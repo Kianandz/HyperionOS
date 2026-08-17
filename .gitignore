@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Python Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables & secrets
+.env
+.env.local
+*.env
+
+# IDE / Editor Settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary & Log files
+*.log
+/tmp/
+*.tmp
+
+# Custom project temporary files
+folder-structure

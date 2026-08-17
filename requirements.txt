@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+psutil
+jinja2
+pymysql
+psycopg2-binary
+pymssql
+docker
+pamela
+python-jose[cryptography]
