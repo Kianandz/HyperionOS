@@ -74,9 +74,9 @@
                     <div>
                         <label class="block text-slate-400 text-xs mb-1">Tipe Website</label>
                         <select id="web-type" onchange="toggleWebFields()" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-2.5 text-white text-sm">
-                            <option value="proxy">Reverse Proxy (Node/Python/Go)</option>
+                            <option value="proxy">Reverse Proxy</option>
                             <option value="static">Static HTML</option>
-                            <option value="php">PHP-FPM (Arch Linux)</option>
+                            <option value="php">PHP</option>
                         </select>
                     </div>
                     <div>

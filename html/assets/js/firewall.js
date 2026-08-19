@@ -20,7 +20,7 @@ async function fetchUfwData() {
         tbody.innerHTML = '';
 
         if (data.rules.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">Tidak ada active rules ditemukan.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">No active rules</td></tr>`;
             return;
         }
 
@@ -37,7 +37,7 @@ async function fetchUfwData() {
             `;
         });
     } catch (err) {
-        console.error("Gagal load UFW status:", err);
+        console.error("Failed to load UFW status:", err);
     }
 }
 
@@ -50,7 +50,7 @@ async function toggleUfwState() {
     });
 
     if (res.ok) fetchUfwData();
-    else alert("Gagal mengubah status UFW (Pastikan backend punya akses sudo tanpa password).");
+    else alert("Failed to change status UFW");
 }
 
 async function addUfwRule() {
@@ -71,7 +71,7 @@ async function addUfwRule() {
         document.getElementById('ufw-port').value = '';
         fetchUfwData();
     } else {
-        alert("Gagal menambahkan rule UFW");
+        alert("Failed to add rule UFW");
     }
 }
 
@@ -79,7 +79,7 @@ async function deleteUfwRule(toValue) {
     const cleanPort = toValue.split('/')[0];
     const proto = toValue.includes('udp') ? 'udp' : 'tcp';
 
-    if (!confirm(`Hapus rule untuk port ${toValue}?`)) return;
+    if (!confirm(`Delete rule for port ${toValue}?`)) return;
 
     const payload = {
         command_type: 'delete_rule',
@@ -95,7 +95,7 @@ async function deleteUfwRule(toValue) {
     });
 
     if (res.ok) fetchUfwData();
-    else alert("Gagal menghapus rule UFW");
+    else alert("Failed to deleted rule UFW");
 }
 
 onTabChange('firewall', fetchUfwData);

@@ -4,8 +4,6 @@ import pymssql
 
 def test_db_connection(db_type: str, host: str, port: int, user: str, password: str, database: str = ""):
 
-    """Testing koneksi ke Database Remote."""
-
     try:
 
         if db_type == "mysql":
@@ -64,13 +62,13 @@ def test_db_connection(db_type: str, host: str, port: int, user: str, password: 
 
         else:
 
-            return {"status": "error", "message": "Database type tidak didukung"}
+            return {"status": "error", "message": "Database type not supported!"}
 
         return {
 
             "status": "success",
 
-            "message": f"Berhasil terkoneksi ke {db_type.upper()} server!",
+            "message": f"Connected to {db_type.upper()} server!",
 
             "databases": databases
 
@@ -82,8 +80,6 @@ def test_db_connection(db_type: str, host: str, port: int, user: str, password: 
     
 
 def execute_custom_query(db_type: str, host: str, port: int, user: str, password: str, database: str, query: str):
-
-    """Eksekusi query SQL dinamis (SELECT, INSERT, UPDATE, DELETE, CREATE, DLL)."""
 
     conn = None
 
@@ -128,7 +124,7 @@ def execute_custom_query(db_type: str, host: str, port: int, user: str, password
 
         else:
 
-            return {"status": "error", "message": "Database type tidak didukung"}
+            return {"status": "error", "message": "Database type not supported!"}
         
         cursor.execute(query)
 
@@ -172,7 +168,7 @@ def execute_custom_query(db_type: str, host: str, port: int, user: str, password
 
                 "type": "mutation",
 
-                "message": f"Query berhasil dieksekusi! ({affected_rows} baris terpengaruh)",
+                "message": f"Query Executed! ({affected_rows} line)",
 
                 "affected_rows": affected_rows
 

@@ -16,7 +16,7 @@ async function fetchDockerData() {
         tbody.innerHTML = '';
 
         if (containers.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Tidak ada container ditemukan.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">Container not found</td></tr>`;
             return;
         }
 
@@ -44,12 +44,12 @@ async function fetchDockerData() {
             `;
         });
     } catch (err) {
-        console.error("Gagal load Docker data:", err);
+        console.error("Failed load Docker data:", err);
     }
 }
 
 async function handleDockerAction(containerId, action) {
-    if (action === 'delete' && !confirm(`Yakin mau menghapus container ${containerId}?`)) return;
+    if (action === 'delete' && !confirm(`Are you sure to delete container ${containerId}?`)) return;
 
     const res = await fetch(`${API_BASE}/docker/action`, {
         method: 'POST',
@@ -60,7 +60,7 @@ async function handleDockerAction(containerId, action) {
     if (res.ok) {
         fetchDockerData();
     } else {
-        alert("Gagal melakukan eksekusi pada container!");
+        alert("Failed to exec container!");
     }
 }
 

@@ -9,9 +9,12 @@ from app.api.files import router as files_router
 from app.api.cloudflared import router as cloudflared_router
 from app.api.settings import router as settings_router
 from app.api.auth import router as auth_router
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
-app = FastAPI(title="HyperionOS", version="1.0.0")
+app = FastAPI(title=os.getenv("TITLE"), version=os.getenv("VERSION"))
 
 app.add_middleware(
     CORSMiddleware,

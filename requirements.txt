@@ -8,3 +8,6 @@ pymssql
 docker
 pamela
 python-jose[cryptography]
+pyjwt
+python-dotenv
+typing

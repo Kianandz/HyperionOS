@@ -50,7 +50,7 @@ def check_connection(data: DBConnectSchema):
 def run_query(data: QueryExecuteSchema):
 
     if not data.database:
-        raise HTTPException(status_code=400, detail="Database harus dipilih terlebih dahulu!")
+        raise HTTPException(status_code=400, detail="Select database first!")
     
     result = execute_custom_query(
         data.db_type, data.host, data.port, data.user, 

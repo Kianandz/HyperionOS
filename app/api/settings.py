@@ -1,16 +1,20 @@
 from fastapi import APIRouter
+import os
+from dotenv import load_dotenv
 
 router = APIRouter()
+
+load_dotenv()
 
 @router.get("/info")
 def get_settings():
 
     return {
-        "app_name": "HyperionOS",
+        "app_name": os.getenv("TITLE"),
 
-        "version": "1.0.0",
+        "version": os.getenv("VERSION"),
 
-        "author": "Kianandz",
+        "author": os.getenv("DEV"),
 
         "environment": "Arch Linux"
         

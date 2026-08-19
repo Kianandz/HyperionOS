@@ -9,7 +9,7 @@
         <i class="fa fa-pie-chart w-5"></i><span>Home</span>
     </a>
     <a href="#websites" onclick="switchTab('websites')" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition" id="nav-websites">
-        <i class="fa fa-globe w-5"></i><span>Kelola Website</span>
+        <i class="fa fa-globe w-5"></i><span>Website</span>
     </a>
     <a href="#database" onclick="switchTab('database')" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition" id="nav-database">
         <i class="fa fa-database w-5"></i><span>Database</span>
@@ -18,7 +18,7 @@
         <i class="fa fa-cubes w-5"></i><span>Docker</span>
     </a>
     <a href="#firewall" onclick="switchTab('firewall')" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition" id="nav-firewall">
-        <i class="fa fa-shield w-5"></i><span>Firewall (UFW)</span>
+        <i class="fa fa-shield w-5"></i><span>Firewall</span>
     </a>
     <a href="#files" onclick="switchTab('files')" class="flex items-center space-x-3 px-4 py-3 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition" id="nav-files">
         <i class="fa fa-folder-open w-5"></i><span>File Manager</span>

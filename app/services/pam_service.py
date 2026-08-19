@@ -1,4 +1,9 @@
 import pamela
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 def verify_linux_user(username: str, password: str) -> bool:
 
@@ -10,7 +15,7 @@ def verify_linux_user(username: str, password: str) -> bool:
     
     except pamela.PAMError as e:
 
-        print(f"[PAM Error] {e}")
+        logger.warning(f"Failed login attempt for user '{username}': {e}")
 
         return False
     

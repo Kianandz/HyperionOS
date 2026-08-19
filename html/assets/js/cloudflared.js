@@ -8,7 +8,7 @@ async function fetchCloudflaredStatus() {
             : "px-3 py-1 rounded text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20";
         badge.innerText = `Status: ${data.status}`;
     } catch (err) {
-        console.error("Gagal load Cloudflared status:", err);
+        console.error("Failed load Cloudflared status:", err);
     }
 }
 
@@ -21,7 +21,7 @@ async function submitCloudflaredToken() {
     });
 
     if (res.ok) alert("Tunnel berhasil di-submit!");
-    else alert("Gagal mengaktifkan Cloudflared Tunnel.");
+    else alert("Failted disabled Cloudflared Tunnel.");
 
     fetchCloudflaredStatus();
 }

@@ -1,50 +1,72 @@
+const DOM = {
+    hostname: document.getElementById('val-hostname'),
+    uptime: document.getElementById('val-uptime'),
+    os: document.getElementById('val-os'),
+    cores: document.getElementById('val-cores'),
+    processes: document.getElementById('val-processes'),
+    cpuVal: document.getElementById('val-cpu'),
+    cpuBar: document.getElementById('bar-cpu'),
+    ramVal: document.getElementById('val-ram'),
+    ramPercent: document.getElementById('val-ram-percent'),
+    ramBar: document.getElementById('bar-ram'),
+    netDown: document.getElementById('val-net-down'),
+    netUp: document.getElementById('val-net-up'),
+    diskList: document.getElementById('disk-list')
+};
+
 async function fetchMetrics() {
     try {
         const res = await fetch(`${API_BASE}/dashboard/metrics`);
+        if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+        
         const data = await res.json();
 
-        // System Info
+        // Update Text (TIDAK ADA LAGI INJECT SVG DISINI)
         if (data.system) {
-            document.getElementById('val-hostname').innerText = `Host: ${data.system.hostname}`;
-            document.getElementById('val-uptime').innerText = data.system.uptime;
-            document.getElementById('val-os').innerText = data.system.os;
-            document.getElementById('val-cores').innerText = `${data.system.cpu_cores} Cores`;
-            document.getElementById('val-processes').innerText = `${data.system.process_count} Tasks`;
+            // Karena SVG udah ditaro di HTML, kita cuma ubah text node terakhirnya
+            DOM.hostname.lastChild.nodeValue = ` Host: ${data.system.hostname}`;
+            DOM.uptime.innerText = data.system.uptime;
+            DOM.os.innerText = data.system.os;
+            DOM.cores.innerText = data.system.cpu_cores;
+            DOM.processes.innerText = data.system.process_count;
         }
 
-        // CPU Usage & Progress Bar
-        document.getElementById('val-cpu').innerText = `${data.cpu_percent}%`;
-        document.getElementById('bar-cpu').style.width = `${data.cpu_percent}%`;
+        // CPU & RAM
+        DOM.cpuVal.innerText = `${data.cpu_percent}%`;
+        DOM.cpuBar.style.width = `${data.cpu_percent}%`;
 
-        // RAM Usage & Progress Bar
-        document.getElementById('val-ram').innerText = `${data.ram.used_gb} / ${data.ram.total_gb} GB`;
-        document.getElementById('val-ram-percent').innerText = `${data.ram.percent}% used`;
-        document.getElementById('bar-ram').style.width = `${data.ram.percent}%`;
+        DOM.ramVal.innerText = `${data.ram.used_gb} / ${data.ram.total_gb} GB`;
+        DOM.ramPercent.innerText = `${data.ram.percent}% used`;
+        DOM.ramBar.style.width = `${data.ram.percent}%`;
 
         // Network
-        document.getElementById('val-net-down').innerText = `${data.network.download_kbps} KB/s`;
-        document.getElementById('val-net-up').innerText = `${data.network.upload_kbps} KB/s`;
+        DOM.netDown.innerHTML = `${data.network.download_kbps} <span class="text-sm text-emerald-500/50 font-normal">KB/s</span>`;
+        DOM.netUp.innerHTML = `${data.network.upload_kbps} <span class="text-sm text-pink-500/50 font-normal">KB/s</span>`;
 
-        // Disk Storage
-        const diskContainer = document.getElementById('disk-list');
-        diskContainer.innerHTML = '';
+        // Disk (Flat Solid Design)
+        const fragment = document.createDocumentFragment();
         data.disks.forEach(disk => {
-            diskContainer.innerHTML += `
-                <div class="space-y-1">
-                    <div class="flex justify-between text-sm">
-                        <span class="font-mono text-indigo-300">${disk.mountpoint} (${disk.device})</span>
-                        <span class="text-slate-400">${disk.used_gb} GB / ${disk.total_gb} GB (${disk.percent}%)</span>
-                    </div>
-                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
-                        <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${disk.percent}%"></div>
-                    </div>
+            const diskEl = document.createElement('div');
+            diskEl.className = 'space-y-2';
+            diskEl.innerHTML = `
+                <div class="flex justify-between items-center text-sm">
+                    <span class="font-mono text-slate-300 bg-slate-800 px-2.5 py-1 rounded-md text-[11px] font-semibold tracking-wide">${disk.mountpoint}</span>
+                    <span class="text-slate-400 text-xs font-mono">${disk.used_gb} / ${disk.total_gb} GB <span class="text-indigo-400 ml-1 font-bold">(${disk.percent}%)</span></span>
+                </div>
+                <div class="w-full bg-slate-950/80 rounded-full h-2 overflow-hidden">
+                    <div class="bg-indigo-500 h-full rounded-full transition-all duration-700 ease-out" style="width: ${disk.percent}%"></div>
                 </div>
             `;
+            fragment.appendChild(diskEl);
         });
+        
+        DOM.diskList.innerHTML = '';
+        DOM.diskList.appendChild(fragment);
+
     } catch (err) {
-        console.error("Gagal konek ke FastAPI:", err);
+        console.error('[Dashboard] Error:', err.message);
     }
 }
 
-setInterval(fetchMetrics, 2000);
 fetchMetrics();
+setInterval(fetchMetrics, 2000);

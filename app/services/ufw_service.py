@@ -3,8 +3,6 @@ import re
 
 def get_ufw_status():
 
-    """Mengecek status ufw dan daftar rules yang aktif."""
-
     try:
 
         res = subprocess.run(["sudo", "ufw", "status", "verbose"], capture_output=True, text=True, check=True)
@@ -57,8 +55,6 @@ def get_ufw_status():
 
 def ufw_action(command_type: str, port: str = "", proto: str = "tcp", action: str = "allow"):
 
-    """Menjalankan perintah ufw allow/deny/enable/disable."""
-
     try:
 
         if command_type == "toggle_active":
@@ -77,7 +73,7 @@ def ufw_action(command_type: str, port: str = "", proto: str = "tcp", action: st
 
             subprocess.run(["sudo", "ufw", "delete", action, rule_target], check=True)
         
-        return {"status": "success", "message": "Perintah UFW berhasil dieksekusi"}
+        return {"status": "success", "message": "UFW Executed"}
     
     except Exception as e:
 

@@ -5,13 +5,11 @@ CLOUDFLARED_SERVICE_NAME = "cloudflared"
 
 def set_cloudflared_token(token: str):
 
-    """Install dan jalankan cloudflared service pakai token."""
-
     try:
 
         subprocess.run(["sudo", "cloudflared", "service", "install", token], check=True)
 
-        return {"status": "success", "message": "Cloudflared Tunnel berhasil dihubungkan!"}
+        return {"status": "success", "message": "Cloudflared Tunnel connected!"}
     
     except Exception as e:
 
@@ -19,8 +17,6 @@ def set_cloudflared_token(token: str):
     
 
 def get_cloudflared_status():
-
-    """Cek apakah service cloudflared running di background."""
 
     try:
 

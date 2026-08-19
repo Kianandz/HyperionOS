@@ -160,13 +160,13 @@ fi
 log_info "Adding 'hyperion' to docker group..."
 usermod -aG docker hyperion
 
-log_info "Setting up sudoers privileges for 'kianandz'..."
-SUDOERS_FILE="/etc/sudoers.d/hyperion_kianandz"
+log_info "Setting up sudoers privileges for 'hyperion'..."
+SUDOERS_FILE="/etc/sudoers.d/hyperion"
 cat << 'EOF' > "$SUDOERS_FILE"
-kianandz ALL=(ALL) NOPASSWD: /usr/sbin/nginx, /bin/systemctl reload nginx, /bin/systemctl start nginx, /bin/systemctl stop nginx, /bin/systemctl restart nginx
-kianandz ALL=(ALL) NOPASSWD: /usr/bin/systemctl * php-fpm
-kianandz ALL=(ALL) NOPASSWD: /usr/bin/systemctl * nginx
-kianandz ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u *
+hyperion ALL=(ALL) NOPASSWD: /usr/sbin/nginx, /bin/systemctl reload nginx, /bin/systemctl start nginx, /bin/systemctl stop nginx, /bin/systemctl restart nginx
+hyperion ALL=(ALL) NOPASSWD: /usr/bin/systemctl * php-fpm
+hyperion ALL=(ALL) NOPASSWD: /usr/bin/systemctl * nginx
+hyperion ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u *
 EOF
 chmod 0440 "$SUDOERS_FILE"
 

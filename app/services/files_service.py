@@ -9,7 +9,7 @@ def get_directory_contents(target_path: str = ""):
     
     if not os.path.exists(full_path):
 
-        return {"status": "error", "message": "Path tidak ditemukan"}
+        return {"status": "error", "message": "Path not found"}
 
     items = []
 
@@ -59,7 +59,7 @@ def delete_path(target_path: str):
 
             os.remove(full_path)
 
-        return {"status": "success", "message": "Item berhasil dihapus"}
+        return {"status": "success", "message": "Item deleted"}
     
     except Exception as e:
 

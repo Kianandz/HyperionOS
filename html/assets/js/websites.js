@@ -73,7 +73,7 @@ async function fetchServiceStatuses() {
             phpBadge.innerHTML = `<span class="w-2 h-2 rounded-full bg-slate-500"></span> PHP-FPM Not Installed`;
         }
     } catch (err) {
-        console.error("Gagal load status service:", err);
+        console.error("Failed to load status service:", err);
     }
 }
 
@@ -85,10 +85,10 @@ async function handleNginxAction(action) {
             alert(data.message);
             fetchServiceStatuses();
         } else {
-            alert("Gagal: " + (data.detail || "Error menjalankan aksi Nginx"));
+            alert("Failed: " + (data.detail || "Error cannot run action Nginx"));
         }
     } catch (err) {
-        alert("Gagal koneksi server!");
+        alert("Failed connect to server!");
     }
 }
 
@@ -123,7 +123,7 @@ async function fetchWebsites() {
             `;
         });
     } catch (err) {
-        console.error("Gagal load websites:", err);
+        console.error("Failed to load websites:", err);
     }
 }
 
@@ -139,7 +139,7 @@ async function editConfig(domain) {
         switchWebTab('advanced');
         document.getElementById('modal-website').classList.remove('hidden');
     } catch (err) {
-        alert("Gagal load file konfigurasi!");
+        alert("Failed to load Config!");
     }
 }
 
@@ -155,7 +155,7 @@ async function submitWebsite() {
         raw_config: document.getElementById('web-raw-config').value
     };
 
-    if (!payload.domain) return alert("Domain wajib diisi!");
+    if (!payload.domain) return alert("Domain must be filled!");
 
     const res = await fetch(`${API_BASE}/websites/save`, {
         method: 'POST',
@@ -168,7 +168,7 @@ async function submitWebsite() {
         closeModalWebsite();
         loadWebsitesTab();
     } else {
-        alert("Gagal menyimpan config:\n" + (data.detail || "Error Nginx syntax"));
+        alert("Failed to save config:\n" + (data.detail || "Error Nginx syntax"));
     }
 }
 
@@ -202,10 +202,10 @@ async function handlePhpFpmAction(action) {
             alert(data.message);
             fetchServiceStatuses();
         } else {
-            alert("Gagal: " + (data.detail || "Error PHP-FPM"));
+            alert("Failed: " + (data.detail || "Error PHP-FPM"));
         }
     } catch (err) {
-        alert("Gagal koneksi ke server!");
+        alert("Failed to connect server!");
     }
 }
 
@@ -235,17 +235,16 @@ async function refreshCurrentLog() {
         const res = await fetch(`${API_BASE}/websites/logs/${currentLogTarget}`);
         const data = await res.json();
         if (res.ok) {
-            logBox.innerText = data.logs || '--- Log Kosong / Tidak Ada Data ---';
+            logBox.innerText = data.logs || '--- Log empty or no data ---';
             logBox.scrollTop = logBox.scrollHeight;
         } else {
-            logBox.innerText = 'Gagal membaca log: ' + data.detail;
+            logBox.innerText = 'Failed to read log: ' + data.detail;
         }
     } catch (err) {
-        logBox.innerText = 'Error koneksi server saat membaca log.';
+        logBox.innerText = 'Error when try to connect server.';
     }
 }
 
-// PHP Config Manager (php.ini)
 async function openPhpConfigModal() {
     try {
         const res = await fetch(`${API_BASE}/websites/php-config`);
@@ -255,10 +254,10 @@ async function openPhpConfigModal() {
             document.getElementById('php-ini-path-label').innerText = data.path;
             document.getElementById('modal-php-config').classList.remove('hidden');
         } else {
-            alert("Gagal baca php.ini: " + data.detail);
+            alert("Failed to read php.ini: " + data.detail);
         }
     } catch (err) {
-        alert("Gagal koneksi ke server!");
+        alert("Failed to connect server!");
     }
 }
 
@@ -276,13 +275,13 @@ async function savePhpConfig() {
         });
         const data = await res.json();
         if (res.ok) {
-            alert("File php.ini berhasil di-update!");
+            alert("File php.ini updated!");
             closePhpConfigModal();
             fetchServiceStatuses();
         } else {
-            alert("Gagal menyimpan php.ini:\n" + data.detail);
+            alert("Failed save php.ini:\n" + data.detail);
         }
     } catch (err) {
-        alert("Gagal koneksi ke server!");
+        alert("Failed to connect server!");
     }
 }

@@ -24,12 +24,12 @@ async function fetchFiles(path = "") {
             `;
         });
     } catch (err) {
-        console.error("Gagal load files:", err);
+        console.error("Failed load files:", err);
     }
 }
 
 async function deleteFileItem(path) {
-    if (!confirm(`Hapus ${path}?`)) return;
+    if (!confirm(`Delete ${path}?`)) return;
     await fetch(`${API_BASE}/files/delete`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

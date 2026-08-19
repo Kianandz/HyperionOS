@@ -74,7 +74,7 @@ async function connectDatabase() {
         }
     } catch (err) {
         statusMsg.className = "text-sm text-rose-400 font-semibold";
-        statusMsg.innerText = "Gagal terhubung ke backend FastAPI!";
+        statusMsg.innerText = "Failed to connect backend FastAPI!";
     }
 }
 
@@ -87,7 +87,7 @@ async function runSqlQuery() {
     const tableBody = document.getElementById('query-table-body');
 
     if (!dbName || !query) {
-        alert("Pilih database dan masukkan query SQL dulu bro!");
+        alert("Select database first & then exec query!");
         return;
     }
 

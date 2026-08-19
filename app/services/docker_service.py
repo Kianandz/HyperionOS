@@ -2,8 +2,6 @@ import docker
 
 def get_docker_client():
 
-    """Menginisialisasi client Docker via local socket."""
-
     try:
 
         return docker.from_env()
@@ -18,7 +16,7 @@ def get_docker_overview():
 
     if not client:
 
-        return {"status": "offline", "error": "Docker service tidak berjalan atau perizinan ditolak"}
+        return {"status": "offline", "error": "Docker not running or permission denied"}
     
     try:
 
@@ -101,7 +99,7 @@ def container_action(container_id: str, action: str):
 
             container.remove(force=True)
 
-        return {"status": "success", "message": f"Aksi {action} pada {container_id} berhasil"}
+        return {"status": "success", "message": f"Action {action} on {container_id} Success"}
     
     except Exception as e:
 
