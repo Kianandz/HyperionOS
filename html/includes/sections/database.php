@@ -42,16 +42,27 @@
             <div id="db-status-msg" class="text-sm text-slate-500 italic">Belum terkoneksi ke server mana pun.</div>
             <ul id="db-list" class="space-y-2 font-mono text-sm hidden"></ul>
         </div>
+
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4 md:col-span-3 hidden" id="table-explorer-section">
+            <h2 class="text-lg font-semibold text-white">
+                <i class="fa fa-table mr-2 text-indigo-400"></i> Explorer: <span id="active-db-label" class="text-emerald-400"></span>
+            </h2>
+            
+            <!-- Area List Tabel -->
+            <div id="table-list-gui" class="flex flex-wrap gap-2 mb-4">
+                <span class="text-sm text-slate-500 italic">Memuat tabel...</span>
+            </div>
+        </div>
     </div>
     <div class="bg-slate-900 border border-slate-800 p-6 rounded-xl space-y-4 md:col-span-3 mt-4">
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center hidden">
         <h2 class="text-lg font-semibold text-white"><i class="fa fa-terminal text-indigo-400 mr-2"></i>SQL Console</h2>
         <input type="text" id="selected-db" placeholder="Database Name" class="bg-slate-950 border border-slate-800 rounded px-3 py-1 text-sm text-indigo-300 font-mono" />
     </div>
 
-    <textarea id="sql-query" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded p-3 text-emerald-400 font-mono text-sm focus:outline-none focus:border-indigo-500" placeholder="SELECT * FROM users LIMIT 10;"></textarea>
+    <textarea id="sql-query" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded p-3 text-emerald-400 font-mono text-sm focus:outline-none focus:border-indigo-500 hidden" placeholder="SELECT * FROM users LIMIT 10;"></textarea>
 
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center hidden">
         <button onclick="runSqlQuery()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded font-semibold text-sm transition flex items-center">
             <i class="fa fa-play mr-2"></i> Execute Query
         </button>
@@ -59,9 +70,9 @@
     </div>
 
     <!-- Output Data Table -->
-    <div id="query-result-container" class="overflow-x-auto hidden border border-slate-800 rounded">
+    <div id="query-result-container" class="overflow-x-auto hidden border border-slate-800 rounded overflow-y-auto h-[50vh]">
         <table class="w-full text-left text-sm text-slate-300 font-mono">
-            <thead id="query-table-head" class="bg-slate-950 text-indigo-400 uppercase text-xs border-b border-slate-800"></thead>
+            <thead id="query-table-head" class="sticky top-0 z-10 bg-slate-950 text-indigo-400 uppercase text-xs border-b border-slate-800"></thead>
             <tbody id="query-table-body" class="divide-y divide-slate-800 bg-slate-900/50"></tbody>
         </table>
     </div>

@@ -104,4 +104,66 @@ def container_action(container_id: str, action: str):
     except Exception as e:
 
         return {"status": "error", "message": str(e)}
+
+def get_container_details(container_id: str):
+
+    client = get_docker_client()
+
+    if not client:
+
+        return {"status": "error", "message": "Docker client error"}
+    
+    try:
+        c = client.containers.get(container_id)
+        cfg = c.attrs.get('Config', {})
+        host_cfg = c.attrs.get('HostConfig', {})
+
+        return {
+
+            "id": c.short_id,
+
+            "name": c.name,
+
+            "image": cfg.get('Image'),
+
+            "status": c.status,
+
+            "env": cfg.get('Env', []), # List of "KEY=VAL"
+
+            "volumes": host_cfg.get('Binds', []), # List of "host:container:mode"
+
+            "ports": c.attrs.get('NetworkSettings', {}).get('Ports', {}),
+
+            "cmd": cfg.get('Cmd', [])
+
+        }
+    except Exception as e:
+
+        return {"status": "error", "message": str(e)}
+
+def install_and_run(image_name: str):
+
+    client = get_docker_client()
+
+    if not client:
+
+        return {"status": "error", "message": "Docker client error"}
+    
+    try:
+
+        container = client.containers.run(image_name, detach=True)
+
+        return {
+
+            "status": "success", 
+
+            "message": f"Successfully installed and started {image_name}", 
+
+            "container_id": container.short_id
+
+        }
+    
+    except Exception as e:
+
+        return {"status": "error", "message": str(e)}
     

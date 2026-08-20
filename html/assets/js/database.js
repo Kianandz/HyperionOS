@@ -27,12 +27,19 @@ function getPayload(includeDb = false) {
     return payload;
 }
 
-function selectDatabase(dbName) {
+async function selectDatabase(dbName) {
     const selectedInput = document.getElementById('selected-db');
     if (selectedInput) {
         selectedInput.value = dbName;
         selectedInput.classList.add('ring-2', 'ring-indigo-500');
         setTimeout(() => selectedInput.classList.remove('ring-2', 'ring-indigo-500'), 1000);
+        
+        // Update label UI
+        document.getElementById('active-db-label').innerText = dbName;
+        document.getElementById('table-explorer-section').classList.remove('hidden');
+        
+        // Langsung load tabel otomatis!
+        await loadTablesGUI();
     }
 }
 
@@ -142,4 +149,56 @@ async function runSqlQuery() {
         statusMsg.className = "text-xs text-rose-400 font-mono";
         statusMsg.innerText = "Failed to execute query!";
     }
+}
+
+async function loadTablesGUI() {
+    const dbType = document.getElementById('db-type').value;
+    const tableListContainer = document.getElementById('table-list-gui');
+    tableListContainer.innerHTML = '<span class="text-sm text-yellow-400 animate-pulse">Fetching tables...</span>';
+
+    // Sesuaikan query berdasarkan engine database
+    let query = "";
+    if (dbType === 'mysql') query = "SHOW TABLES;";
+    if (dbType === 'postgres') query = "SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema';";
+    if (dbType === 'mssql') query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE';";
+
+    // Pura-pura ngisi query ke textarea console biar getPayload() bisa dipake ulang
+    document.getElementById('sql-query').value = query; 
+    
+    const payload = getPayload(true);
+
+    try {
+        const res = await fetch(`${API_BASE}/databases/query`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok && data.type === 'select') {
+            tableListContainer.innerHTML = '';
+
+            data.data.forEach(row => {
+                const tableName = Object.values(row)[0]; 
+                tableListContainer.innerHTML += `
+                    <button onclick="loadTableData('${tableName}')" class="bg-slate-800 hover:bg-indigo-600 text-indigo-300 hover:text-white px-3 py-1 rounded border border-slate-700 text-sm transition flex items-center">
+                        <i class="fa fa-table mr-2"></i> ${tableName}
+                    </button>
+                `;
+            });
+        }
+    } catch (err) {
+        tableListContainer.innerHTML = '<span class="text-sm text-rose-400">Gagal load tabel!</span>';
+    }
+}
+
+async function loadTableData(tableName) {
+    // Generate query SELECT * otomatis
+    const autoQuery = `SELECT * FROM ${tableName} LIMIT 100;`;
+    
+    // Set text area (biar user tetep bisa edit/custom query-nya di console)
+    document.getElementById('sql-query').value = autoQuery;
+    
+    // Panggil fungsi runSqlQuery() lu yang udah mantap itu buat ngerender table HTML
+    await runSqlQuery();
 }

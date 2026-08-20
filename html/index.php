@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - HyperionOS</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <!-- <link rel="stylesheet" href="assets/css/tailwind.css"> -->
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 flex items-center justify-center h-screen">
     <div class="bg-slate-900 border border-slate-800 p-8 rounded-xl w-full max-w-md space-y-6">

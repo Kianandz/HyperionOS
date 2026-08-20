@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HyperionOS</title>
-    <link rel="stylesheet" href="assets/css/tailwind.css">
+    <!-- <link rel="stylesheet" href="assets/css/tailwind.css"> -->
     <link rel="stylesheet" href="assets/css/fontawesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans flex h-screen overflow-hidden selection:bg-indigo-500 selection:text-white">
 
