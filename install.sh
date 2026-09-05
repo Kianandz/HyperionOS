@@ -41,6 +41,7 @@ EOF
     
     provision_user
     setup_application
+    configure_nginx
     configure_venv
     
     configure_permissions

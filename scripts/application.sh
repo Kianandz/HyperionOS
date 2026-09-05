@@ -67,3 +67,51 @@ configure_venv() {
     
     log_success "Virtual environment synchronized."
 }
+
+configure_nginx() {
+    log_info "Updating Nginx core configuration..."
+    
+    # Backup existing configuration if it exists
+    if [[ -f /etc/nginx/nginx.conf ]]; then
+        sudo cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.bak
+        log_info "Created backup of the existing nginx.conf"
+    fi
+    
+    # Write new configuration
+    sudo tee /etc/nginx/nginx.conf > /dev/null << 'EOF'
+#user http;
+worker_processes auto;
+
+# Load all installed dynamic modules
+include modules.d/*.conf;
+
+events {
+    worker_connections 1024;
+    multi_accept on;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    # Core optimizations
+    types_hash_max_size 2048;
+    types_hash_bucket_size 64;
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+
+    # Load modular configuration files
+    include conf.d/*.conf;
+}
+EOF
+
+    # Validate the new configuration
+    if sudo nginx -t > /dev/null 2>&1; then
+        log_success "Nginx configuration updated and tested successfully."
+    else
+        log_error "Nginx configuration test failed. Please check the syntax."
+        return 1
+    fi
+}
