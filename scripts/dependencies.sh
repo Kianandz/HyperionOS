@@ -53,7 +53,7 @@ install_dependencies() {
         sudo apt-get update -yqq
         sudo apt-get install -yqq $DEBIAN_DEPS
     elif [[ "$PKG_MANAGER" == "pacman" ]]; then
-        sudo pacman -Sy --noconfirm
+        sudo pacman -Syu --noconfirm
         sudo pacman -S --noconfirm --needed $ARCH_DEPS
     fi
 
