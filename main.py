@@ -3,6 +3,7 @@ from fastapi.responses import RedirectResponse
 from fastapi.exceptions import HTTPException
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
+from dotenv import load_dotenv
 
 from app.core.config import settings
 from app.routes import auth, dashboard, websites, database, docker, firewall, files, cloudflared, settings as settings_route
@@ -36,6 +37,9 @@ app.include_router(files.router)
 app.include_router(cloudflared.router)
 app.include_router(settings_route.router)
 
+load_dotenv()
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.getenv("PORT"))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)

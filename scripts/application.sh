@@ -40,9 +40,23 @@ setup_application() {
     local secret_key
     secret_key=$(openssl rand -base64 64 | tr -d '\n')
 
+    log_info "Allocating random available port for application..."
+    local app_port
+    while true; do
+        # Generate port acak di rentang 8000 - 9999
+        app_port=$((RANDOM % 2000 + 8000))
+        
+        # Cek apakah port sedang dipakai (menggunakan ss atau netstat)
+        if ! sudo ss -tulpn | grep -q ":${app_port} "; then
+            break
+        fi
+    done
+    log_success "Assigned port: ${app_port}"
+
     sudo -u "${APP_USER}" tee "${APP_DIR}/.env" > /dev/null <<EOF
 APP_NAME=HyperionOS
 VERSION=1.0.0
+PORT=${app_port}
 SECRET_KEY=${secret_key}
 EOF
     log_success "Application payload deployed."
