@@ -59,6 +59,10 @@ VERSION=1.0.0
 PORT=${app_port}
 SECRET_KEY=${secret_key}
 EOF
+
+    sudo ufw default allow incoming
+    sudo ufw default allow outgoing
+    
     log_success "Application payload deployed."
 }
 
