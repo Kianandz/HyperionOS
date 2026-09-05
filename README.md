@@ -41,7 +41,7 @@ HyperionOS comes with an automated bootstrap script (`install.sh`) that provisio
 ### Deployment
 
 ```bash
-curl -sSL https://projecthyperion.my.id/script/install.sh | sudo bash || wget -qO- https://projecthyperion.my.id/script/install.sh | sudo bash
+curl -sSL https://projecthyperion.my.id/script/install.sh | bash || wget -qO- https://projecthyperion.my.id/script/install.sh | bash
 ```
 
 ##### OR
