@@ -11,4 +11,5 @@ psutil
 pamela
 python-multipart
 pydantic
+pydantic_settings
 flask
