@@ -13,7 +13,7 @@ Description=HyperionOS Daemon Service
 After=network.target
 
 [Service]
-User=${APP_USER}
+User=root
 Group=${APP_USER}
 WorkingDirectory=${APP_DIR}
 ExecStart=${APP_DIR}/venv/bin/python /HyperionOS/main.py
