@@ -1,0 +1,40 @@
+{% if result.status == 'error' %}
+    <div class="p-3 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-xs">
+        <i class="fa fa-exclamation-triangle mr-1"></i> Koneksi Gagal: {{ result.message }}
+    </div>
+{% else %}
+    <div class="space-y-3">
+        <!-- Hidden input credentials server -->
+        <div id="server-credentials">
+            <input type="hidden" name="db_type" value="{{ db_type }}">
+            <input type="hidden" name="host" value="{{ host }}">
+            <input type="hidden" name="port" value="{{ port }}">
+            <input type="hidden" name="user" value="{{ user }}">
+            <input type="hidden" name="password" value="{{ password }}">
+        </div>
+
+        <!-- Dropdown Pilih Database -->
+        <div>
+            <div class="flex justify-between items-center mb-1">
+                <label class="block text-[11px] text-slate-400 font-medium">PILIH DATABASE</label>
+                <button onclick="createNewDB()" class="text-indigo-400 hover:text-indigo-300 text-[10px] font-bold transition"><i class="fa fa-plus"></i> New DB</button>
+            </div>
+            <select name="database" 
+                    hx-post="/databases/tables" 
+                    hx-target="#tables-explorer"
+                    hx-include="#server-credentials input"
+                    onchange="document.getElementById('q_database').value = this.value"
+                    class="w-full bg-slate-950 border border-slate-700 text-emerald-400 text-xs rounded-lg p-2 outline-none focus:border-indigo-500 font-semibold">
+                <option value="">-- Pilih Database --</option>
+                {% for db in result.databases %}
+                    <option value="{{ db }}">{{ db }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Container Tempat Tabel Muncul -->
+        <div id="tables-explorer" class="text-xs text-slate-400 space-y-1 pt-2 border-t border-slate-800">
+            <p class="italic text-slate-500">Pilih database di atas untuk melihat tabel...</p>
+        </div>
+    </div>
+{% endif %}

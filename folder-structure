@@ -1,0 +1,126 @@
+├── app
+│   ├── core
+│   │   ├── config.py
+│   │   └── security.py
+│   ├── routes
+│   │   ├── auth.py
+│   │   ├── cloudflared.py
+│   │   ├── dashboard.py
+│   │   ├── database.py
+│   │   ├── docker.py
+│   │   ├── files.py
+│   │   ├── firewall.py
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   └── websites.py
+│   ├── services
+│   │   ├── cloudflared_service.py
+│   │   ├── database_service.py
+│   │   ├── docker_service.py
+│   │   ├── files_service.py
+│   │   ├── metrics.py
+│   │   ├── pam_service.py
+│   │   ├── ufw_service.py
+│   │   └── website_service.py
+│   ├── static
+│   │   ├── css
+│   │   │   ├── fontawesome.css
+│   │   │   ├── fontawesome.min.css
+│   │   │   └── style.css
+│   │   ├── fonts
+│   │   │   ├── FontAwesome.otf
+│   │   │   ├── fontawesome-webfont.eot
+│   │   │   ├── fontawesome-webfont.svg
+│   │   │   ├── fontawesome-webfont.ttf
+│   │   │   ├── fontawesome-webfont.woff
+│   │   │   └── fontawesome-webfont.woff2
+│   │   ├── js
+│   │   │   ├── cloudflared
+│   │   │   │   └── cloudflared.js
+│   │   │   ├── databases
+│   │   │   │   ├── data.js
+│   │   │   │   ├── sessions.js
+│   │   │   │   └── structure.js
+│   │   │   ├── docker
+│   │   │   │   ├── appstore.js
+│   │   │   │   ├── main.js
+│   │   │   │   └── settings.js
+│   │   │   ├── files
+│   │   │   │   └── files.js
+│   │   │   ├── firewall
+│   │   │   │   ├── bulk_del.js
+│   │   │   │   ├── main.js
+│   │   │   │   └── modal_logs.js
+│   │   │   ├── htmx.min.js
+│   │   │   ├── main.js
+│   │   │   ├── settings.js
+│   │   │   └── websites
+│   │   │       ├── global.js
+│   │   │       ├── modal_add.js
+│   │   │       ├── modal_edit.js
+│   │   │       ├── modal_fm.js
+│   │   │       └── modal_logs.js
+│   │   └── uploads
+│   │       └── backgrounds
+│   │           ├── wpp-1.jpg
+│   │           └── wpp-1.mp4
+│   └── templates
+│       ├── components
+│       │   ├── cloudflared
+│       │   │   ├── header.html
+│       │   │   ├── logs_terminal.html
+│       │   │   └── token_card.html
+│       │   ├── databases
+│       │   │   ├── db_modals.html
+│       │   │   ├── db_query_result.html
+│       │   │   ├── db_selector.html
+│       │   │   ├── db_sidebar.html
+│       │   │   ├── db_status.html
+│       │   │   ├── db_tables_sidebar.html
+│       │   │   └── db_workspace.html
+│       │   ├── docker
+│       │   │   ├── container_grid.html
+│       │   │   ├── modal_appstore.html
+│       │   │   ├── modal_settings.html
+│       │   │   └── stats_card.html
+│       │   ├── files
+│       │   │   ├── batch_action_bar.html
+│       │   │   ├── file_table.html
+│       │   │   ├── hidden_forms.html
+│       │   │   ├── modals.html
+│       │   │   ├── paste_bar.html
+│       │   │   └── topbar.html
+│       │   ├── firewall
+│       │   │   ├── modal_add.html
+│       │   │   ├── modal_logs.html
+│       │   │   └── rules_table.html
+│       │   ├── metrics_grid.html
+│       │   ├── settings
+│       │   │   ├── appearance.html
+│       │   │   ├── card_theme.html
+│       │   │   ├── dns_card.html
+│       │   │   ├── header.html
+│       │   │   └── maintenance_card.html
+│       │   ├── sidebar.html
+│       │   └── websites
+│       │       ├── modal_add.html
+│       │       ├── modal_edit.html
+│       │       ├── modal_fm.html
+│       │       └── modal_logs.html
+│       ├── layouts
+│       │   └── base.html
+│       └── pages
+│           ├── cloudflared.html
+│           ├── dashboard.html
+│           ├── databases.html
+│           ├── docker.html
+│           ├── files.html
+│           ├── firewall.html
+│           ├── login.html
+│           ├── settings.html
+│           └── websites.html
+├── folder-structure
+├── install.sh
+├── main.py
+├── README.md
+└── requirements.txt

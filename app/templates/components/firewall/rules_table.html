@@ -1,0 +1,55 @@
+<div class="p-4 border-b border-slate-800/60 bg-slate-900/20 flex justify-between items-center">
+    <h2 class="text-sm font-bold text-white tracking-wide">Active Rules</h2>
+    <div class="flex items-center gap-4">
+        <!-- Tombol Bulk Delete (Default Hidden) -->
+        <button id="bulk-delete-btn" onclick="deleteSelectedRules()" class="hidden bg-rose-500/20 text-rose-400 hover:bg-rose-500/30 px-3 py-1.5 rounded-lg text-xs font-bold transition cursor-pointer shadow-sm">
+            <i class="fa fa-trash"></i> Hapus Terpilih (<span id="selected-count">0</span>)
+        </button>
+        
+        <div class="text-xs text-slate-400">
+            Default Incoming: <span class="text-rose-400">{{ ufw.default_incoming }}</span> | 
+            Outgoing: <span class="text-emerald-400">{{ ufw.default_outgoing }}</span>
+        </div>
+    </div>
+</div>
+<div class="overflow-x-auto">
+    <table class="w-full text-left text-xs text-slate-400">
+        <thead class="bg-slate-800/30 text-slate-400 uppercase border-b border-slate-800/60">
+            <tr>
+                <th class="p-3.5 pl-5 w-10">
+                    <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="accent-indigo-500 rounded bg-slate-900 border border-slate-700 cursor-pointer h-3.5 w-3.5">
+                </th>
+                <th class="p-3.5">Port / Service</th>
+                <th class="p-3.5">Action</th>
+                <th class="p-3.5">From</th>
+                <th class="p-3.5 text-right pr-5">Options</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-800/40">
+            {% for rule in ufw.rules %}
+            <tr class="hover:bg-slate-800/20 transition">
+                <td class="p-3.5 pl-5">
+                    <input type="checkbox" class="rule-checkbox accent-indigo-500 rounded bg-slate-900 border border-slate-700 cursor-pointer h-3.5 w-3.5" 
+                           data-action="{{ rule.action.split(' ')[0]|lower }}" 
+                           data-port="{{ rule.to }}"
+                           onchange="updateBulkBtn()">
+                </td>
+                <td class="p-3.5 font-mono text-white">{{ rule.to }}</td>
+                <td class="p-3.5">
+                    <span class="px-2 py-0.5 rounded text-[10px] {% if 'ALLOW' in rule.action|upper %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/20{% else %}bg-rose-500/20 text-rose-300 border border-rose-500/20{% endif %}">
+                        {{ rule.action }}
+                    </span>
+                </td>
+                <td class="p-3.5 font-mono">{{ rule.from }}</td>
+                <td class="p-3.5 text-right pr-5">
+                    <button onclick="deleteRule('{{ rule.action.split(' ')[0]|lower }}', '{{ rule.to }}')" class="text-rose-400 hover:text-rose-300 p-1.5 rounded bg-rose-500/10 hover:bg-rose-500/20 transition cursor-pointer">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="5" class="p-8 text-center text-slate-500">No active rules found.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

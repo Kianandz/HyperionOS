@@ -1,0 +1,176 @@
+<!-- Modal Settings Container -->
+<div id="settings-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-3xl overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- Header & Tabs -->
+        <div class="bg-slate-800/50 p-4 border-b border-white/5 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-brands fa-docker text-blue-400"></i> Container Settings</h3>
+            <button onclick="closeSettingsModal()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa fa-solid fa-close text-xl"></i></button>
+        </div>
+        <div class="flex gap-4 px-6 pt-4 border-b border-white/5">
+            <button onclick="showSettingsTab('config')" id="tab-btn-config" class="text-sm font-medium text-blue-400 border-b-2 border-blue-400 pb-2 cursor-pointer">Configuration</button>
+            <button onclick="showSettingsTab('terminal')" id="tab-btn-terminal" class="text-sm font-medium text-slate-400 hover:text-slate-200 pb-2 cursor-pointer">Terminal</button>
+            <button onclick="showSettingsTab('logs')" id="tab-btn-logs" class="text-sm font-medium text-slate-400 hover:text-slate-200 pb-2 cursor-pointer">Logs</button>
+            <button onclick="showSettingsTab('export')" id="tab-btn-export" class="text-sm font-medium text-slate-400 hover:text-slate-200 pb-2 cursor-pointer">Export Compose</button>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6 overflow-y-auto flex-1 custom-scrollbar" id="settings-content">
+            
+            <!-- Tab Config -->
+            <form id="tab-config" class="space-y-5">
+                <!-- Image & Tag -->
+                <div class="grid grid-cols-4 gap-3">
+                    <div class="col-span-3">
+                        <label class="block text-xs font-medium text-slate-400 mb-1 text-left">Docker Image *</label>
+                        <input type="text" id="conf-image" placeholder="linuxserver/mariadb" class="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-400 outline-none transition-colors">
+                    </div>
+                    <div class="col-span-1">
+                        <label class="block text-xs font-medium text-slate-400 mb-1 text-left">Tag</label>
+                        <input type="text" id="conf-tag" placeholder="latest" class="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-400 outline-none transition-colors">
+                    </div>
+                </div>
+
+                <!-- Title & Icon -->
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1 text-left">Title *</label>
+                        <input type="text" id="conf-title" placeholder="MariaDB" class="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-emerald-400 outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1 text-left">Icon URL</label>
+                        <div class="flex gap-2">
+                            <div class="w-10 h-10 rounded bg-slate-950 border border-white/10 flex items-center justify-center p-1 shrink-0">
+                                <img id="conf-icon-preview" src="https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/docker.png" class="w-full h-full object-contain">
+                            </div>
+                            <input type="text" id="conf-icon" placeholder="https://..." class="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:border-blue-500 outline-none transition-colors" oninput="document.getElementById('conf-icon-preview').src = this.value || 'https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/docker.png'">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Ports -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-medium text-slate-400 text-left">Port</label>
+                        <button type="button" onclick="addDynamicRow('ports-list', 'port')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-full flex items-center gap-1 transition-colors cursor-pointer">
+                            <i class="fa fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-12 gap-2 text-center text-xs text-slate-500 mb-1 px-1">
+                        <div class="col-span-5 text-left">Host</div>
+                        <div class="col-span-5 text-left">Container</div>
+                        <div class="col-span-2 text-left">Protocol</div>
+                    </div>
+                    <div id="ports-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Dynamic Volumes -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-medium text-slate-400 text-left">Volumes</label>
+                        <button type="button" onclick="addDynamicRow('volumes-list', 'volume')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-full flex items-center gap-1 transition-colors cursor-pointer">
+                            <i class="fa fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-12 gap-2 text-center text-xs text-slate-500 mb-1 px-1">
+                        <div class="col-span-6 text-left">Host</div>
+                        <div class="col-span-6 text-left">Container</div>
+                    </div>
+                    <div id="volumes-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Dynamic Environment Variables -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-medium text-slate-400 text-left">Environment Variables</label>
+                        <button type="button" onclick="addDynamicRow('envs-list', 'env')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-full flex items-center gap-1 transition-colors cursor-pointer">
+                            <i class="fa fa-plus"></i> Add
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-12 gap-2 text-center text-xs text-slate-500 mb-1 px-1">
+                        <div class="col-span-5 text-left">Key</div>
+                        <div class="col-span-7 text-left">Value</div>
+                    </div>
+                    <div id="envs-list" class="space-y-2"></div>
+                </div>
+
+                <!-- Resources & Advance Settings -->
+                <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+                    <!-- Privileges Toggle -->
+                    <div class="col-span-2 flex items-center gap-3">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="conf-privileged" class="sr-only peer">
+                            <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+                        </label>
+                        <span class="text-sm font-medium text-slate-300">Privileges</span>
+                    </div>
+
+                    <!-- Memory Slider -->
+                    <div class="col-span-2 mt-2">
+                        <label class="block text-xs font-medium text-blue-400 mb-2 text-left bg-blue-500/10 inline-block px-2 py-1 rounded">Memory Limit</label>
+                        <input type="range" id="conf-mem" min="256" max="4096" step="256" value="1024" class="w-full h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500" oninput="document.getElementById('mem-val').innerText = this.value + ' MB'">
+                        <div class="flex justify-between text-[10px] text-slate-500 mt-1">
+                            <span>256MB</span>
+                            <span id="mem-val" class="font-bold text-slate-300">1024 MB</span>
+                            <span>4096MB</span>
+                        </div>
+                    </div>
+
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-xs font-medium text-blue-400 mb-1 text-left bg-blue-500/10 inline-block px-2 py-1 rounded">CPU Shares</label>
+                        <select id="conf-cpu" class="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <option value="high">High</option>
+                            <option value="medium" selected>Medium (Default)</option>
+                            <option value="low">Low</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-xs font-medium text-slate-400 mb-1 text-left mt-1">Restart Policy</label>
+                        <select id="conf-restart" class="w-full bg-slate-950 border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                            <option value="unless-stopped" selected>unless-stopped</option>
+                            <option value="always">always</option>
+                            <option value="on-failure">on-failure</option>
+                            <option value="no">no</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Save Action -->
+                <div class="col-span-2 flex justify-end pt-4">
+                    <button onclick="saveContainerConfig()" type="button" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+                        <i class="fa fa-solid fa-check mr-1"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Tab Terminal -->
+            <div id="tab-terminal" class="hidden h-full flex flex-col min-h-[300px]">
+                <div class="flex flex-col h-[400px] bg-slate-950 rounded-lg border border-white/5 font-mono text-xs">
+                    <div id="term-output" class="flex-1 overflow-y-auto p-3 text-emerald-400 whitespace-pre-wrap">Connected to container terminal.<br>root@container:/# </div>
+                    <div class="flex border-t border-white/10 items-center bg-slate-900">
+                        <span class="pl-3 pr-2 text-slate-500 font-bold">$</span>
+                        <input type="text" id="term-input" class="flex-1 bg-transparent text-slate-200 py-3 pr-3 outline-none" placeholder="Enter command...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logs -->
+            <div id="tab-logs" class="hidden h-full flex flex-col min-h-[300px]">
+                <div class="flex flex-col h-[400px] bg-slate-950 rounded-lg border border-white/5 font-mono text-xs p-3">
+                    <pre id="logs-output" class="flex-1 overflow-auto text-slate-300 whitespace-pre-wrap">Loading logs...</pre>
+                </div>
+            </div>
+            
+            <!-- Tab Export Compose -->
+            <div id="tab-export" class="hidden">
+                <textarea class="w-full h-80 bg-slate-950 border border-white/10 rounded-lg p-4 font-mono text-xs text-slate-300" readonly>version: '3.8'
+services:
+app:
+    image: image_name
+    ports:
+    - "8080:80"
+# (Nanti diisi lewat JS dari backend)</textarea>
+            </div>
+        </div>
+    </div>
+</div>

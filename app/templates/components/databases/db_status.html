@@ -1,0 +1,22 @@
+<div id="mysql-status-banner" class="bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 p-5 rounded-2xl shadow-2xl flex items-center justify-between transition-all">
+    <div class="flex items-center gap-4">
+        <div class="p-3 rounded-xl {% if mysql_installed %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20{% else %}bg-amber-500/10 text-amber-400 border border-amber-500/20{% endif %} shadow-inner">
+            <i class="fa fa-database text-lg"></i>
+        </div>
+        <div>
+            <h3 class="text-sm font-bold text-white tracking-wide">Local MySQL Engine</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Runtime database environment status</p>
+        </div>
+    </div>
+    <div>
+        {% if not mysql_installed %}
+        <button hx-post="/databases/install-local" hx-target="#mysql-status-banner" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2.5 rounded-xl font-semibold transition-all flex items-center gap-2 shadow-lg shadow-indigo-500/20 active:scale-95">
+            <i class="fa fa-download"></i> Install MySQL Server
+        </button>
+        {% else %}
+        <button onclick="useLocalSession()" class="bg-slate-800/80 hover:bg-slate-700 text-emerald-400 border border-emerald-500/30 text-xs px-4 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-md transition-all active:scale-95">
+            <i class="fa fa-plug"></i> Connect Localhost
+        </button>
+        {% endif %}
+    </div>
+</div>

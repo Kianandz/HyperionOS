@@ -1,0 +1,168 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Settings - HyperionOS{% endblock %}
+
+{% block content %}
+<div class="space-y-6 max-w-7xl mx-auto">
+    <!-- Header (Glassmorphism) -->
+    <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl shadow-xl flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+                <i class="fa fa-cog text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-wide">HyperionOS Control Center</h1>
+                <p class="text-xs text-slate-400">Pengaturan tingkat lanjut untuk sistem host & dashboard</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grid Layout Settings -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Card 1: Sistem DNS -->
+        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+            <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+                <i class="fa fa-globe text-indigo-400"></i> Sistem DNS
+            </h2>
+            <form action="/settings/dns" method="POST" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Primary DNS</label>
+                    <input type="text" name="primary" value="1.1.1.1" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 font-mono outline-none focus:border-indigo-500 shadow-inner">
+                </div>
+                <div>
+                    <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Secondary DNS</label>
+                    <input type="text" name="secondary" value="8.8.8.8" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 font-mono outline-none focus:border-indigo-500 shadow-inner">
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-5 py-2.5 rounded-xl font-bold transition shadow-lg shadow-indigo-500/20 border border-indigo-500/50 cursor-pointer flex items-center gap-2">
+                        <i class="fa fa-save"></i> Apply DNS
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Card 2: Maintenance & System Reset -->
+        <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+            <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+                <i class="fa fa-wrench text-amber-400"></i> Maintenance & System Reset
+            </h2>
+            <p class="text-xs text-slate-400 leading-relaxed">
+                Bersihkan file log sistem yang menumpuk untuk menghemat ruang penyimpanan server host.
+            </p>
+            <form action="/settings/clean-logs" method="POST" class="pt-2">
+                <button type="submit" class="bg-slate-800/80 hover:bg-slate-700 active:scale-95 text-slate-200 px-4 py-3 rounded-xl border border-slate-700/60 transition flex items-center gap-2.5 text-xs font-bold cursor-pointer shadow-md">
+                    <i class="fa fa-eraser text-indigo-400 text-sm"></i> Vacuum System Logs (>50M)
+                </button>
+            </form>
+        </div>
+
+        <!-- Card: Global Background -->
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-image text-pink-400"></i> Global Background
+    </h2>
+    
+    <!-- Tab Tipe Background -->
+    <div class="flex gap-2">
+        <button type="button" id="btn-type-color" onclick="setBgType('color')" class="flex-1 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold transition">Color</button>
+        <button type="button" id="btn-type-image" onclick="setBgType('image')" class="flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition">Image</button>
+        <button type="button" id="btn-type-video" onclick="setBgType('video')" class="flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition">Video</button>
+    </div>
+
+    <!-- Panel Color -->
+    <div id="panel-color" class="space-y-3">
+        <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px]">Warna Hex</label>
+        <input type="color" id="bg-color-val" value="#0f172a" class="w-full h-10 rounded-xl cursor-pointer bg-transparent border border-slate-700/60">
+    </div>
+
+    <!-- Panel Media (Image/Video) -->
+    <div id="panel-media" class="hidden space-y-3">
+        <select id="mediaMethod" onchange="toggleMediaInput()" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500">
+            <option value="url">Dari URL / Path Statis</option>
+            <option value="upload">Upload Lokal (Simpan ke Backend)</option>
+        </select>
+        
+        <div id="input-url">
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Link / Path (Misal: /static/uploads/backgrounds/wpp-1.jpg)</label>
+            <input type="text" id="bg-media-url" placeholder="https://... atau /static/..." class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500">
+        </div>
+        
+        <div id="input-upload" class="hidden">
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Upload File</label>
+            <input type="file" id="bg-media-file" class="w-full text-slate-400 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+        </div>
+
+        <div>
+            <label class="flex justify-between font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">
+                <span>Kecerahan (Brightness)</span> <span id="valBright">1.0</span>
+            </label>
+            <input type="range" id="sliderBright" min="0.1" max="1" step="0.1" value="1" oninput="document.getElementById('valBright').innerText = this.value" class="w-full accent-indigo-500 cursor-pointer">
+        </div>
+    </div>
+
+    
+
+    <button onclick="saveGlobalBg()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-500/20 border border-indigo-500/50 mt-4 flex items-center justify-center gap-2">
+        <i class="fa fa-save"></i> Terapkan Background
+    </button>
+</div>
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-paint-brush text-teal-400"></i> Styling (Card, Modal & Teks)
+    </h2>
+    
+    <div class="space-y-4">
+        <!-- Input Color (Grid biar rapi) -->
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Warna Card / Modal</label>
+                <input type="color" id="ui-card-color" value="#0f172a" class="w-full h-10 rounded-xl cursor-pointer bg-transparent border border-slate-700/60">
+            </div>
+            <div>
+                <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Warna Teks Utama</label>
+                <input type="color" id="ui-text-color" value="#f1f5f9" class="w-full h-10 rounded-xl cursor-pointer bg-transparent border border-slate-700/60">
+            </div>
+        </div>
+
+        <!-- Slider Opacity -->
+        <div>
+            <label class="flex justify-between font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">
+                <span>Opacity Card</span> <span id="valCardOp">0.6</span>
+            </label>
+            <input type="range" id="ui-card-opacity" min="0.1" max="1" step="0.05" value="0.6" oninput="document.getElementById('valCardOp').innerText = this.value" class="w-full accent-teal-500 cursor-pointer">
+        </div>
+
+        <!-- Slider Blur -->
+        <div>
+            <label class="flex justify-between font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">
+                <span>Efek Blur (Backdrop)</span> <span id="valCardBlur">12px</span>
+            </label>
+            <input type="range" id="ui-card-blur" min="0" max="30" step="1" value="12" oninput="document.getElementById('valCardBlur').innerText = this.value + 'px'" class="w-full accent-teal-500 cursor-pointer">
+        </div>
+    </div>
+
+    <button onclick="saveCardTheme()" class="w-full bg-teal-600 hover:bg-teal-500 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-teal-500/20 border border-teal-500/50 mt-4 flex items-center justify-center gap-2">
+        <i class="fa fa-save"></i> Terapkan Styling
+    </button>
+</div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedUi = JSON.parse(localStorage.getItem('HYPERION_UI'));
+        if(savedUi) {
+            document.getElementById('ui-card-color').value = savedUi.cardHex;
+            document.getElementById('ui-text-color').value = savedUi.textHex;
+            document.getElementById('ui-card-opacity').value = savedUi.cardOp;
+            document.getElementById('valCardOp').innerText = savedUi.cardOp;
+            document.getElementById('ui-card-blur').value = savedUi.cardBlur;
+            document.getElementById('valCardBlur').innerText = savedUi.cardBlur + 'px';
+        }
+    });
+</script>
+
+<script src="/static/js/settings.js"></script>
+{% endblock%}

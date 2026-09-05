@@ -1,0 +1,24 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Cloudflared - HyperionOS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    
+    <!-- Header -->
+    {% include 'components/cloudflared/header.html' %}
+
+    <!-- Grid Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- KIRI: Pasang Token -->
+        {% include 'components/cloudflared/token_card.html' %}
+
+        <!-- KANAN: Live Logs Terminal -->
+        {% include 'components/cloudflared/logs_terminal.html' %}
+        
+    </div>
+</div>
+
+<script src="/static/js/cloudflared/cloudflared.js"></script>
+{% endblock %}

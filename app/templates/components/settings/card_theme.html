@@ -1,0 +1,23 @@
+<!-- Pengaturan Tema Card & Modal -->
+<div class="mt-8 border-t border-slate-800/80 pt-6">
+    <h4 class="text-white font-bold mb-4">Pengaturan Tema Card & Modal</h4>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div>
+            <label class="block text-xs font-bold text-slate-400 mb-2">Warna Dasar</label>
+            <input type="color" id="cardColor" value="#0f172a" class="w-full h-10 rounded-xl cursor-pointer border-0 bg-transparent">
+        </div>
+        
+        <div>
+            <label class="block text-xs font-bold text-slate-400 mb-2">Transparansi (<span id="opacityVal">60</span>%)</label>
+            <input type="range" id="cardOpacity" min="0" max="100" value="60" class="w-full accent-indigo-500 cursor-pointer">
+        </div>
+        
+        <div>
+            <label class="block text-xs font-bold text-slate-400 mb-2">Efek Kaca / Blur (<span id="blurVal">12</span>px)</label>
+            <input type="range" id="cardBlur" min="0" max="30" value="12" class="w-full accent-indigo-500 cursor-pointer">
+        </div>
+        
+    </div>
+    <button onclick="saveCardTheme()" class="mt-5 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg border border-indigo-500/50">Simpan Tema</button>
+</div>

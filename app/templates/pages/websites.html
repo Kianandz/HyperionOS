@@ -1,0 +1,109 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Websites - HyperionOS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header (Glassmorphism) -->
+    <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl flex flex-col md:flex-row md:justify-between md:items-center shadow-xl gap-4">
+        <div class="flex items-center gap-3">
+            <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+                <i class="fa fa-globe text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-wide">Kelola Website</h1>
+                <p class="text-xs text-slate-400">VirtualHost, Nginx & PHP-FPM Controller</p>
+            </div>
+        </div>
+        
+        <div class="flex flex-wrap items-center gap-4">
+            <!-- Nginx Control -->
+            <div class="flex items-center gap-2 bg-slate-950/50 border border-slate-800/80 p-2 rounded-xl shadow-inner">
+                <span class="text-slate-400 text-[10px] font-bold ml-1 tracking-wider"><i class="fa fa-server mr-1"></i> NGINX: <span class="text-emerald-400">{{ nginx.status|upper }}</span></span>
+                <div class="flex gap-1 border-l border-slate-700/50 pl-2 ml-1">
+                    <form action="/websites/control/nginx/start" method="POST"><button class="text-[10px] bg-emerald-600/20 text-emerald-400 px-2.5 py-1.5 rounded-lg hover:bg-emerald-600 hover:text-white transition font-bold"><i class="fa fa-play"></i></button></form>
+                    <form action="/websites/control/nginx/stop" method="POST"><button class="text-[10px] bg-rose-600/20 text-rose-400 px-2.5 py-1.5 rounded-lg hover:bg-rose-600 hover:text-white transition font-bold"><i class="fa fa-stop"></i></button></form>
+                    <form action="/websites/control/nginx/restart" method="POST"><button class="text-[10px] bg-slate-800/80 text-slate-300 px-2.5 py-1.5 rounded-lg hover:bg-slate-700 transition font-bold"><i class="fa fa-refresh"></i></button></form>
+                    <button onclick="showLogs('nginx')" class="text-[10px] bg-indigo-600/20 text-indigo-400 px-2.5 py-1.5 rounded-lg hover:bg-indigo-600 hover:text-white transition font-bold"><i class="fa fa-terminal"></i></button>
+                </div>
+            </div>
+            
+            <!-- PHP-FPM Control -->
+            <div class="flex items-center gap-2 bg-slate-950/50 border border-slate-800/80 p-2 rounded-xl shadow-inner">
+                <span class="text-slate-400 text-[10px] font-bold ml-1 tracking-wider"><i class="fa fa-code mr-1"></i> PHP: <span class="text-emerald-400">{{ php_fpm.status|upper }}</span></span>
+                <div class="flex gap-1 border-l border-slate-700/50 pl-2 ml-1">
+                    <form action="/websites/control/php/start" method="POST"><button class="text-[10px] bg-emerald-600/20 text-emerald-400 px-2.5 py-1.5 rounded-lg hover:bg-emerald-600 hover:text-white transition font-bold"><i class="fa fa-play"></i></button></form>
+                    <form action="/websites/control/php/stop" method="POST"><button class="text-[10px] bg-rose-600/20 text-rose-400 px-2.5 py-1.5 rounded-lg hover:bg-rose-600 hover:text-white transition font-bold"><i class="fa fa-stop"></i></button></form>
+                    <form action="/websites/control/php/restart" method="POST"><button class="text-[10px] bg-slate-800/80 text-slate-300 px-2.5 py-1.5 rounded-lg hover:bg-slate-700 transition font-bold"><i class="fa fa-refresh"></i></button></form>
+                    <button onclick="showLogs('php')" class="text-[10px] bg-indigo-600/20 text-indigo-400 px-2.5 py-1.5 rounded-lg hover:bg-indigo-600 hover:text-white transition font-bold"><i class="fa fa-terminal"></i></button>
+                </div>
+            </div>
+
+            <!-- Tambah Website -->
+            <button onclick="openModal('modalAddWebsite')" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs transition font-bold flex items-center gap-2 shadow-lg shadow-indigo-500/20 border border-indigo-500/50">
+                <i class="fa fa-plus"></i> Tambah
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabel Website (Glassmorphism) -->
+    <div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-2xl overflow-hidden shadow-xl">
+        <table class="w-full text-left text-sm text-slate-400">
+            <thead class="bg-slate-800/40 text-slate-300 text-xs uppercase font-semibold tracking-wider">
+                <tr>
+                    <th class="p-4 pl-6">Domain / VirtualHost</th>
+                    <th class="p-4 text-center">Status</th>
+                    <th class="p-4 text-right pr-6">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/50">
+                {% for site in sites %}
+                <tr class="hover:bg-slate-800/30 transition-colors">
+                    <td class="p-4 pl-6 font-mono">
+                        <a href="//{{ site.domain }}:{{ site.port }}" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-950/50 text-indigo-300 border border-slate-800 hover:bg-indigo-900/40 hover:border-indigo-700 transition-all shadow-inner">
+                            <i class="fa fa-link text-indigo-500/50 mr-2 text-xs"></i> {{ site.domain }}:<span class="text-indigo-400 font-bold ml-0.5">{{ site.port }}</span>
+                        </a>
+                    </td>
+                    <td class="p-4 text-center">
+                        <span class="px-3 py-1.5 rounded-xl text-xs font-bold {% if site.is_active %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/20{% endif %} flex items-center justify-center gap-1.5 w-max mx-auto">
+                            <i class="fa {% if site.is_active %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
+                            {{ 'Active' if site.is_active else 'Disabled' }}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right pr-6 space-x-1">
+                        <button type="button" onclick="openFileManager('{{ site.domain }}')" class="p-2 bg-cyan-600/10 text-cyan-400 hover:bg-cyan-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Files"><i class="fa fa-folder-open"></i></button>
+                        <button type="button" onclick="openEditModal('{{ site.domain }}')" class="p-2 bg-purple-600/10 text-purple-400 hover:bg-purple-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Config"><i class="fa fa-cog"></i></button>
+                        
+                        <form action="/websites/toggle/{{ site.domain }}" method="POST" class="inline">
+                            {% if site.is_active %}
+                                <button type="submit" class="p-2 bg-amber-600/10 text-amber-400 hover:bg-amber-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Disable"><i class="fa fa-pause"></i></button>
+                            {% else %}
+                                <button type="submit" class="p-2 bg-emerald-600/10 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Enable"><i class="fa fa-play"></i></button>
+                            {% endif %}
+                        </form>
+                        
+                        <form action="/websites/delete/{{ site.domain }}" method="POST" class="inline" id="formDelete-{{ site.domain }}">
+                            <button type="button" onclick="confirmWebDelete('{{ site.domain }}')" class="p-2 bg-rose-600/10 text-rose-400 hover:bg-rose-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Delete"><i class="fa fa-trash"></i></button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="3" class="p-8 text-center text-slate-500"><i class="fa fa-inbox text-3xl mb-2 opacity-50 block"></i> Belum ada website.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Partials Modals -->
+{% include 'components/websites/modal_add.html' %}
+{% include 'components/websites/modal_logs.html' %}
+{% include 'components/websites/modal_fm.html' %}
+{% include 'components/websites/modal_edit.html' %}
+
+<script src="/static/js/websites/global.js"></script>
+<script src="/static/js/websites/modal_add.js"></script>
+<script src="/static/js/websites/modal_edit.js"></script>
+<script src="/static/js/websites/modal_logs.js"></script>
+<script src="/static/js/websites/modal_fm.js"></script>
+{% endblock %}

@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+itsdangerous
+requests
+docker
+pymysql
+psycopg2-binary
+pymssql
+Jinja2
+psutil
+pamela
+python-multipart
+pydantic
+flask

@@ -1,0 +1,40 @@
+<aside class="w-64 bg-slate-900/60 backdrop-blur-md border-r border-slate-800/80 flex flex-col justify-between select-none">
+    <div>
+        <div class="p-6 border-b border-slate-800/80 flex items-center space-x-3">
+            <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30 border border-indigo-500/50">H</div>
+            <span class="text-xl font-bold tracking-wider text-white">Hyperion<span class="text-indigo-500">OS</span></span>
+        </div>
+        <nav class="p-4 space-y-1.5 text-xs font-bold">
+            <a href="/dashboard" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'dashboard' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-pie-chart w-5 text-base"></i><span>Home</span>
+            </a>
+            <a href="/websites" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'websites' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-globe w-5 text-base"></i><span>Website</span>
+            </a>
+            <a href="/databases" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'databases' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-database w-5 text-base"></i><span>Remote DB</span>
+            </a>
+            <a href="/docker" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'docker' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-cubes w-5 text-base"></i><span>Docker</span>
+            </a>
+            <a href="/firewall" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'firewall' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-shield w-5 text-base"></i><span>Firewall</span>
+            </a>
+            <a href="/files" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'files' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-folder-open w-5 text-base"></i><span>File Manager</span>
+            </a>
+            <a href="/cloudflared" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'cloudflared' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-cloud w-5 text-base"></i><span>Cloudflared</span>
+            </a>
+            <a href="/settings" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'settings' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
+                <i class="fa fa-cog w-5 text-base"></i><span>Settings</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4 border-t border-slate-800/80">
+        <a href="/logout" class="flex items-center space-x-3 px-4 py-3 text-rose-400 hover:bg-rose-500/10 rounded-xl transition text-xs font-bold border border-transparent hover:border-rose-500/20">
+            <i class="fa fa-sign-out w-5 text-base"></i><span>Logout</span>
+        </a>
+    </div>
+</aside>

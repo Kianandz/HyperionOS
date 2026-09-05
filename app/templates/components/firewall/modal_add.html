@@ -1,0 +1,47 @@
+<!-- Background overlay -->
+<div id="addRuleModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-2xl shadow-2xl p-6 relative">
+        <button onclick="closeModal('addRuleModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white transition cursor-pointer">
+            <i class="fa fa-times text-lg"></i>
+        </button>
+
+        <h2 class="text-lg font-bold text-white mb-4">Add New Rule</h2>
+        
+        <form id="addRuleForm" onsubmit="submitRule(event)" class="space-y-4 text-sm">
+            <input type="hidden" name="command_type" value="add_rule">
+            
+            <div class="flex gap-2 mb-2">
+                <button type="button" onclick="setFwPreset('22', 'tcp', 'allow')" class="px-3 py-1 bg-slate-800 hover:bg-indigo-500/20 hover:text-indigo-300 border border-transparent hover:border-indigo-500/30 rounded-lg text-xs text-slate-300 transition cursor-pointer">SSH (22)</button>
+                <button type="button" onclick="setFwPreset('80', 'both', 'allow')" class="px-3 py-1 bg-slate-800 hover:bg-indigo-500/20 hover:text-indigo-300 border border-transparent hover:border-indigo-500/30 rounded-lg text-xs text-slate-300 transition cursor-pointer">HTTP (80)</button>
+                <button type="button" onclick="setFwPreset('443', 'both', 'allow')" class="px-3 py-1 bg-slate-800 hover:bg-indigo-500/20 hover:text-indigo-300 border border-transparent hover:border-indigo-500/30 rounded-lg text-xs text-slate-300 transition cursor-pointer">HTTPS (443)</button>
+            </div>
+
+            <div>
+                <label class="block text-slate-400 text-xs mb-1">Port / Service</label>
+                <input id="fw-port" type="text" name="port" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 outline-none focus:border-indigo-500/50 transition">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-slate-400 text-xs mb-1">Protocol</label>
+                    <select id="fw-proto" name="proto" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 outline-none">
+                        <option value="tcp">TCP</option>
+                        <option value="udp">UDP</option>
+                        <option value="both">TCP & UDP</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-slate-400 text-xs mb-1">Action</label>
+                    <select id="fw-action" name="action" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 outline-none">
+                        <option value="allow">ALLOW</option>
+                        <option value="deny">DENY</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3 rounded-xl font-bold transition mt-4 cursor-pointer">
+                Save Rule
+            </button>
+        </form>
+    </div>
+</div>

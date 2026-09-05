@@ -1,0 +1,49 @@
+<div id="modalEditWebsite" class="hidden fixed inset-0 bg-slate-950/80 z-[60] flex items-center justify-center backdrop-blur-sm">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-3xl p-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-5 pb-4 border-b border-slate-800/60">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-cog text-purple-400"></i> Config: <span id="editDomainTitle" class="text-indigo-400 tracking-wider"></span></h3>
+            <button onclick="closeModal('modalEditWebsite')" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 p-2 px-4 rounded-xl transition-colors"><i class="fa fa-times"></i></button>
+        </div>
+        
+        <div class="flex space-x-2 mb-6 bg-slate-950/50 p-1.5 rounded-xl border border-slate-800/50">
+            <button type="button" onclick="switchEditTab('advanced')" id="editTabAdvanced" class="flex-1 py-2 text-xs font-bold text-white bg-purple-600/80 rounded-lg shadow transition">Advanced (Current)</button>
+            <button type="button" onclick="switchEditTab('simple')" id="editTabSimple" class="flex-1 py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition">Simple (Reset)</button>
+        </div>
+
+        <form action="/websites/save" method="POST" class="space-y-4">
+            <input type="hidden" name="mode" id="editFormMode" value="advanced">
+            <input type="hidden" name="domain" id="editInputDomain">
+            <input type="hidden" name="root_dir" id="editInputRootDir">
+
+            <div id="editContentAdvanced">
+                <textarea id="editRawConfigArea" name="raw_config" class="w-full h-[400px] bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-xs font-mono text-slate-300 outline-none focus:border-purple-500 transition resize-none custom-scrollbar shadow-inner"></textarea>
+            </div>
+
+            <div id="editContentSimple" class="hidden space-y-5">
+                <div class="bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-xs text-rose-400 font-bold flex items-center gap-3">
+                    <i class="fa fa-exclamation-triangle text-xl"></i> Peringatan: Mode Simple akan mereset dan menimpa konfigurasi lama lu.
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Tipe Website</label>
+                        <select name="site_type" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-purple-500 transition shadow-inner">
+                            <option value="proxy">Reverse Proxy</option>
+                            <option value="php">PHP (FPM)</option>
+                            <option value="static">Static HTML</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Port</label>
+                        <input type="number" name="port" value="8000" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-purple-500 transition shadow-inner">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 active:scale-95 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg flex justify-center items-center gap-2">
+                    <i class="fa fa-save"></i> Simpan Perubahan
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

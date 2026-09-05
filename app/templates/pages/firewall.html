@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Firewall - HyperionOS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="glass-panel border border-slate-800/80 p-5 rounded-2xl flex justify-between items-center shadow-xl">
+        <div class="flex items-center gap-3">
+            <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+                <i class="fa fa-shield text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-wide">Firewall Management</h1>
+                <p class="text-xs text-slate-400">UFW Status & Rules Configuration</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-4">
+            <button id="ufw-toggle-btn" 
+                    onclick="toggleUFW('{{ ufw.status }}')"
+                    class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer
+                    {% if ufw.status == 'active' %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20{% endif %}">
+                <i class="fa {% if ufw.status == 'active' %}fa-toggle-on{% else %}fa-toggle-off{% endif %} text-base"></i> 
+                UFW {{ ufw.status|upper }}
+            </button>
+
+            <button onclick="openLogsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer border border-slate-700/50">
+                <i class="fa fa-terminal"></i> View Logs
+            </button>
+            
+            <button onclick="openModal('addRuleModal')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 cursor-pointer">
+                <i class="fa fa-plus"></i> Add Rule
+            </button>
+        </div>
+    </div>
+
+    <!-- Area Tabel HTMX -->
+    <div class="glass-panel border border-slate-800/60 rounded-2xl overflow-hidden shadow-xl" 
+         id="firewall-table-container"
+         hx-get="/firewall/table" 
+         hx-trigger="load, reloadRules from:body">
+        <div class="p-10 text-center text-slate-500"><i class="fa fa-spinner fa-spin text-2xl"></i></div>
+    </div>
+</div>
+
+{% include 'components/firewall/modal_add.html' %}
+{% include 'components/firewall/modal_logs.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/firewall/main.js"></script>
+<script src="/static/js/firewall/bulk_del.js"></script>
+<script src="/static/js/firewall/modal_logs.js"></script>
+{% endblock %}

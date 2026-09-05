@@ -1,0 +1,24 @@
+<!-- Stats Card -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="bg-slate-800/40 backdrop-blur-lg border border-white/10 p-5 rounded-2xl flex justify-between items-center shadow-lg">
+        <div>
+            <p class="text-slate-400 text-sm font-medium mb-1">Containers Running</p>
+            <p class="text-3xl font-bold text-emerald-400">{{ overview.containers_running if overview.status == 'online' else 0 }}</p>
+        </div>
+        <i class="fa fa-brands fa-docker text-4xl text-emerald-500/20"></i>
+    </div>
+    <div class="bg-slate-800/40 backdrop-blur-lg border border-white/10 p-5 rounded-2xl flex justify-between items-center shadow-lg">
+        <div>
+            <p class="text-slate-400 text-sm font-medium mb-1">Containers Stopped</p>
+            <p class="text-3xl font-bold text-rose-400">{{ overview.containers_stopped if overview.status == 'online' else 0 }}</p>
+        </div>
+        <i class="fa fa-solid fa-circle-stop text-4xl text-rose-500/20"></i>
+    </div>
+    <div class="bg-slate-800/40 backdrop-blur-lg border border-white/10 p-5 rounded-2xl flex justify-between items-center shadow-lg">
+        <div>
+            <p class="text-slate-400 text-sm font-medium mb-1">Total Images</p>
+            <p class="text-3xl font-bold text-indigo-400">{{ overview.images_count if overview.status == 'online' else 0 }}</p>
+        </div>
+        <i class="fa fa-solid fa-layer-group text-4xl text-indigo-500/20"></i>
+    </div>
+</div>

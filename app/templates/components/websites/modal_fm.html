@@ -1,0 +1,63 @@
+<div id="modalFileManager" class="hidden fixed inset-0 bg-slate-950/90 z-[70] flex items-center justify-center backdrop-blur-md">
+    <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-5xl p-6 shadow-2xl flex flex-col h-[90vh]">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-5 gap-3 border-b border-slate-800/60 pb-4">
+            <div>
+                <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-folder-open text-cyan-400"></i> File Manager</h3>
+                <p class="text-xs font-mono text-slate-400 mt-1 bg-slate-950/50 px-2 py-0.5 rounded-md inline-block border border-slate-800" id="fmCurrentPath">/...</p>
+            </div>
+            <button onclick="closeModal('modalFileManager')" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 py-2.5 px-4 rounded-xl transition-colors"><i class="fa fa-times text-lg"></i></button>
+        </div>
+        
+        <div class="flex flex-wrap gap-2 mb-4 bg-slate-950/50 p-2.5 rounded-xl border border-slate-800/60 items-center shadow-inner">
+            <div class="relative group">
+                <button class="bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2 rounded-lg text-xs font-bold transition flex items-center gap-2 shadow-lg">
+                    <i class="fa fa-upload"></i> Upload
+                </button>
+                <div class="absolute left-0 w-40 bg-slate-800/95 backdrop-blur border border-slate-700 rounded-xl shadow-xl hidden group-hover:block z-10 overflow-hidden">
+                    <button onclick="document.getElementById('fmUploadInput').click()" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-700 hover:text-white transition-colors"><i class="fa fa-file-o mr-2 text-indigo-400"></i> File</button>
+                    <div class="h-px bg-slate-700/50"></div>
+                    <button onclick="document.getElementById('fmUploadFolderInput').click()" class="w-full text-left px-4 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-700 hover:text-white transition-colors"><i class="fa fa-folder-o mr-2 text-amber-400"></i> Folder</button>
+                </div>
+            </div>
+            
+            <div class="h-5 w-px bg-slate-700/50 mx-1"></div>
+            
+            <button onclick="createItem('file')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-lg text-xs font-bold transition border border-slate-700/50"><i class="fa fa-plus mr-1"></i> File</button>
+            <button onclick="createItem('folder')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3.5 py-2 rounded-lg text-xs font-bold transition border border-slate-700/50"><i class="fa fa-folder mr-1"></i> Folder</button>
+            
+            <div class="h-5 w-px bg-slate-700/50 mx-1"></div>
+            
+            <button id="fmPasteBtn" onclick="executePaste()" class="hidden bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-600 hover:text-white px-4 py-2 rounded-lg text-xs font-bold transition"><i class="fa fa-paste mr-1"></i> Paste Here</button>
+            <span id="fmUploadStatus" class="ml-auto text-xs font-bold text-emerald-400 hidden bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20"><i class="fa fa-spinner fa-spin mr-2"></i> Processing...</span>
+            
+            <input type="file" id="fmUploadInput" multiple class="hidden" onchange="handleUpload(this.files)">
+            <input type="file" id="fmUploadFolderInput" webkitdirectory directory multiple class="hidden" onchange="handleUpload(this.files)">
+        </div>
+
+        <div class="bg-slate-950/60 border border-slate-800/60 rounded-xl flex-1 overflow-y-auto shadow-inner">
+            <table class="w-full text-left text-sm text-slate-400 whitespace-nowrap">
+                <thead class="bg-slate-800/60 text-slate-300 text-[10px] uppercase font-bold tracking-wider sticky top-0 z-0 backdrop-blur-md">
+                    <tr>
+                        <th class="p-3 pl-5">Nama</th>
+                        <th class="p-3 w-28">Size</th>
+                        <th class="p-3 text-right pr-5">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="fmFileList" class="divide-y divide-slate-800/50 text-xs"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="modalEditor" class="hidden fixed inset-0 bg-slate-950/95 z-[80] flex items-center justify-center backdrop-blur-md">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-6xl p-5 shadow-2xl flex flex-col h-[95vh]">
+        <div class="flex justify-between items-center mb-4 border-b border-slate-800/60 pb-3">
+            <h3 class="text-sm font-bold text-slate-300 flex items-center gap-2"><i class="fa fa-edit text-amber-400 text-lg"></i> <span id="editorFilename" class="text-white font-mono bg-slate-950/50 px-2 py-1 rounded-md border border-slate-800"></span></h3>
+            <div class="flex gap-2">
+                <button onclick="saveFileContent()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-xl text-xs font-bold transition shadow-lg"><i class="fa fa-save mr-1"></i> Save</button>
+                <button onclick="closeModal('modalEditor')" class="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2 rounded-xl text-xs font-bold transition"><i class="fa fa-times mr-1"></i> Close</button>
+            </div>
+        </div>
+        <textarea id="editorTextarea" class="w-full flex-1 bg-slate-950/80 border border-slate-700/60 rounded-xl p-5 text-sm font-mono text-slate-300 outline-none focus:border-indigo-500 transition resize-none custom-scrollbar shadow-inner" spellcheck="false"></textarea>
+    </div>
+</div>

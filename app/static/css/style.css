@@ -1,0 +1,32 @@
+/* 1. Background & Glass Effect */
+    .bg-slate-900\/60, 
+    .bg-slate-900\/40, 
+    .bg-slate-950,
+    .bg-slate-900,
+    .dynamic-glass,
+    .swal2-popup,
+    .glass-panel {
+        background-color: var(--theme-card-bg) !important;
+        backdrop-filter: blur(var(--theme-card-blur)) !important;
+        -webkit-backdrop-filter: blur(var(--theme-card-blur)) !important;
+        border-color: rgba(255, 255, 255, 0.1) !important; 
+    }
+
+    /* 2. Custom Border Radius khusus kotak SweetAlert-nya aja */
+    .swal2-popup {
+        border-radius: 12px !important;
+        backdrop-filter: blur(calc(var(--theme-card-blur) + 10px)) !important;
+        -webkit-backdrop-filter: blur(calc(var(--theme-card-blur) + 10px)) !important;
+    }
+
+    /* 3. Nimpa warna teks global yang aman */
+    body, 
+    p,
+    label,
+    .text-slate-100, 
+    .text-white,
+    .text-slate-200, /* gw tambahin dikit siapa tau lu sering pake */
+    .swal2-title,
+    .swal2-html-container {
+        color: var(--theme-text-main) !important;
+    }

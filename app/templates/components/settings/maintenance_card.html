@@ -1,0 +1,14 @@
+<!-- Card 2: Maintenance & System Reset -->
+<div class="custom-card border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-wrench text-amber-400"></i> Maintenance & System Reset
+    </h2>
+    <p class="text-xs text-slate-400 leading-relaxed">
+        Bersihkan file log sistem yang menumpuk untuk menghemat ruang penyimpanan server host.
+    </p>
+    <form action="/settings/clean-logs" method="POST" class="pt-2">
+        <button type="submit" class="bg-slate-800/80 hover:bg-slate-700 active:scale-95 text-slate-200 px-4 py-3 rounded-xl border border-slate-700/60 transition flex items-center gap-2.5 text-xs font-bold cursor-pointer shadow-md">
+            <i class="fa fa-eraser text-indigo-400 text-sm"></i> Vacuum System Logs (>50M)
+        </button>
+    </form>
+</div>

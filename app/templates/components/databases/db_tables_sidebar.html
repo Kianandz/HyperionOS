@@ -1,0 +1,39 @@
+{% if result.status == 'error' %}
+    <div class="p-3 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-xs">
+        <i class="fa fa-exclamation-triangle mr-1"></i> {{ result.message }}
+    </div>
+{% elif result.tables|length == 0 %}
+    <div class="p-3 text-slate-500 text-xs italic">
+        Database '{{ database }}' kosong (tidak ada tabel).
+        <button onclick="createNewTable()" class="text-indigo-400 hover:text-indigo-300 font-bold transition ml-2 mt-2"><i class="fa fa-plus"></i> Create Table</button>
+    </div>
+{% else %}
+    <div class="space-y-1 overflow-y-auto pr-1">
+        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex justify-between items-center">
+            <span>Tabel ({{ result.tables|length }})<span class="text-indigo-400 font-mono ml-4">{{ database }}</span></span>
+            <button onclick="createNewTable()" class="text-indigo-400 hover:text-indigo-300 font-bold transition"><i class="fa fa-plus"></i> New Table</button>
+        </div>
+        
+        {% for tbl in result.tables %}
+    <div class="flex items-center gap-1 mb-1 group">
+        <!-- Tombol Browse Data -->
+        <button 
+            hx-post="/databases/query" hx-target="#data-view" hx-include="#inline-query-box input, #inline-query-box textarea"
+            onclick="document.querySelector('textarea[name=\'query\']').value = 'SELECT * FROM `{{ tbl.name }}` LIMIT 25;'"
+            class="flex-1 text-left px-2.5 py-1.5 rounded-l-lg bg-slate-950 hover:bg-slate-800 border-y border-l border-slate-800/80 text-slate-300 hover:text-white text-xs flex items-center justify-between transition-all">
+            <span class="truncate font-mono"><i class="fa fa-table mr-1.5 text-indigo-400 group-hover:text-indigo-300"></i>{{ tbl.name }}</span>
+            <span class="text-[10px] text-slate-500 font-sans ml-2">{{ tbl.rows }} rows</span>
+        </button>
+        <form hx-post="/databases/structure" hx-target="#data-view" hx-include="#inline-query-box input" class="inline m-0">
+            <input type="hidden" name="table" value="{{ tbl.name }}">
+            <button type="submit" class="px-2 py-1.5 rounded-r-lg bg-slate-950 hover:bg-amber-900/40 border border-slate-800/80 text-slate-500 hover:text-amber-400 text-xs transition-all" title="Structure">
+                <i class="fa fa-list"></i>
+            </button>
+        </form>
+        <button type="button" onclick="deleteTable('{{ tbl.name }}')" class="px-2 py-1.5 rounded-r-lg bg-slate-950 hover:bg-red-900/40 border border-slate-800/80 text-slate-500 hover:text-red-400 text-xs transition-all" title="Drop Table">
+            <i class="fa fa-trash"></i>
+        </button>
+    </div>
+{% endfor %}
+    </div>
+{% endif %}

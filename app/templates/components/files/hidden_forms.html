@@ -1,0 +1,8 @@
+<!-- HIDDEN FORMS FOR JS ACTIONS -->
+<form id="createFolderForm" action="/files/create-folder" method="POST" class="hidden"><input type="hidden" name="path" value="{{ contents['current_path'] }}"><input type="hidden" name="folder_name" value=""></form>
+<form id="createFileForm" action="/files/create-file" method="POST" class="hidden"><input type="hidden" name="path" value="{{ contents['current_path'] }}"><input type="hidden" name="file_name" value=""></form>
+<form id="singleRenameForm" action="/files/rename" method="POST" class="hidden"><input type="hidden" name="path" value=""><input type="hidden" name="new_name" value=""></form>
+<form id="singleDeleteForm" action="/files/delete" method="POST" class="hidden"><input type="hidden" name="path" value=""></form>
+<form id="singleExtractForm" action="/files/extract" method="POST" class="hidden"><input type="hidden" name="path" value=""></form>
+<form id="batchDeleteForm" action="/files/batch-delete" method="POST" class="hidden"><input type="hidden" name="current_path" value="{{ contents['current_path'] }}"><input type="hidden" id="batchDeletePaths" name="paths_json" value=""></form>
+<form id="batchCompressForm" action="/files/batch-compress" method="POST" class="hidden"><input type="hidden" name="current_path" value="{{ contents['current_path'] }}"><input type="hidden" id="batchCompressPaths" name="paths_json" value=""><input type="hidden" id="batchCompressName" name="zip_name" value=""></form>

@@ -1,0 +1,58 @@
+<!-- Container Grid ala CasaOS -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-5">
+    {% for c in containers %}
+    <div class="relative bg-slate-800/40 backdrop-blur-lg border border-white/10 rounded-2xl p-5 hover:bg-slate-700/50 hover:border-white/20 transition-all shadow-lg group">
+        
+        <!-- TIGA TITIK MENU ADA DI SINI -->
+        <div class="absolute top-3 right-3 z-20">
+            <button onclick="toggleMenu('menu-{{ c.id }}')" class="text-slate-400 hover:text-white p-1 px-2 focus:outline-none cursor-pointer rounded hover:bg-white/10">
+                <i class="fa fa-solid fa-bars"></i>
+            </button>
+            
+            <!-- DROPDOWN MENU -->
+            <div id="menu-{{ c.id }}" class="hidden absolute right-0 mt-1 w-36 bg-slate-900 border border-white/10 rounded-xl shadow-xl overflow-hidden text-sm">
+                <button onclick="openContainerSettings('{{ c.id }}')" class="w-full text-left px-4 py-2 text-slate-300 hover:bg-slate-800 hover:text-white cursor-pointer"><i class="fa fa-solid fa-gear w-5"></i> Settings</button>
+                <form action="/docker/action" method="POST" class="w-full">
+                    <input type="hidden" name="container_id" value="{{ c.id }}">
+                    <input type="hidden" name="action" value="restart">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-amber-400 hover:bg-slate-800 cursor-pointer"><i class="fa fa-solid fa-rotate-right w-5"></i> Restart</button>
+                </form>
+                {% if c.status == 'running' %}
+                    <form action="/docker/action" method="POST" class="w-full">
+                        <input type="hidden" name="container_id" value="{{ c.id }}">
+                        <input type="hidden" name="action" value="stop">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-rose-400 hover:bg-slate-800 cursor-pointer"><i class="fa fa-solid fa-power-off w-5"></i> Shutdown</button>
+                    </form>
+                {% else %}
+                <form action="/docker/action" method="POST" class="w-full">
+                        <input type="hidden" name="container_id" value="{{ c.id }}">
+                        <input type="hidden" name="action" value="start">
+                        <button type="submit" class="w-full text-left px-4 py-2 text-emerald-400 hover:bg-slate-800 cursor-pointer"><i class="fa fa-solid fa-play w-5"></i> Start</button>
+                    </form>
+                {% endif %}
+                <div class="border-t border-white/5 my-1"></div>
+                <form action="/docker/action" method="POST" class="w-full" onsubmit="confirmUninstall(event, this)">
+                    <input type="hidden" name="container_id" value="{{ c.id }}">
+                    <input type="hidden" name="image_name" value="{{ c.image }}">
+                    <input type="hidden" name="action" value="uninstall_purge">
+                    <button type="submit" class="w-full text-left px-4 py-2 text-red-500 hover:bg-red-500/20 cursor-pointer"><i class="fa fa-solid fa-trash w-5"></i> Uninstall Clean</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- AREA KLIK BUKA APP -->
+        <a href="http://{{ request.client.host }}:{{ c.port }}" target="_blank" class="flex flex-col items-center gap-3 mt-2 block cursor-pointer">
+            <div class="w-16 h-16 rounded-2xl bg-slate-900/50 flex items-center justify-center p-2 border border-white/5 shadow-inner">
+                <img src="{{ c.icon }}" onerror="this.src='https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/docker.png'" class="w-full h-full object-contain drop-shadow-md">
+            </div>
+            <div class="text-center">
+                <h3 class="text-white font-semibold truncate w-24" title="{{ c.name }}">{{ c.name }}</h3>
+                <div class="flex items-center justify-center gap-1.5 mt-1">
+                    <span class="w-2 h-2 rounded-full {% if c.status == 'running' %}bg-emerald-400 shadow-[0_0_8px_#34d399]{% else %}bg-rose-500{% endif %}"></span>
+                    <span class="text-[10px] uppercase font-bold text-slate-400">{{ c.status }}</span>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+</div>

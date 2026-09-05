@@ -1,0 +1,73 @@
+<!-- Card: Advanced Appearance & Glassmorphism -->
+<div class="custom-card border p-5 shadow-xl">
+    <h2 class="text-sm font-bold border-b border-custom pb-3 flex items-center gap-2 mb-4 text-main-custom">
+        <i class="fa fa-paint-brush text-pink-400"></i> Advanced Appearance
+    </h2>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Kolom Kiri: Pilih Sumber Background -->
+        <div class="space-y-4">
+            <div>
+                <label class="block font-bold uppercase tracking-wider text-[10px] mb-2 text-muted-custom">Tipe Wallpaper</label>
+                <div class="flex gap-2">
+                    <button id="btn-type-color" type="button" onclick="setBgType('color')" class="flex-1 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold transition">Color</button>
+                    <button id="btn-type-image" type="button" onclick="setBgType('image')" class="flex-1 py-2 custom-input text-muted-custom hover:text-white rounded-lg text-xs font-bold transition">Image</button>
+                    <button id="btn-type-video" type="button" onclick="setBgType('video')" class="flex-1 py-2 custom-input text-muted-custom hover:text-white rounded-lg text-xs font-bold transition">Video</button>
+                </div>
+            </div>
+
+            <!-- Input Panel: Solid Color -->
+            <div id="panel-color" class="space-y-2">
+                <label class="block font-bold text-xs text-muted-custom">Pilih Warna</label>
+                <div class="flex gap-3 items-center">
+                    <input type="color" id="bgColorPicker" class="w-10 h-10 rounded cursor-pointer bg-transparent border-0" oninput="previewTheme()">
+                    <input type="text" id="bgColorHex" class="custom-input flex-1 border rounded-xl p-2.5 font-mono text-sm" placeholder="#0f172a">
+                </div>
+            </div>
+
+            <!-- Input Panel: Media (Image/Video) -->
+            <div id="panel-media" class="space-y-3 hidden">
+                <div>
+                    <label class="block font-bold text-xs mb-1 text-muted-custom">Metode Input</label>
+                    <select id="mediaMethod" class="custom-input w-full border rounded-xl p-2.5 text-sm outline-none" onchange="toggleMediaInput()">
+                        <option value="url">Gunakan URL (Link)</option>
+                        <option value="upload">Upload File Lokal</option>
+                    </select>
+                </div>
+                
+                <div id="input-url">
+                    <input type="text" id="bgMediaUrl" placeholder="https://..." class="custom-input w-full border rounded-xl p-2.5 text-sm font-mono">
+                </div>
+                
+                <div id="input-upload" class="hidden">
+                    <input type="file" id="bgMediaFile" accept="image/*,video/mp4" class="w-full text-sm text-muted-custom file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Glassmorphism Sliders -->
+        <div class="space-y-5 custom-inner-box p-4 rounded-xl border">
+            <div>
+                <div class="flex justify-between text-xs font-bold mb-2 text-main-custom">
+                    <span>Glass Blur Intensity</span>
+                    <span id="valBlur" class="text-indigo-400">12px</span>
+                </div>
+                <input type="range" id="sliderBlur" min="0" max="30" value="12" class="w-full h-2 bg-slate-700/50 rounded-lg appearance-none cursor-pointer accent-indigo-500" oninput="previewTheme()">
+            </div>
+            
+            <div>
+                <div class="flex justify-between text-xs font-bold mb-2 text-main-custom">
+                    <span>Overlay Opacity (Kecerahan)</span>
+                    <span id="valOpacity" class="text-indigo-400">0.5</span>
+                </div>
+                <input type="range" id="sliderOpacity" min="0" max="1" step="0.05" value="0.5" class="w-full h-2 bg-slate-700/50 rounded-lg appearance-none cursor-pointer accent-indigo-500" oninput="previewTheme()">
+            </div>
+        </div>
+    </div>
+    
+    <div class="pt-4 border-t border-custom mt-4 flex justify-end">
+        <button type="button" onclick="saveAdvancedTheme()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg">
+            <i class="fa fa-save"></i> Terapkan & Simpan
+        </button>
+    </div>
+</div>

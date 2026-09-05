@@ -1,0 +1,71 @@
+<div id="modalAddWebsite" class="hidden fixed inset-0 bg-slate-950/80 z-[60] flex items-center justify-center backdrop-blur-sm">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-2xl p-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-5 pb-4 border-b border-slate-800/60">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-plus-circle text-indigo-400"></i> Tambah Website</h3>
+            <button onclick="closeModal('modalAddWebsite')" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 py-2 px-4 rounded-xl transition-colors"><i class="fa fa-times"></i></button>
+        </div>
+        
+        <div class="flex space-x-2 mb-6 bg-slate-950/50 p-1.5 rounded-xl border border-slate-800/50">
+            <button type="button" onclick="switchTab('simple')" id="tabSimple" class="flex-1 py-2 text-xs font-bold text-white bg-slate-800 rounded-lg shadow transition">Simple</button>
+            <button type="button" onclick="switchTab('advanced')" id="tabAdvanced" class="flex-1 py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition">Advanced</button>
+        </div>
+
+        <form action="/websites/save" method="POST" class="space-y-5">
+            <input type="hidden" name="mode" id="formMode" value="simple">
+            <div>
+                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Domain / Server Name</label>
+                <div class="relative">
+                    <i class="fa fa-globe absolute left-3.5 top-3 text-slate-500 text-sm"></i>
+                    <input type="text" name="domain" placeholder="contoh.com" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition shadow-inner" required oninput="updateRootDir(this.value)">
+                </div>
+            </div>
+
+            <div id="contentSimple" class="space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Tipe Website</label>
+                        <select name="site_type" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-indigo-500 transition shadow-inner">
+                            <option value="proxy">Reverse Proxy</option>
+                            <option value="php">PHP (FPM)</option>
+                            <option value="static">Static HTML</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Port (Khusus Proxy)</label>
+                        <input type="number" name="port" value="8000" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-indigo-500 transition shadow-inner">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Document Root</label>
+                    <div class="relative">
+                        <i class="fa fa-folder absolute left-3.5 top-3 text-slate-500 text-sm"></i>
+                        <input type="text" name="root_dir" id="inputRootDir" value="/var/www/html/" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-500 outline-none transition cursor-not-allowed shadow-inner" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contentAdvanced" class="hidden">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Raw Nginx Configuration</label>
+                    <textarea id="rawConfigArea" name="raw_config" class="w-full h-80 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-xs font-mono text-slate-300 outline-none focus:border-indigo-500 transition resize-none custom-scrollbar shadow-inner">server {
+    listen 80;
+    server_name example.com;
+    root /var/www/html/example.com;
+    index index.php index.html index.htm;
+    client_max_body_size 64M;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}</textarea>
+                </div>
+            </div>
+            
+            <div class="pt-2">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg flex justify-center items-center gap-2">
+                    <i class="fa fa-save"></i> Simpan Website
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

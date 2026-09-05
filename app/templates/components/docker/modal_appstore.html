@@ -1,0 +1,31 @@
+<!-- Modal App Store (Simple One-Click) -->
+<div id="appstore-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-5xl overflow-hidden flex flex-col h-[80vh] pb-6">
+        
+        <!-- Header Modal -->
+        <div class="bg-slate-800/50 p-5 border-b border-white/5 flex flex-wrap justify-between items-center gap-3">
+            <h2 class="text-xl font-bold text-white"><i class="fa fa-solid fa-store text-indigo-400 mr-2"></i> App Store</h2>
+            
+            <div class="flex items-center gap-3 flex-1 justify-end">
+                <!-- Search Bar -->
+                <div class="relative w-full max-w-xs">
+                    <i class="fa fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="appstore-search" placeholder="Search apps..." class="w-full bg-slate-950 border border-white/10 rounded-lg pl-9 pr-3 py-2 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                </div>
+
+                <button onclick="closeAppStore()" class="text-slate-400 hover:text-rose-500 transition-colors cursor-pointer w-8 h-8 flex items-center justify-center rounded-lg hover:bg-rose-500/10 shrink-0">
+                    <i class="fa fa-solid fa-close text-xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Content List Apps -->
+        <div id="appstore-container" class="p-6 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 content-start flex-1 custom-scrollbar">
+            <!-- Loading muter-muter -->
+            <div class="col-span-full text-center text-slate-400 py-10">
+                <i class="fa fa-solid fa-circle-notch fa-spin text-3xl mb-3"></i>
+                <p>Loading apps...</p>
+            </div>
+        </div>
+    </div>
+</div>

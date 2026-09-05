@@ -1,0 +1,107 @@
+<input type="hidden" id="query_result_mode" value="{% if table %}structure{% else %}data{% endif %}">
+<input type="hidden" id="query_result_table" value="{% if table %}{{ table }}{% endif %}">
+{% if result.status == 'error' %}
+    <!-- Display Error Query -->
+    <div class="p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-xs space-y-1 font-mono">
+        <div class="flex items-center gap-2 font-bold text-red-300">
+            <i class="fa fa-exclamation-circle"></i> SQL Error Syntax / Connection Failure
+        </div>
+        <p class="text-slate-300 break-all">{{ result.message }}</p>
+    </div>
+
+{% elif result.columns %}
+    <!-- Display SELECT Results Table -->
+    <div class="space-y-3">
+        <!-- Status Bar -->
+        <!-- Status Bar -->
+<div class="flex flex-col md:flex-row items-center justify-between text-xs text-slate-400 pb-3 border-b border-slate-800 gap-3">
+    <div class="flex items-center gap-3">
+        <span class="font-mono text-emerald-400"><i class="fa fa-check-circle mr-1"></i> {{ result.rows|length }} rows returned</span>
+        
+        {% if table %}
+        <!-- Tombol Tambah Kolom (Struktur Mode) -->
+        <button onclick="openAddColumnModal('{{ table }}')" class="bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 py-1 rounded-md text-[10px] font-bold transition flex items-center gap-1.5 shadow-lg shadow-indigo-500/20">
+            <i class="fa fa-plus"></i> Tambah Field
+        </button>
+        {% else %}
+        <!-- Tombol Tambah Data (Data Mode) -->
+        <button type="button" onclick="openAddRowModal(this)" data-cols='{{ result.columns|tojson|safe }}' class="bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-1 rounded-md text-[10px] font-bold transition flex items-center gap-1.5 shadow-lg shadow-emerald-500/20">
+            <i class="fa fa-plus"></i> Tambah Data
+        </button>
+        {% endif %}
+    </div>
+
+    <!-- Bagian Kanan: Search & Pagination -->
+    <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+            {% if not table %}
+            <!-- Quick Search Box -->
+            <div class="relative w-full md:w-48">
+                <input type="text" id="quick_search_input" 
+                    data-columns="{{ result.columns|tojson|forceescape }}"
+                    onkeypress="if(event.key === 'Enter') applyQuickSearch(this.value, this.dataset.columns)" 
+                    placeholder="Search & Enter..." 
+                    class="w-full bg-slate-950 border border-slate-700 rounded py-1 px-2.5 pl-7 text-[10px] font-mono outline-none focus:border-indigo-500 text-slate-300">
+                <i class="fa fa-search absolute left-2 top-1.5 text-slate-500 text-[10px]"></i>
+            </div>
+            
+            <!-- Pagination Controls -->
+            <div class="flex items-center gap-1 bg-slate-950 border border-slate-800 rounded p-0.5">
+                <button onclick="changePage(-1)" class="px-2 py-0.5 hover:bg-slate-800 text-slate-400 hover:text-indigo-400 rounded transition" title="Previous Page"><i class="fa fa-chevron-left"></i></button>
+                <button onclick="changePage(1)" class="px-2 py-0.5 hover:bg-slate-800 text-slate-400 hover:text-indigo-400 rounded transition" title="Next Page"><i class="fa fa-chevron-right"></i></button>
+            </div>
+            {% endif %}
+            
+            <span class="text-[10px] text-slate-500 font-mono truncate max-w-[150px] md:max-w-xs" title="{{ query }}">{{ query }}</span>
+        </div>
+    </div>
+
+        <!-- Data Table -->
+        <div class="overflow-x-auto rounded-lg border border-slate-800">
+            <table class="w-full text-left text-xs font-mono">
+                <thead class="bg-slate-950 text-slate-400 uppercase tracking-wider text-[11px] border-b border-slate-800">
+                    <tr>
+                        <th class="p-3 w-8 text-center">
+                            <input type="checkbox" onchange="toggleSelectAllRows(this)" class="rounded bg-slate-900 border-slate-700">
+                        </th>
+                        {% for col in result.columns %}
+                            <th class="p-3 font-semibold text-slate-300 border-r border-slate-800/50 last:border-r-0 whitespace-nowrap">{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800/60 bg-slate-900/50">
+                    {% for row in result.rows %}
+                        <tr class="hover:bg-slate-800/50 transition-colors group">
+                            <td class="p-3 text-center flex items-center gap-2">
+                                <input type="checkbox" name="row_ids" value="{{ row[0] }}" class="rounded bg-slate-900 border-slate-700">
+                                <!-- Tombol Edit Quick per Row -->
+                                <!-- Tombol Edit Quick per Row -->
+                                <button type="button" 
+                                    data-cols="{{ result.columns|tojson|forceescape }}" 
+                                    data-row="{{ row|tojson|forceescape }}" 
+                                    onclick="quickEditRow(this)" 
+                                    class="text-slate-500 hover:text-amber-400 opacity-0 group-hover:opacity-100 transition" 
+                                    title="Edit Baris">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </td>
+                            {% for cell in row %}
+                                <td class="p-3 border-r border-slate-800/30 last:border-r-0 text-slate-300 whitespace-nowrap max-w-xs truncate">
+                                    {% if cell is none %}<span class="text-slate-600 italic">NULL</span>{% else %}{{ cell }}{% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% else %}
+    <!-- Display Non-SELECT Result (INSERT, UPDATE, DELETE) -->
+    <div class="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg text-xs space-y-1 font-mono">
+        <div class="flex items-center gap-2 font-bold text-emerald-300">
+            <i class="fa fa-check-circle"></i> Query Executed Successfully
+        </div>
+        <p class="text-slate-300">Affected rows: <span class="font-bold text-white">{{ result.affected_rows }}</span></p>
+    </div>
+{% endif %}

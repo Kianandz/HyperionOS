@@ -1,0 +1,38 @@
+{% extends 'layouts/base.html' %}
+{% block title %}Docker - HyperionOS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header (Glassmorphism) -->
+    <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl flex flex-col md:flex-row md:justify-between md:items-center shadow-xl gap-4">
+        <div class="flex items-center gap-3">
+            <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+                <i class="fa fa-cubes text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-wide">Docker Management</h1>
+                <p class="text-xs text-slate-400">Container & App Store Controller</p>
+            </div>
+        </div>
+        
+        <div class="flex items-center gap-3">
+            <button onclick="openAppStore()" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-500/20 flex items-center gap-2 border border-indigo-500/50 cursor-pointer">
+                <i class="fa fa-shopping-bag"></i> App Store
+            </button>
+            <span class="text-xs font-mono bg-slate-950/60 text-indigo-300 border border-slate-800/80 px-3.5 py-2.5 rounded-xl shadow-inner flex items-center gap-1.5">
+                <i class="fa fa-info-circle text-slate-500"></i> v{{ overview.docker_version if overview.status == 'online' else 'N/A' }}
+            </span>
+        </div>
+    </div>
+
+    {% include 'components/docker/stats_card.html' %}
+    {% include 'components/docker/container_grid.html' %}
+</div>
+
+{% include 'components/docker/modal_appstore.html' %}
+{% include 'components/docker/modal_settings.html' %}
+
+<script src="/static/js/docker/main.js"></script>
+<script src="/static/js/docker/appstore.js"></script>
+<script src="/static/js/docker/settings.js"></script>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!-- Modal Log UFW -->
+<div id="logsModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center transition-opacity">
+    <div class="bg-slate-900 border border-slate-800 w-full max-w-3xl rounded-2xl shadow-2xl p-6 relative flex flex-col max-h-[85vh]">
+        
+        <!-- Header Modal -->
+        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+                <i class="fa fa-terminal text-indigo-400"></i>
+                <h2 class="text-lg font-bold text-white">System Firewall Logs (/var/log/ufw.log)</h2>
+            </div>
+            <button onclick="closeModal('logsModal')" class="text-slate-400 hover:text-white transition cursor-pointer">
+                <i class="fa fa-times text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Content Area / Log Viewer -->
+        <div class="flex-1 overflow-y-auto bg-slate-950 rounded-xl p-4 border border-slate-800/80 font-mono text-xs text-slate-300 leading-relaxed whitespace-pre-wrap selection:bg-indigo-500/30" id="log-content-container">
+            <div class="text-center text-slate-500 py-8">
+                <i class="fa fa-spinner fa-spin text-xl"></i> Loading logs...
+            </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="mt-4 pt-3 border-t border-slate-800 flex justify-between items-center text-xs">
+            <span class="text-slate-500">Menampilkan 50 baris terakhir</span>
+            <button onclick="fetchUfwLogs()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg font-medium transition cursor-pointer flex items-center gap-1.5">
+                <i class="fa fa-refresh text-xs"></i> Refresh Log
+            </button>
+        </div>
+    </div>
+</div>

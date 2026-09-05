@@ -1,0 +1,48 @@
+<div class="lg:col-span-3 space-y-4 flex flex-col">
+    <!-- Actions Toolbar -->
+    <div class="bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 p-4 rounded-2xl flex items-center justify-between flex-wrap gap-3 shadow-2xl">
+        <div class="flex items-center gap-2">
+            <button id="btn-batch-duplicate" onclick="triggerBatchAction('duplicate')" disabled class="disabled:opacity-30 disabled:cursor-not-allowed bg-slate-800/50 hover:bg-slate-700 text-indigo-400 border border-slate-700/50 text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition-all shadow-sm">
+                <i class="fa fa-copy"></i> Duplicate
+            </button>
+            <button id="btn-batch-delete" onclick="triggerBatchAction('delete')" disabled class="disabled:opacity-30 disabled:cursor-not-allowed bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/25 text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition-all shadow-sm">
+                <i class="fa fa-trash"></i> Delete Selected
+            </button>
+        </div>
+        
+        <button onclick="document.getElementById('inline-query-box').classList.toggle('hidden')" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 ml-auto shadow-lg shadow-indigo-500/20 transition-all font-semibold active:scale-95">
+            <i class="fa fa-terminal"></i> Toggle SQL Editor
+        </button>
+    </div>
+
+    <!-- SQL Query Console -->
+    <div id="inline-query-box" class="hidden bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 p-5 rounded-2xl shadow-2xl space-y-4 transition-all">
+        <form hx-post="/databases/query" hx-target="#data-view" class="space-y-3">
+            <input type="hidden" name="db_type" id="q_db_type" value="mysql">
+            <input type="hidden" name="host" id="q_host" value="127.0.0.1">
+            <input type="hidden" name="port" id="q_port" value="3306">
+            <input type="hidden" name="user" id="q_user" value="root">
+            <input type="hidden" name="password" id="q_password" value="">
+            <input type="hidden" name="database" id="q_database" value="">
+
+            <textarea name="query" rows="3" placeholder="SELECT * FROM users LIMIT 10;" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-4 font-mono text-xs text-emerald-400 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-inner placeholder:text-slate-600"></textarea>
+            
+            <div class="flex justify-between items-center px-0.5">
+                <span class="text-[11px] text-slate-400 font-medium"><i class="fa fa-info-circle mr-1 text-indigo-400"></i> Ketik query SQL kustom untuk manipulasi data</span>
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95">
+                    <i class="fa fa-play mr-1.5"></i> Run Query
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Table Data View -->
+    <div id="data-view" class="bg-slate-900/60 backdrop-blur-2xl border border-slate-800/80 p-5 rounded-2xl shadow-2xl overflow-x-auto min-h-[400px] flex-1">
+        <div class="flex flex-col items-center justify-center h-64 text-slate-500 text-xs text-center space-y-3 mt-12">
+            <div class="w-14 h-14 rounded-2xl bg-slate-800/50 flex items-center justify-center border border-slate-700/50 shadow-inner">
+                <i class="fa fa-table text-2xl opacity-40"></i>
+            </div>
+            <p class="font-medium text-slate-400">Pilih database dan tabel di sidebar kiri<br>untuk menampilkan isi data.</p>
+        </div>
+    </div>
+</div>

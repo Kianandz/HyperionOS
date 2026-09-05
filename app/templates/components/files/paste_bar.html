@@ -1,0 +1,19 @@
+<!-- PASTE BAR -->
+<div id="pasteBar" class="hidden bg-indigo-950/60 backdrop-blur-md border border-indigo-500/30 p-3.5 rounded-2xl flex justify-between items-center text-xs shadow-xl">
+    <div class="flex items-center gap-3 text-indigo-200 px-2 font-bold">
+        <div class="bg-indigo-500/20 p-2.5 rounded-xl border border-indigo-500/30"><i class="fa fa-clipboard text-indigo-400 text-sm"></i></div>
+        <span>Menunggu Paste: <strong id="clipboardText" class="text-white font-mono bg-slate-950/60 px-2.5 py-1 rounded-lg border border-slate-800"></strong></span>
+    </div>
+    <div class="flex items-center gap-3">
+        <button onclick="clearClipboard()" class="text-slate-400 hover:text-rose-400 px-3 py-2 text-xs font-bold transition-colors cursor-pointer">BATAL</button>
+        
+        <form id="pasteForm" action="/files/batch-transfer" method="POST" class="m-0" onsubmit="handlePasteSubmit(event)">
+            <input type="hidden" id="pasteSrcInput" name="paths_json" value="">
+            <input type="hidden" id="pasteActionInput" name="action" value="">
+            <input type="hidden" name="dest_dir" value="{{ contents['current_path'] }}">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-4 py-2 rounded-xl transition-all font-bold flex items-center gap-2 shadow-lg border border-indigo-500/50 cursor-pointer">
+                <i class="fa fa-paste"></i> Tempel di Sini
+            </button>
+        </form>
+    </div>
+</div>

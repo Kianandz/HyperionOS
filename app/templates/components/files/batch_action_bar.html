@@ -1,0 +1,31 @@
+<!-- FLOATING BATCH ACTION BAR (PILL) -->
+<div id="batchActionBar" class="fixed bottom-8 left-1/2 -translate-x-1/2 flex bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 p-2.5 rounded-2xl items-center gap-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.6)] z-[100] transform transition-all duration-300 translate-y-[150%] opacity-0 pointer-events-none">
+    
+    <div class="px-4 py-2 bg-slate-950/80 rounded-xl border border-slate-800 text-indigo-300 font-bold text-xs flex items-center gap-2.5 mr-2 shadow-inner">
+        <span class="flex h-5 w-5 bg-indigo-600 text-white rounded-lg items-center justify-center text-[10px] shadow" id="selectedCount">0</span>
+        Terpilih
+    </div>
+    
+    <button onclick="batchCompress()" class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded-xl transition-all flex flex-col items-center gap-0.5 group active:scale-95 cursor-pointer">
+        <i class="fa fa-file-archive-o text-base group-hover:text-purple-400 transition-colors"></i>
+        <span class="text-[9px] font-bold tracking-wider uppercase">ZIP</span>
+    </button>
+    <button onclick="batchCopyCut('copy')" class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded-xl transition-all flex flex-col items-center gap-0.5 group active:scale-95 cursor-pointer">
+        <i class="fa fa-copy text-base group-hover:text-sky-400 transition-colors"></i>
+        <span class="text-[9px] font-bold tracking-wider uppercase">Copy</span>
+    </button>
+    <button onclick="batchCopyCut('move')" class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-slate-800/80 rounded-xl transition-all flex flex-col items-center gap-0.5 group active:scale-95 cursor-pointer">
+        <i class="fa fa-scissors text-base group-hover:text-cyan-400 transition-colors"></i>
+        <span class="text-[9px] font-bold tracking-wider uppercase">Move</span>
+    </button>
+    <button onclick="batchDelete()" class="px-3.5 py-2 text-slate-300 hover:text-white hover:bg-rose-500/20 rounded-xl transition-all flex flex-col items-center gap-0.5 group active:scale-95 cursor-pointer">
+        <i class="fa fa-trash text-base group-hover:text-rose-400 transition-colors"></i>
+        <span class="text-[9px] font-bold tracking-wider uppercase">Hapus</span>
+    </button>
+    
+    <div class="w-px h-8 bg-slate-800 mx-1"></div>
+    
+    <button onclick="clearSelection()" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all active:scale-95 cursor-pointer" title="Batalkan Pilihan">
+        <i class="fa fa-times text-lg"></i>
+    </button>
+</div>
