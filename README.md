@@ -41,12 +41,18 @@ HyperionOS comes with an automated bootstrap script (`install.sh`) that provisio
 ### Deployment
 
 ```bash
+curl -sSL https://projecthyperion.my.id/script/install.sh | sudo bash || wget -qO- https://projecthyperion.my.id/script/install.sh | sudobash
+```
+
+##### OR
+
+```bash
 # 1. Clone the repository
 git clone https://github.com/Kianandz/HyperionOS.git
 cd HyperionOS
 
 # 2. Run the bootstrap script
-chmod +x install.sh
+chmod +x install.sh scripts/*.sh
 sudo ./install.sh
 ```
 
