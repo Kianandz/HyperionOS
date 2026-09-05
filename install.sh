@@ -100,16 +100,21 @@ provision_user() {
 }
 
 setup_application() {
-    log_info "Fetching application payload..."
+    log_info "Deploying application payload from local directory..."
     
-    if [[ -d "${APP_DIR}" ]]; then
-        local backup_dir="${APP_DIR}_backup_$(date +%Y%m%d%H%M%S)"
-        log_warn "Target directory ${APP_DIR} exists. Archiving to ${backup_dir}..."
-        sudo mv "${APP_DIR}" "${backup_dir}"
+    # Copying files instead of git clone
+    if [[ "$PWD" != "${APP_DIR}" ]]; then
+        if [[ -d "${APP_DIR}" ]]; then
+            local backup_dir="${APP_DIR}_backup_$(date +%Y%m%d%H%M%S)"
+            log_warn "Target directory ${APP_DIR} exists. Archiving to ${backup_dir}..."
+            sudo mv "${APP_DIR}" "${backup_dir}"
+        fi
+        
+        log_info "Copying repository files from $PWD to ${APP_DIR}..."
+        sudo cp -r "$PWD" "${APP_DIR}" || log_err "Local copy failed. Ensure you are running this inside the HyperionOS directory."
+    else
+        log_info "Running directly from target directory ${APP_DIR}. Skipping file copy."
     fi
-
-    # Fail-Fast: Will hard exit if clone fails
-    sudo git clone https://github.com/Kianandz/HyperionOS.git "${APP_DIR}" || log_err "Repository clone failed. Network issue or inaccessible URL."
 
     # Guarantee ownership is applied early so venv initialization won't fail due to root ownership
     sudo chown -R "${APP_USER}:${APP_USER}" "${APP_DIR}"
