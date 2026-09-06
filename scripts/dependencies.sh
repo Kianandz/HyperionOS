@@ -49,7 +49,6 @@ install_dependencies() {
     if [[ "$PKG_MANAGER" == "apt" ]]; then
         sudo apt-get update -yqq || log_warn "APT update returned non-zero, proceeding..."
         
-        # Release dpkg locks and fix broken installs silently
         sudo dpkg --configure -a >/dev/null 2>&1 || true
         sudo apt-get install -f -yqq >/dev/null 2>&1 || true
 
