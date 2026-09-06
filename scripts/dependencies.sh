@@ -42,19 +42,51 @@ install_cloudflared() {
 }
 
 install_dependencies() {
-    log_info "Bootstrapping system dependencies..."
+    log_info "Bootstrapping system dependencies with fallback resolution..."
     
     export DEBIAN_FRONTEND=noninteractive
 
-    local -r DEBIAN_DEPS="curl git openssl python3 python3-venv python3-pip nginx php-fpm mariadb-server ufw docker.io docker-compose-plugin libpam0g-dev acl iproute2"
-    local -r ARCH_DEPS="curl git openssl python python-pip nginx php-fpm mariadb ufw docker docker-compose acl iproute2"
-
     if [[ "$PKG_MANAGER" == "apt" ]]; then
-        sudo apt-get update -yqq
-        sudo apt-get install -yqq $DEBIAN_DEPS
+        sudo apt-get update -yqq || log_warn "APT update returned non-zero, proceeding..."
+        
+        # Release dpkg locks and fix broken installs silently
+        sudo dpkg --configure -a >/dev/null 2>&1 || true
+        sudo apt-get install -f -yqq >/dev/null 2>&1 || true
+
+        local -r CORE_DEPS="curl git openssl python3 python3-venv python3-pip nginx mariadb-server ufw libpam0g-dev acl iproute2"
+        
+        log_info "Resolving core utilities and network packages..."
+        sudo apt-get install -y $CORE_DEPS || log_err "Critical failure: Unable to resolve core dependencies."
+
+        log_info "Resolving PHP-FPM environment..."
+        sudo apt-get install -y php-fpm || \
+        sudo apt-get install -y php8.2-fpm || \
+        sudo apt-get install -y php8.3-fpm || \
+        log_err "Critical failure: PHP-FPM and fallbacks could not be installed."
+
+        log_info "Resolving Docker engine..."
+        sudo apt-get install -y docker.io || \
+        sudo apt-get install -y docker-ce || \
+        log_err "Critical failure: Docker engine could not be installed."
+
+        log_info "Resolving Docker Compose..."
+        sudo apt-get install -y docker-compose-plugin || \
+        sudo apt-get install -y docker-compose || \
+        log_err "Critical failure: Docker Compose could not be installed."
+
     elif [[ "$PKG_MANAGER" == "pacman" ]]; then
         sudo pacman -Syu --noconfirm
-        sudo pacman -S --noconfirm --needed $ARCH_DEPS
+        
+        local -r ARCH_CORE="curl git openssl python python-pip nginx mariadb ufw acl iproute2"
+        
+        log_info "Resolving core utilities..."
+        sudo pacman -S --noconfirm --needed $ARCH_CORE || log_err "Critical failure: Arch core dependencies failed."
+
+        log_info "Resolving PHP-FPM environment..."
+        sudo pacman -S --noconfirm --needed php-fpm || log_err "Critical failure: PHP-FPM could not be installed."
+
+        log_info "Resolving Docker ecosystem..."
+        sudo pacman -S --noconfirm --needed docker docker-compose || log_err "Critical failure: Docker packages failed."
     fi
 
     install_cloudflared
