@@ -7,6 +7,7 @@ import shutil
 import os
 import tempfile
 import json
+import subprocess
 from flask import request, redirect, flash
 from typing import List
 
@@ -42,12 +43,8 @@ async def upload_file(path: str = Form(""), file: List[UploadFile] = File(...), 
     target_dir = files_service.get_safe_path(path)
 
     for f in file:
-        # Mengamankan struktur subfolder kalau upload via webkitdirectory
         dest_path = os.path.join(target_dir, f.filename)
-
-        # Bikin otomatis foldernya kalau belum ada di storage
         os.makedirs(os.path.dirname(dest_path), exist_ok=True)
-
         with open(dest_path, "wb+") as dest_f:
             shutil.copyfileobj(f.file, dest_f)
 
@@ -87,54 +84,29 @@ async def transfer_file_folder(src_path: str = Form(...), dest_dir: str = Form(.
     return responses.RedirectResponse(url=f"/files?path={dest_dir}", status_code=303)
 
 @router.post("/batch-transfer")
-async def batch_transfer(
-    paths_json: str = Form("[]"), 
-    action: str = Form(...), 
-    dest_dir: str = Form(""), 
-    _ : str = Depends(verify_session)
-):
+async def batch_transfer(paths_json: str = Form("[]"), action: str = Form(...), dest_dir: str = Form(""), _ : str = Depends(verify_session)):
     try:
         paths = json.loads(paths_json)
-        # Proteksi 1: Pastikan paths selalu berbentuk list
-        if isinstance(paths, str):
-            paths = [paths]
+        if isinstance(paths, str): paths = [paths]
     except Exception:
         return responses.RedirectResponse(url=f"/files?path={dest_dir}", status_code=303)
 
-    # FIX: Ambil path yang benar pakai files_service bawaan lu
     target_dest_path = files_service.get_safe_path(dest_dir)
-
     for p in paths:
         p = str(p).strip()
-        
-        # Proteksi 2: Tolak mentah-mentah jika path kosong, titik (.), atau root
-        if not p or p == '.' or p == '/':
-            continue
-
-        # FIX: Ambil source path yang bener
+        if not p or p == '.' or p == '/': continue
         src_path = files_service.get_safe_path(p)
 
-        # Proteksi 3: Mencegah infinite recursive loop (blackhole)
-        if target_dest_path.startswith(src_path):
-            print(f"Bahaya Rekursif: {src_path} dicegah agar tidak masuk ke {target_dest_path}")
-            continue
+        if target_dest_path.startswith(src_path): continue
 
-        # Eksekusi Copy/Move
         if os.path.exists(src_path):
             dest_file_path = os.path.join(target_dest_path, os.path.basename(src_path))
-            
             try:
                 if action == 'copy':
-                    if os.path.isdir(src_path):
-                        shutil.copytree(src_path, dest_file_path, dirs_exist_ok=True)
-                    else:
-                        shutil.copy2(src_path, dest_file_path)
-                elif action == 'move':
-                    shutil.move(src_path, dest_file_path)
-            except Exception as e:
-                print(f"Gagal transfer {src_path}: {e}")
-                pass 
-
+                    if os.path.isdir(src_path): shutil.copytree(src_path, dest_file_path, dirs_exist_ok=True)
+                    else: shutil.copy2(src_path, dest_file_path)
+                elif action == 'move': shutil.move(src_path, dest_file_path)
+            except Exception: pass 
     return responses.RedirectResponse(url=f"/files?path={dest_dir}", status_code=303)
 
 @router.post("/extract")
@@ -157,7 +129,6 @@ async def batch_compress_items(paths_json: str = Form(...), current_path: str = 
     files_service.compress_items(paths, current_path, zip_name)
     return responses.RedirectResponse(url=f"/files?path={current_path}", status_code=303)
 
-# API FOR TEXT EDITOR
 @router.get("/api/read-file")
 async def api_read_file(path: str, _ : str = Depends(verify_session)):
     return JSONResponse(content=files_service.read_file(path))
@@ -165,3 +136,72 @@ async def api_read_file(path: str, _ : str = Depends(verify_session)):
 @router.post("/api/write-file")
 async def api_write_file(path: str = Form(...), content: str = Form(...), _ : str = Depends(verify_session)):
     return JSONResponse(content=files_service.write_file(path, content))
+
+# ===============================
+# ROUTER KHUSUS SAMBA FILE SHARING
+# ===============================
+
+@router.get("/samba", response_class=responses.HTMLResponse)
+async def samba_page(request: Request, user: str = Depends(verify_session)):
+    shares = files_service.parse_smb_conf()
+    
+    try:
+        st = subprocess.run(["systemctl", "is-active", "smb"], capture_output=True, text=True).stdout.strip()
+        if st != "active":
+            st = subprocess.run(["systemctl", "is-active", "smbd"], capture_output=True, text=True).stdout.strip()
+        is_active = (st == "active")
+    except:
+        is_active = False
+        
+    return templates.TemplateResponse(
+        request=request, 
+        name="pages/samba.html", 
+        context={
+            "user": user,
+            "active_page": "samba",
+            "shares": shares,
+            "is_active": is_active
+        }
+    )
+
+@router.post("/samba/control/{action}")
+async def samba_control(action: str, _ : str = Depends(verify_session)):
+    files_service.control_samba(action)
+    return responses.RedirectResponse(url="/files/samba", status_code=303)
+
+@router.get("/samba/logs")
+async def samba_logs(_ : str = Depends(verify_session)):
+    logs = files_service.get_samba_logs()
+    return JSONResponse(content={"status": "success", "logs": logs})
+    
+@router.post("/samba/save")
+async def samba_save(
+    name: str = Form(...), path: str = Form(""), guest_ok: bool = Form(False), 
+    writable: bool = Form(False), browseable: bool = Form(True), 
+    valid_users: str = Form(""), create_mask: str = Form("0755"), 
+    directory_mask: str = Form("0755"), raw_config: str = Form(""),
+    _ : str = Depends(verify_session)
+):
+    files_service.save_samba_share(name, path, guest_ok, writable, browseable, valid_users, create_mask, directory_mask, raw_config)
+    return responses.RedirectResponse(url="/files/samba", status_code=303)
+
+@router.post("/samba/delete")
+async def samba_delete(name: str = Form(...), _ : str = Depends(verify_session)):
+    files_service.delete_samba_share(name)
+    return responses.RedirectResponse(url="/files/samba", status_code=303)
+
+@router.post("/samba/user")
+async def samba_manage_user(username: str = Form(...), password: str = Form(...), _ : str = Depends(verify_session)):
+    files_service.set_samba_password(username, password)
+    return responses.RedirectResponse(url="/files/samba", status_code=303)
+
+@router.get("/samba/api/users")
+async def get_samba_users(_ : str = Depends(verify_session)):
+    users = files_service.get_samba_users()
+    return JSONResponse(content={"status": "success", "users": users})
+
+
+@router.post("/samba/user/delete")
+async def samba_delete_user(username: str = Form(...), _ : str = Depends(verify_session)):
+    files_service.delete_samba_user(username)
+    return responses.RedirectResponse(url="/files/samba", status_code=303)

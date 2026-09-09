@@ -6,8 +6,8 @@
         </div>
         
         <div class="flex space-x-2 mb-6 bg-slate-950/50 p-1.5 rounded-xl border border-slate-800/50">
-            <button type="button" onclick="switchEditTab('advanced')" id="editTabAdvanced" class="flex-1 py-2 text-xs font-bold text-white bg-purple-600/80 rounded-lg shadow transition">Advanced (Current)</button>
-            <button type="button" onclick="switchEditTab('simple')" id="editTabSimple" class="flex-1 py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition">Simple (Reset)</button>
+            <button type="button" onclick="switchEditTab('advanced')" id="editTabAdvanced" class="flex-1 py-2 text-xs font-bold text-white bg-purple-600/80 rounded-lg shadow transition">Advanced Mode (Current Configuration)</button>
+            <button type="button" onclick="switchEditTab('simple')" id="editTabSimple" class="flex-1 py-2 text-xs font-bold text-slate-400 hover:text-white rounded-lg transition">Simple Mode (Reset Virtual Host)</button>
         </div>
 
         <form action="/websites/save" method="POST" class="space-y-4">
@@ -21,14 +21,14 @@
 
             <div id="editContentSimple" class="hidden space-y-5">
                 <div class="bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-xs text-rose-400 font-bold flex items-center gap-3">
-                    <i class="fa fa-exclamation-triangle text-xl"></i> Peringatan: Mode Simple akan mereset dan menimpa konfigurasi lama lu.
+                    <i class="fa fa-exclamation-triangle text-xl"></i> Warning: Simple Mode will overwrite your existing configuration.
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Tipe Website</label>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Template</label>
                         <select name="site_type" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-purple-500 transition shadow-inner">
                             <option value="proxy">Reverse Proxy</option>
-                            <option value="php">PHP (FPM)</option>
+                            <option value="php">PHP (Using PHP-FPM)</option>
                             <option value="static">Static HTML</option>
                         </select>
                     </div>
@@ -41,7 +41,7 @@
             
             <div class="pt-4">
                 <button type="submit" class="w-full bg-purple-600 hover:bg-purple-500 active:scale-95 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg flex justify-center items-center gap-2">
-                    <i class="fa fa-save"></i> Simpan Perubahan
+                    <i class="fa fa-save"></i> Save Configuration
                 </button>
             </div>
         </form>

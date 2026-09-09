@@ -1,0 +1,18 @@
+<div id="fm-editor-modal" class="fixed inset-0 z-[110] bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-4 transition-opacity">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-5xl flex flex-col max-h-[90vh] shadow-2xl">
+        <div class="p-4 px-6 border-b border-slate-800/80 flex justify-between items-center bg-slate-800/50 rounded-t-2xl">
+            <h3 id="fm-editor-title" class="font-mono text-xs text-indigo-300 font-bold flex items-center gap-2"><i class="fa fa-code"></i> Edit File</h3>
+            <button onclick="closeTextEditor()" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 p-2 rounded-xl transition-colors cursor-pointer border border-slate-700/50"><i class="fa fa-times"></i></button>
+        </div>
+        <div class="p-5 flex-1 overflow-hidden flex flex-col bg-slate-950/80">
+            <input type="hidden" id="fm-editor-path" value="">
+            <textarea id="fm-editor-content" class="w-full flex-1 bg-transparent text-slate-300 font-mono text-xs p-2 focus:outline-none resize-none h-96 min-h-[400px] leading-relaxed custom-scrollbar shadow-inner"></textarea>
+        </div>
+        <div class="p-4 px-6 border-t border-slate-800/80 flex justify-end gap-3 bg-slate-800/50 rounded-b-2xl">
+            <button onclick="closeTextEditor()" class="bg-slate-800 hover:bg-slate-700 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-700/50">Batal</button>
+            <button onclick="saveTextContent()" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-5 py-2.5 rounded-xl text-xs font-bold transition-colors shadow-lg shadow-indigo-500/20 flex items-center gap-2 border border-indigo-500/50 cursor-pointer">
+                <i class="fa fa-save"></i> Simpan Perubahan
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+<div id="smb-user-modal" class="fixed inset-0 z-[110] bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden">
+        <div class="p-4 border-b border-slate-800/80 flex justify-between items-center bg-slate-800/50">
+            <h3 class="text-emerald-400 font-bold text-sm"><i class="fa fa-users"></i> Kelola User Samba</h3>
+            <button onclick="document.getElementById('smb-user-modal').classList.add('hidden')" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa fa-times"></i></button>
+        </div>
+        
+        <div class="flex p-3 gap-2 bg-slate-950/50 border-b border-slate-800/50">
+            <button type="button" onclick="switchUserTab('list')" id="btn-user-list" class="flex-1 py-2 text-xs font-bold rounded-lg bg-emerald-600 text-white transition-all shadow-md cursor-pointer">List User</button>
+            <button type="button" onclick="switchUserTab('add')" id="btn-user-add" class="flex-1 py-2 text-xs font-bold rounded-lg bg-transparent text-slate-400 hover:bg-slate-800 transition-all cursor-pointer">Add/Edit User</button>
+        </div>
+
+        <div class="p-5">
+            <div id="tab-user-list" class="space-y-3 max-h-60 overflow-y-auto custom-scrollbar">
+                <div id="user-list-container" class="text-center text-slate-500 text-xs py-4">Memuat user...</div>
+            </div>
+
+            <form id="tab-user-add" action="/files/samba/user" method="POST" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5">Username Samba</label>
+                    <input type="text" name="username" id="input-username" required placeholder="Contoh: nanda" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-slate-200 outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-400 mb-1.5">Password</label>
+                    <input type="password" name="password" required placeholder="••••••••" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-slate-200 outline-none focus:border-emerald-500">
+                </div>
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-bold py-3 rounded-xl transition-all border border-emerald-500/50 text-sm cursor-pointer">
+                    <i class="fa fa-save mr-1"></i> Simpan User
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

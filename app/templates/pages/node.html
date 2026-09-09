@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% block title %}Node.js Manager - HyperionOS{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-900/60 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80">
+        <div>
+            <h1 class="text-2xl font-bold text-white flex items-center gap-3">
+                <i class="fa fa-code text-indigo-500"></i> Node.js Project Manager
+            </h1>
+            <p class="text-xs text-slate-400 mt-1">teretetetetettteetett</p>
+        </div>
+    </div>
+
+    <!-- Dependency Status Component -->
+    {% include 'components/node/dependency_card.html' %}
+
+    <!-- Project List Component -->
+    {% include 'components/node/project_list.html' %}
+
+    <!-- Modals Component -->
+    {% include 'components/node/modals.html' %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/node/node_manager.js"></script>
+{% endblock %}

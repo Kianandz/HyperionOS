@@ -4,14 +4,14 @@
         <div class="flex justify-between items-center border-b border-slate-800 pb-4">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
                 <span class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20"><i class="fa fa-plug text-xs"></i></span>
-                Konek ke Server Database
+                Add DB Connection
             </h3>
             <button onclick="closeNewConnectionModal()" class="w-7 h-7 rounded-lg bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center"><i class="fa fa-times"></i></button>
         </div>
         
         <form onsubmit="handleSaveNewConnection(event)" class="space-y-4 text-xs">
             <div>
-                <label class="block text-slate-400 mb-1.5 font-semibold tracking-wide">Nama Sesi / Server</label>
+                <label class="block text-slate-400 mb-1.5 font-semibold tracking-wide">Session Name</label>
                 <input type="text" id="conn_name" required placeholder="Local MySQL Server" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 font-mono outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
             </div>
             <div class="grid grid-cols-2 gap-3">
@@ -39,12 +39,12 @@
             </div>
             <div>
                 <label class="block text-slate-400 mb-1.5 font-semibold tracking-wide">Password</label>
-                <input type="password" id="conn_password" placeholder="(kosongkan jika tanpa password)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 font-mono outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
+                <input type="password" id="conn_password" placeholder="(Blank if no Password)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 font-mono outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
             </div>
             
             <div class="pt-4 flex justify-end gap-3 border-t border-slate-800">
-                <button type="button" onclick="closeNewConnectionModal()" class="bg-slate-800/60 text-slate-300 px-4 py-2.5 rounded-xl hover:bg-slate-800 font-semibold transition-colors">Batal</button>
-                <button type="submit" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-500 font-semibold shadow-lg shadow-indigo-500/20 transition-all active:scale-95">Hubungkan & Simpan</button>
+                <button type="button" onclick="closeNewConnectionModal()" class="bg-slate-800/60 text-slate-300 px-4 py-2.5 rounded-xl hover:bg-slate-800 font-semibold transition-colors">Cancel</button>
+                <button type="submit" class="bg-indigo-600 text-white px-5 py-2.5 rounded-xl hover:bg-indigo-500 font-semibold shadow-lg shadow-indigo-500/20 transition-all active:scale-95">Save Connection</button>
             </div>
         </form>
     </div>
@@ -56,26 +56,26 @@
         <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-5">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
                 <span class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20"><i class="fa fa-table text-xs"></i></span>
-                Buat Tabel Baru
+                Create New Table
             </h3>
             <button onclick="document.getElementById('modalCreateTable').classList.add('hidden')" class="w-7 h-7 rounded-lg bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center"><i class="fa fa-times"></i></button>
         </div>
         
         <div class="mb-5">
-            <label class="block text-slate-400 text-xs mb-1.5 font-semibold tracking-wide">Nama Tabel</label>
-            <input type="text" id="new_tbl_name" placeholder="misal: users" class="w-full max-w-sm bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono">
+            <label class="block text-slate-400 text-xs mb-1.5 font-semibold tracking-wide">Table Name</label>
+            <input type="text" id="new_tbl_name" placeholder="Table Name" class="w-full max-w-sm bg-slate-950 border border-slate-800 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono">
         </div>
 
         <div class="flex-1 overflow-y-auto mb-5 border border-slate-800 rounded-xl p-1 bg-slate-950/60 shadow-inner">
             <table class="w-full text-left text-xs text-slate-300">
                 <thead class="text-slate-400 border-b border-slate-800 bg-slate-900/80 sticky top-0 backdrop-blur-md">
                     <tr>
-                        <th class="p-3 font-semibold">Nama Kolom</th>
+                        <th class="p-3 font-semibold">Field Name</th>
                         <th class="p-3 font-semibold w-32">Type</th>
                         <th class="p-3 font-semibold w-24">Length</th>
                         <th class="p-3 font-semibold w-16 text-center" title="Auto Increment">A.I.</th>
                         <th class="p-3 font-semibold w-16 text-center" title="Primary Key">P.K.</th>
-                        <th class="p-3 font-semibold w-16 text-center">Hapus</th>
+                        <th class="p-3 font-semibold w-16 text-center">Delete</th>
                     </tr>
                 </thead>
                 <tbody id="new_tbl_columns" class="divide-y divide-slate-800/50">
@@ -86,11 +86,11 @@
 
         <div class="flex justify-between items-center border-t border-slate-800 pt-4">
             <button type="button" onclick="addColumnRow()" class="bg-slate-800/60 hover:bg-slate-800 text-indigo-400 text-xs px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition-all font-semibold border border-indigo-500/20 shadow-sm active:scale-95">
-                <i class="fa fa-plus"></i> Tambah Field
+                <i class="fa fa-plus"></i> Add Field
             </button>
             <div class="space-x-3">
-                <button type="button" onclick="document.getElementById('modalCreateTable').classList.add('hidden')" class="bg-slate-800/60 text-slate-300 text-xs px-5 py-2.5 rounded-xl hover:bg-slate-800 font-semibold transition-colors">Batal</button>
-                <button type="button" onclick="submitCreateTable()" class="bg-emerald-600 text-white text-xs px-5 py-2.5 rounded-xl hover:bg-emerald-500 font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95">Simpan Tabel</button>
+                <button type="button" onclick="document.getElementById('modalCreateTable').classList.add('hidden')" class="bg-slate-800/60 text-slate-300 text-xs px-5 py-2.5 rounded-xl hover:bg-slate-800 font-semibold transition-colors">Cancel</button>
+                <button type="button" onclick="submitCreateTable()" class="bg-emerald-600 text-white text-xs px-5 py-2.5 rounded-xl hover:bg-emerald-500 font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95">Save Table</button>
             </div>
         </div>
     </div>
@@ -102,7 +102,7 @@
         <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-5">
             <h3 class="text-sm font-bold text-white flex items-center gap-2">
                 <span class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20"><i class="fa fa-columns text-xs"></i></span>
-                Tambah Field Baru
+                Add Field
             </h3>
             <button onclick="document.getElementById('modalAddColumn').classList.add('hidden')" class="w-7 h-7 rounded-lg bg-slate-800/50 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center"><i class="fa fa-times"></i></button>
         </div>
@@ -111,8 +111,8 @@
         
         <div class="space-y-4 text-xs text-slate-300">
             <div>
-                <label class="block mb-1.5 text-slate-400 font-semibold tracking-wide">Nama Field</label>
-                <input type="text" id="add_col_name" placeholder="misal: status_aktif" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono">
+                <label class="block mb-1.5 text-slate-400 font-semibold tracking-wide">Field Name</label>
+                <input type="text" id="add_col_name" placeholder="Field Name" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all font-mono">
             </div>
             <div class="grid grid-cols-2 gap-4">
                 <div>

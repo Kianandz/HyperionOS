@@ -4,15 +4,14 @@
 
 {% block content %}
 <div class="space-y-6">
-    <!-- Header dengan gaya Glassmorphism seperti Firewall -->
     <div class="glass-panel border border-slate-800/80 p-5 rounded-2xl flex flex-col md:flex-row md:justify-between md:items-center shadow-xl gap-4">
         <div class="flex items-center gap-3">
-            <div class="p-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
+            <div class="py-2 px-4 bg-indigo-500/10 border border-indigo-500/20 rounded-xl text-indigo-400">
                 <i class="fa fa-pie-chart text-xl"></i>
             </div>
             <div>
                 <h1 class="text-xl font-bold text-white tracking-wide">System Overview</h1>
-                <p class="text-xs text-slate-400">Server Monitor & Live Status</p>
+                <p class="text-xs text-slate-400">System resource monitoring</p>
             </div>
         </div>
         
@@ -27,7 +26,6 @@
         </div>
     </div>
 
-    <!-- Area Grid Metrics (HTMX Polling) -->
     <div hx-get="/dashboard/metrics-partial" 
          hx-trigger="every 1s" 
          hx-swap="innerHTML" 

@@ -1,0 +1,26 @@
+<div class="bg-slate-900/60 backdrop-blur-md p-6 rounded-2xl border border-slate-800/80">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-sm font-bold text-white flex items-center gap-2">
+            <i class="fa fa-list text-indigo-400"></i> Active Node Projects
+        </h2>
+        <button onclick="openAddModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-lg shadow-indigo-600/30">
+            <i class="fa fa-plus"></i> Add Node Project
+        </button>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+            <thead class="bg-slate-800/55 text-slate-400 uppercase tracking-wider">
+                <tr>
+                    <th class="p-3 rounded-l-xl">Project Name</th>
+                    <th class="p-3">Path</th>
+                    <th class="p-3">Start Command</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3 rounded-r-xl text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="project-table-body" class="divide-y divide-slate-800/50">
+                <!-- Data dinamis -->
+            </tbody>
+        </table>
+    </div>
+</div>

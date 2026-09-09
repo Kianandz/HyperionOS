@@ -52,7 +52,7 @@ install_dependencies() {
         sudo dpkg --configure -a >/dev/null 2>&1 || true
         sudo apt-get install -f -yqq >/dev/null 2>&1 || true
 
-        local -r CORE_DEPS="curl git openssl python3 python3-venv python3-pip nginx mariadb-server ufw libpam0g-dev acl iproute2"
+        local -r CORE_DEPS="curl git openssl python3 python3-venv python3-pip nginx mariadb-server ufw libpam0g-dev acl iproute2 samba"
         
         log_info "Resolving core utilities and network packages..."
         sudo apt-get install -y $CORE_DEPS || log_err "Critical failure: Unable to resolve core dependencies."
@@ -76,7 +76,7 @@ install_dependencies() {
     elif [[ "$PKG_MANAGER" == "pacman" ]]; then
         sudo pacman -Syu --noconfirm
         
-        local -r ARCH_CORE="curl git openssl python python-pip nginx mariadb ufw acl iproute2"
+        local -r ARCH_CORE="curl git openssl python python-pip nginx mariadb ufw acl iproute2 samba"
         
         log_info "Resolving core utilities..."
         sudo pacman -S --noconfirm --needed $ARCH_CORE || log_err "Critical failure: Arch core dependencies failed."

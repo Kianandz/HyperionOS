@@ -1,0 +1,23 @@
+[
+    {"id": "dashboard", "url": "/dashboard", "icon": "fa-pie-chart", "label": "Home"},
+    {
+        "id": "websites", "icon": "fa-globe", "label": "Website",
+        "sub": [
+            {"id": "nginx", "url": "/websites", "icon": "fa-server", "label": "Nginx"},
+            {"id": "node", "url": "/websites/node", "icon": "fa-code", "label": "Node.js Manager"}
+        ]
+    },
+    {"id": "databases", "url": "/databases", "icon": "fa-database", "label": "Remote DB"},
+    {"id": "docker", "url": "/docker", "icon": "fa-cubes", "label": "Docker"},
+    {"id": "firewall", "url": "/firewall", "icon": "fa-shield", "label": "Firewall"},
+    {
+        "id": "storage", "icon": "fa-folder-open", "label": "Storage & Share",
+        "sub": [
+            {"id": "files", "url": "/files", "icon": "fa-hdd-o", "label": "File Manager"},
+            {"id": "samba", "url": "/files/samba", "icon": "fa-share-alt", "label": "File Sharing"}
+        ]
+    },
+    {"id": "cloudflared", "url": "/cloudflared", "icon": "fa-cloud", "label": "Cloudflared"},
+    {"id": "terminal", "url": "/terminal", "icon": "fa-terminal", "label": "Terminal"},
+    {"id": "settings", "url": "/settings", "icon": "fa-cog", "label": "Settings"}
+]

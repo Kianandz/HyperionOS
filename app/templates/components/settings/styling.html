@@ -1,0 +1,36 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-paint-brush text-teal-400"></i> Styling (Card, Modal & Teks)
+    </h2>
+    
+    <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Warna Card / Modal</label>
+                <input type="color" id="ui-card-color" value="#0f172a" class="w-full h-10 rounded-xl cursor-pointer bg-transparent border border-slate-700/60">
+            </div>
+            <div>
+                <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Warna Teks Utama</label>
+                <input type="color" id="ui-text-color" value="#f1f5f9" class="w-full h-10 rounded-xl cursor-pointer bg-transparent border border-slate-700/60">
+            </div>
+        </div>
+
+        <div>
+            <label class="flex justify-between font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">
+                <span>Opacity Card</span> <span id="valCardOp">0.6</span>
+            </label>
+            <input type="range" id="ui-card-opacity" min="0.1" max="1" step="0.05" value="0.6" oninput="document.getElementById('valCardOp').innerText = this.value" class="w-full accent-teal-500 cursor-pointer">
+        </div>
+
+        <div>
+            <label class="flex justify-between font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">
+                <span>Efek Blur (Backdrop)</span> <span id="valCardBlur">12px</span>
+            </label>
+            <input type="range" id="ui-card-blur" min="0" max="30" step="1" value="12" oninput="document.getElementById('valCardBlur').innerText = this.value + 'px'" class="w-full accent-teal-500 cursor-pointer">
+        </div>
+    </div>
+
+    <button onclick="saveCardTheme()" class="w-full bg-teal-600 hover:bg-teal-500 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-teal-500/20 border border-teal-500/50 mt-4 flex items-center justify-center gap-2">
+        <i class="fa fa-save"></i> Terapkan Styling
+    </button>
+</div>

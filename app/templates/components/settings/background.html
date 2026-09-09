@@ -1,0 +1,44 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-image text-pink-400"></i> Global Background
+    </h2>
+    
+    <div class="flex gap-2">
+        <button type="button" id="btn-type-color" onclick="setBgType('color')" class="flex-1 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold transition">Color</button>
+        <button type="button" id="btn-type-image" onclick="setBgType('image')" class="flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition">Image</button>
+        <button type="button" id="btn-type-video" onclick="setBgType('video')" class="flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition">Video</button>
+    </div>
+
+    <div id="panel-color" class="space-y-3">
+        <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px]">Warna Hex</label>
+        <input type="color" id="bg-color-val" value="#0f172a" class="w-full h-10 rounded-xl cursor-pointer bg-transparent border border-slate-700/60">
+    </div>
+
+    <div id="panel-media" class="hidden space-y-3">
+        <select id="mediaMethod" onchange="toggleMediaInput()" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500">
+            <option value="url">Dari URL / Path Statis</option>
+            <option value="upload">Upload Lokal (Simpan ke Backend)</option>
+        </select>
+        
+        <div id="input-url">
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Link / Path (Misal: /static/uploads/backgrounds/wpp-1.jpg)</label>
+            <input type="text" id="bg-media-url" placeholder="https://... atau /static/..." class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500">
+        </div>
+        
+        <div id="input-upload" class="hidden">
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Upload File</label>
+            <input type="file" id="bg-media-file" class="w-full text-slate-400 text-xs file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 cursor-pointer">
+        </div>
+
+        <div>
+            <label class="flex justify-between font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">
+                <span>Kecerahan (Brightness)</span> <span id="valBright">1.0</span>
+            </label>
+            <input type="range" id="sliderBright" min="0.1" max="1" step="0.1" value="1" oninput="document.getElementById('valBright').innerText = this.value" class="w-full accent-indigo-500 cursor-pointer">
+        </div>
+    </div>
+
+    <button onclick="saveGlobalBg()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-500/20 border border-indigo-500/50 mt-4 flex items-center justify-center gap-2">
+        <i class="fa fa-save"></i> Terapkan Background
+    </button>
+</div>

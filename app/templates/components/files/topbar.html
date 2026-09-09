@@ -1,6 +1,4 @@
-<!-- TOP CONTROL BAR: BREADCRUMB & SEARCH & DROPDOWNS -->
 <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 relative z-20">
-    
     <!-- Breadcrumbs -->
     <div class="flex items-center gap-2 w-full md:w-auto">
         <span class="font-mono text-xs text-indigo-400 bg-slate-950/60 px-4 py-2.5 rounded-xl border border-slate-800/80 shadow-inner flex items-center gap-2.5 whitespace-nowrap overflow-x-auto max-w-full font-bold">
@@ -10,7 +8,6 @@
 
     <!-- Right Side: Search & Buttons -->
     <div class="flex flex-col md:flex-row items-center gap-3 w-full md:w-auto">
-        
         <!-- Search -->
         <div class="relative w-full md:w-72 group">
             <i class="fa fa-search absolute left-3.5 top-3 text-slate-500 group-focus-within:text-indigo-400 transition-colors text-xs"></i>
@@ -19,13 +16,11 @@
 
         <!-- Dropdowns Group -->
         <div class="flex items-center gap-2 w-full md:w-auto justify-end">
-            
             <!-- NEW Dropdown -->
             <div class="relative dropdown-container">
                 <button onclick="toggleDropdown('newDropdown')" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2 border border-indigo-500/50 cursor-pointer">
                     <i class="fa fa-plus"></i> Baru <i class="fa fa-chevron-down text-[9px] ml-0.5 opacity-70"></i>
                 </button>
-                <!-- Dropdown Menu -->
                 <div id="newDropdown" class="hidden absolute right-0 mt-2 w-44 bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 rounded-xl shadow-2xl overflow-hidden z-50 origin-top-right transition-all">
                     <button onclick="promptCreateFile('{{ contents['current_path'] }}'); toggleDropdown('newDropdown')" class="w-full text-left px-4 py-3 text-xs font-bold text-slate-200 hover:bg-slate-800 hover:text-white flex items-center gap-2.5 transition-colors">
                         <i class="fa fa-file-o text-teal-400 text-sm"></i> File Kosong
@@ -42,9 +37,7 @@
                 <button onclick="toggleDropdown('uploadDropdown')" class="bg-slate-800/80 hover:bg-slate-700 active:scale-95 text-slate-200 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-2 border border-slate-700/60 cursor-pointer">
                     <i class="fa fa-upload text-indigo-400"></i> Upload <i class="fa fa-chevron-down text-[9px] ml-0.5 opacity-70"></i>
                 </button>
-                <!-- Dropdown Menu -->
                 <div id="uploadDropdown" class="hidden absolute right-0 mt-2 w-48 bg-slate-900/95 backdrop-blur-xl border border-slate-700/60 rounded-xl shadow-2xl overflow-hidden z-50 origin-top-right transition-all">
-                    <!-- Upload File -->
                     <form action="/files/upload" method="POST" enctype="multipart/form-data" class="m-0">
                         <input type="hidden" name="path" value="{{ contents['current_path'] }}">
                         <label class="w-full text-left px-4 py-3 text-xs font-bold text-slate-200 hover:bg-slate-800 hover:text-white flex items-center gap-2.5 transition-colors cursor-pointer">
@@ -53,7 +46,6 @@
                         </label>
                     </form>
                     <div class="h-px bg-slate-800 w-full"></div>
-                    <!-- Upload Folder -->
                     <form action="/files/upload" method="POST" enctype="multipart/form-data" class="m-0">
                         <input type="hidden" name="path" value="{{ contents['current_path'] }}">
                         <label class="w-full text-left px-4 py-3 text-xs font-bold text-slate-200 hover:bg-slate-800 hover:text-white flex items-center gap-2.5 transition-colors cursor-pointer">
@@ -63,7 +55,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>

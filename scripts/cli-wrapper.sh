@@ -69,7 +69,7 @@ case "$ACTION" in
             sudo usermod -aG docker "$NEW_USER"
             sudo usermod -aG adm "$NEW_USER"
             
-            sudo chown -R "$NEW_USER:$NEW_USER" /var/www/html /etc/nginx /HyperionOS /var/log/nginx
+            sudo chown -R "$NEW_USER:$NEW_USER" /var/www/html /etc/nginx /HyperionOS /var/log/nginx /etc/samba
             sudo chown -R "$NEW_USER:$NEW_USER" /etc/php 2>/dev/null || true
             sudo setfacl -m u:"$NEW_USER":rw /etc/resolv.conf 2>/dev/null || true
             

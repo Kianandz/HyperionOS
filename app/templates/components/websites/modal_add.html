@@ -1,7 +1,7 @@
 <div id="modalAddWebsite" class="hidden fixed inset-0 bg-slate-950/80 z-[60] flex items-center justify-center backdrop-blur-sm">
     <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-2xl p-6 shadow-2xl">
         <div class="flex justify-between items-center mb-5 pb-4 border-b border-slate-800/60">
-            <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-plus-circle text-indigo-400"></i> Tambah Website</h3>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-plus-circle text-indigo-400"></i> Create Virtual Host</h3>
             <button onclick="closeModal('modalAddWebsite')" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 py-2 px-4 rounded-xl transition-colors"><i class="fa fa-times"></i></button>
         </div>
         
@@ -23,15 +23,15 @@
             <div id="contentSimple" class="space-y-5">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Tipe Website</label>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Template</label>
                         <select name="site_type" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-indigo-500 transition shadow-inner">
                             <option value="proxy">Reverse Proxy</option>
-                            <option value="php">PHP (FPM)</option>
+                            <option value="php">PHP (Using PHP-FPM)</option>
                             <option value="static">Static HTML</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Port (Khusus Proxy)</label>
+                        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Port (For Proxy)</label>
                         <input type="number" name="port" value="8000" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-indigo-500 transition shadow-inner">
                     </div>
                 </div>
@@ -46,7 +46,7 @@
 
             <div id="contentAdvanced" class="hidden">
                 <div>
-                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Raw Nginx Configuration</label>
+                    <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Nginx Configuration</label>
                     <textarea id="rawConfigArea" name="raw_config" class="w-full h-80 bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-xs font-mono text-slate-300 outline-none focus:border-indigo-500 transition resize-none custom-scrollbar shadow-inner">server {
     listen 80;
     server_name example.com;
@@ -63,7 +63,7 @@
             
             <div class="pt-2">
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg flex justify-center items-center gap-2">
-                    <i class="fa fa-save"></i> Simpan Website
+                    <i class="fa fa-save"></i> Create Virtual Host
                 </button>
             </div>
         </form>

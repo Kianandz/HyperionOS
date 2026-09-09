@@ -1,0 +1,37 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-2xl p-5 hover:bg-slate-800/40 transition-colors group relative overflow-hidden flex flex-col">
+    <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
+        <i class="fa fa-folder text-7xl text-indigo-500"></i>
+    </div>
+    
+    <div class="relative z-10 flex justify-between items-start mb-4">
+        <h3 class="text-indigo-300 font-bold text-lg flex items-center gap-2">
+            <i class="fa fa-folder-open text-indigo-400"></i> {{ share.name }}
+        </h3>
+        <div class="flex gap-2">
+            <button onclick='openShareModal({{ share | tojson | safe }})' class="text-slate-400 hover:text-indigo-400 transition-colors text-sm cursor-pointer" title="Edit Share">
+                <i class="fa fa-edit"></i>
+            </button>
+            <form action="/files/samba/delete" method="POST" class="m-0" onsubmit="return confirm('Hapus konfigurasi share ini? Folder asli tidak akan terhapus.')">
+                <input type="hidden" name="name" value="{{ share.name }}">
+                <button type="button" onclick="confirmDeleteShare('{{ share.name }}')" class="bg-rose-900/30 hover:bg-rose-600 text-rose-400 hover:text-white p-2 rounded-xl text-sm transition-colors cursor-pointer" title="Hapus Share">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="space-y-2 text-xs relative z-10 flex-1">
+        <div class="flex justify-between border-b border-slate-800/50 pb-2">
+            <span class="text-slate-500">Path</span>
+            <span class="text-slate-300 font-mono" title="{{ share.path }}">{{ share.path[:25] }}{% if share.path|length > 25 %}...{% endif %}</span>
+        </div>
+        <div class="flex justify-between border-b border-slate-800/50 pb-2 pt-1">
+            <span class="text-slate-500">Guest Ok</span>
+            <span class="{% if share.guest_ok == 'Yes' %}text-emerald-400{% else %}text-rose-400{% endif %} font-bold">{{ share.guest_ok }}</span>
+        </div>
+        <div class="flex justify-between pt-1">
+            <span class="text-slate-500">Writable</span>
+            <span class="{% if share.writable == 'Yes' %}text-emerald-400{% else %}text-rose-400{% endif %} font-bold">{{ share.writable }}</span>
+        </div>
+    </div>
+</div>

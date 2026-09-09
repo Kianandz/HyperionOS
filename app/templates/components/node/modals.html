@@ -1,0 +1,46 @@
+<!-- Modal Add Project -->
+<div id="modal-add" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa fa-plus-circle text-indigo-400"></i> Deploy New Node Project</h3>
+        <form id="form-add-project" onsubmit="submitAddProject(event)" class="space-y-4 text-xs font-bold">
+            <div>
+                <label class="block text-slate-400 mb-1">Project Name (No space/special char)</label>
+                <input type="text" name="name" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500">
+            </div>
+            <div>
+                <label class="block text-slate-400 mb-1">Source Type</label>
+                <select name="source_type" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+                    <option value="git">Git Repository URL</option>
+                    <option value="folder">Local Path / Upload Folder</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-slate-400 mb-1">Source Value (Git URL or Local Path)</label>
+                <input type="text" name="source_val" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            </div>
+            <div>
+                <label class="block text-slate-400 mb-1">.env Content (Optional)</label>
+                <textarea name="env_content" rows="3" placeholder="PORT=3000&#10;DB_HOST=localhost" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white font-mono"></textarea>
+            </div>
+            <div>
+                <label class="block text-slate-400 mb-1">PM2 Start Command (e.g. app.js atau npm start)</label>
+                <input type="text" name="start_cmd" value="npm start" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            </div>
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg">Deploy & Install</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Logs -->
+<div id="modal-logs" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl p-6 space-y-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa fa-terminal text-indigo-400"></i> Project PM2 Logs</h3>
+        <pre id="log-content" class="bg-slate-950 text-emerald-400 p-4 rounded-xl text-xs font-mono h-80 overflow-y-auto"></pre>
+        <div class="flex justify-end">
+            <button onclick="closeLogsModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold">Close</button>
+        </div>
+    </div>
+</div>

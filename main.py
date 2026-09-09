@@ -7,7 +7,7 @@ import os
 from dotenv import load_dotenv
 
 from app.core.config import settings
-from app.routes import auth, dashboard, websites, database, docker, firewall, files, cloudflared, settings as settings_route
+from app.routes import auth, dashboard, websites, node, database, docker, firewall, files, cloudflared, settings as settings_route, terminal
 
 app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
 
@@ -31,11 +31,13 @@ async def root():
 app.include_router(auth.router)
 app.include_router(dashboard.router)
 app.include_router(websites.router)
+app.include_router(node.router)
 app.include_router(database.router)
 app.include_router(docker.router)
 app.include_router(firewall.router)
 app.include_router(files.router)
 app.include_router(cloudflared.router)
+app.include_router(terminal.router)
 app.include_router(settings_route.router)
 
 load_dotenv()

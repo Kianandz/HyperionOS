@@ -3,7 +3,7 @@ function openModal(id) { document.getElementById(id).classList.remove('hidden');
 
     function confirmWebDelete(domain) {
         Swal.fire({
-            title: 'Hapus website ini?', text: domain, icon: 'warning',
+            title: 'Delete Virtual Host?', text: domain, icon: 'warning',
             showCancelButton: true, background: '#0f172a', color: '#fff',
             confirmButtonColor: '#e11d48', confirmButtonText: 'Hapus!'
         }).then((res) => {

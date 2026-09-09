@@ -61,14 +61,14 @@ let currentFMDomain = '';
             await fetch(`/websites/files/upload/${currentFMDomain}`, { method: 'POST', body: formData });
             await loadFiles();
         } catch(e) {
-            Swal.fire({ title: 'Upload Gagal', text: e, icon: 'error', background: '#0f172a', color: '#fff' });
+            Swal.fire({ title: 'Upload Failed', text: e, icon: 'error', background: '#0f172a', color: '#fff' });
         } finally {
             document.getElementById('fmUploadStatus').classList.add('hidden');
         }
     }
 
     async function createItem(type) {
-        const { value: name } = await Swal.fire({ title: `Nama ${type} baru:`, input: 'text', showCancelButton: true, background: '#0f172a', color: '#fff' });
+        const { value: name } = await Swal.fire({ title: `New ${type} :`, input: 'text', showCancelButton: true, background: '#0f172a', color: '#fff' });
         if (!name) return;
         const form = new FormData(); form.append('name', name); form.append('type', type); form.append('subpath', currentSubPath);
         await fetch(`/websites/files/create/${currentFMDomain}`, { method: 'POST', body: form }); await loadFiles();
@@ -82,7 +82,7 @@ let currentFMDomain = '';
 
     async function executePaste() {
         if (!clipboard) return;
-        const { value: newName, isConfirmed } = await Swal.fire({ title: "Rename paste", input: 'text', inputValue: clipboard.name, text: "(Biarin kalau nama sama)", showCancelButton: true, background: '#0f172a', color: '#fff' });
+        const { value: newName, isConfirmed } = await Swal.fire({ title: "Rename paste", input: 'text', inputValue: clipboard.name, text: "(Skip if exists)", showCancelButton: true, background: '#0f172a', color: '#fff' });
         if (!isConfirmed) return;
         const destPath = currentSubPath ? `${currentSubPath}/${newName || clipboard.name}` : (newName || clipboard.name);
         const form = new FormData(); form.append('action', clipboard.action); form.append('target', clipboard.targetPath); form.append('dest', destPath);
@@ -112,7 +112,7 @@ let currentFMDomain = '';
     }
 
     async function deleteFile(relativePath) {
-        const res = await Swal.fire({ title: `Hapus ${relativePath}?`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#e11d48', background: '#0f172a', color: '#fff' });
+        const res = await Swal.fire({ title: `Delete ${relativePath}?`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#e11d48', background: '#0f172a', color: '#fff' });
         if (!res.isConfirmed) return;
         await fetch(`/websites/files/delete/${currentFMDomain}/${relativePath}`, { method: 'POST' }); await loadFiles();
     }

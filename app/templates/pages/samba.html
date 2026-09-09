@@ -1,0 +1,72 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}File Sharing - HyperionOS{% endblock %}
+
+{% block content %}
+<script src="/static/js/files/fm_action.js"></script>
+<script src="/static/js/files/fm_config_ui.js"></script>
+<script src="/static/js/files/fm_editor_media.js"></script>
+<script src="/static/js/files/fm_clipboard_batch.js"></script>
+
+<div class="space-y-6 pb-24 relative">
+    
+    <!-- TOP BAR -->
+    <div class="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 p-5 rounded-2xl shadow-xl flex flex-col md:flex-row justify-between items-center gap-4 relative z-20">
+        <div class="flex items-center gap-4 w-full md:w-auto">
+            <div class="bg-indigo-500/20 p-3 rounded-xl border border-indigo-500/30">
+                <i class="fa fa-share-alt text-indigo-400 text-xl"></i>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 class="text-slate-200 font-bold text-lg">Samba File Sharing</h2>
+                    {% if is_active %}
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse" title="Service Active"></span>
+                    {% else %}
+                        <span class="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]" title="Service Inactive"></span>
+                    {% endif %}
+                </div>
+                <p class="text-slate-400 text-xs mt-0.5">Kelola folder yang dibagikan ke jaringan lokal</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3 w-full md:w-auto justify-end">
+            <!-- SERVICE CONTROLS -->
+            <div class="flex gap-1 border-r border-slate-700/50 pr-4 mr-1">
+                <form action="/files/samba/control/start" method="POST" class="m-0"><button class="text-[11px] bg-emerald-600/20 text-emerald-400 px-3 py-2 rounded-lg hover:bg-emerald-600 hover:text-white transition font-bold" title="Start"><i class="fa fa-play"></i></button></form>
+                <form action="/files/samba/control/stop" method="POST" class="m-0"><button class="text-[11px] bg-rose-600/20 text-rose-400 px-3 py-2 rounded-lg hover:bg-rose-600 hover:text-white transition font-bold" title="Stop"><i class="fa fa-stop"></i></button></form>
+                <form action="/files/samba/control/restart" method="POST" class="m-0"><button class="text-[11px] bg-slate-800/80 text-slate-300 px-3 py-2 rounded-lg hover:bg-slate-700 hover:text-white transition font-bold" title="Restart"><i class="fa fa-refresh"></i></button></form>
+                <button onclick="showSambaLogs()" class="text-[11px] bg-indigo-600/20 text-indigo-400 px-3 py-2 rounded-lg hover:bg-indigo-600 hover:text-white transition font-bold cursor-pointer" title="Logs"><i class="fa fa-terminal"></i></button>
+            </div>
+
+            <!-- USER MANAGEMENT & EDITOR -->
+            <button onclick="openUserModal()" class="bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-emerald-500/50 cursor-pointer">
+                <i class="fa fa-users"></i> Users
+            </button>
+            <button onclick="openTextEditor('/etc/samba/smb.conf')" class="bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-500/20 flex items-center gap-2 border border-indigo-500/50 cursor-pointer">
+                <i class="fa fa-code"></i> Global Config
+            </button>
+        </div>
+    </div>
+
+    <!-- LIST FOLDER SHARING (GRID) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        {% for share in shares %}
+            {% include 'components/samba/share_card.html' %}
+        {% endfor %}
+        
+        <!-- TOMBOL TAMBAH SHARE BARU -->
+        <button onclick="openShareModal()" class="bg-slate-900/20 backdrop-blur-md border border-dashed border-slate-700/60 rounded-2xl p-5 hover:bg-slate-800/40 hover:border-indigo-500/50 transition-all group flex flex-col items-center justify-center min-h-[160px] cursor-pointer">
+            <i class="fa fa-plus-circle text-3xl text-slate-500 group-hover:text-indigo-400 mb-3 transition-colors"></i>
+            <span class="text-slate-400 group-hover:text-indigo-300 text-xs font-bold transition-colors">Tambah Folder Share</span>
+        </button>
+    </div>
+</div>
+
+{% include 'components/samba/share_modal.html' %}
+{% include 'components/samba/user_modal.html' %}
+{% include 'components/samba/logs_modal.html' %}
+{% include 'components/samba/editor_modal.html' %}
+<script src="/static/js/samba/samba_share.js"></script>
+<script src="/static/js/samba/samba_user.js"></script>
+<script src="/static/js/samba/samba_logs.js"></script>
+{% endblock %}

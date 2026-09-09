@@ -10,9 +10,9 @@ async function openEditModal(domain) {
         try {
             const res = await fetch(`/websites/config/${domain}`);
             const data = await res.json();
-            document.getElementById('editRawConfigArea').value = data.config || ('# Error: ' + (data.message || 'Data kosong'));
+            document.getElementById('editRawConfigArea').value = data.config || ('# Error: ' + (data.message || 'Data Empty'));
         } catch (e) {
-            document.getElementById('editRawConfigArea').value = '# Error koneksi';
+            document.getElementById('editRawConfigArea').value = '# Connection Error';
         }
     }
 

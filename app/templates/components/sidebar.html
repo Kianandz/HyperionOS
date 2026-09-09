@@ -4,32 +4,8 @@
             <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30 border border-indigo-500/50">H</div>
             <span class="text-xl font-bold tracking-wider text-white">Hyperion<span class="text-indigo-500">OS</span></span>
         </div>
-        <nav class="p-4 space-y-1.5 text-xs font-bold">
-            <a href="/dashboard" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'dashboard' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-pie-chart w-5 text-base"></i><span>Home</span>
-            </a>
-            <a href="/websites" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'websites' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-globe w-5 text-base"></i><span>Website</span>
-            </a>
-            <a href="/databases" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'databases' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-database w-5 text-base"></i><span>Remote DB</span>
-            </a>
-            <a href="/docker" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'docker' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-cubes w-5 text-base"></i><span>Docker</span>
-            </a>
-            <a href="/firewall" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'firewall' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-shield w-5 text-base"></i><span>Firewall</span>
-            </a>
-            <a href="/files" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'files' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-folder-open w-5 text-base"></i><span>File Manager</span>
-            </a>
-            <a href="/cloudflared" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'cloudflared' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-cloud w-5 text-base"></i><span>Cloudflared</span>
-            </a>
-            <a href="/settings" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition {% if active_page == 'settings' %}bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner{% else %}text-slate-400 hover:bg-slate-800/50 hover:text-white{% endif %}">
-                <i class="fa fa-cog w-5 text-base"></i><span>Settings</span>
-            </a>
-        </nav>
+        <!-- Kontainer Menu -->
+        <nav id="sidebar-nav" class="p-4 space-y-1.5 text-xs font-bold"></nav>
     </div>
 
     <div class="p-4 border-t border-slate-800/80">
@@ -38,3 +14,61 @@
         </a>
     </div>
 </aside>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+    const nav = document.getElementById('sidebar-nav');
+    const currentPath = window.location.pathname;
+    
+    // Default active page dilempar dari backend (Jinja context)
+    const activePage = '{{ active_page | default("dashboard") }}'; 
+
+    try {
+        const res = await fetch('/static/menu.json');
+        const menus = await res.json();
+        
+        menus.forEach(menu => {
+            if (menu.sub) {
+                // Perbaikan: Cek parent ID, Sub ID, ATAU cocokkan dengan currentPath (URL saat ini)
+                const isSubActive = menu.id === activePage || menu.sub.some(s => s.id === activePage || currentPath === s.url);
+                const details = document.createElement('details');
+                details.className = "group [&_summary::-webkit-details-marker]:hidden";
+                if (isSubActive) details.open = true;
+
+                details.innerHTML = `
+                    <summary class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer transition ${isSubActive ? 'bg-indigo-600/10 border border-indigo-500/20' : 'hover:bg-slate-800/50'}">
+                        <!-- Perbaikan: Set warna text agar tetap ungu kalau aktif, tidak peduli dropdown open/closed -->
+                        <div class="flex items-center space-x-3 ${isSubActive ? 'text-indigo-300' : 'text-slate-400 group-open:text-indigo-300'}">
+                            <i class="fa ${menu.icon} w-5 text-base"></i>
+                            <span class="font-bold">${menu.label}</span>
+                        </div>
+                        <i class="fa fa-chevron-down text-xs ${isSubActive ? 'text-indigo-400' : 'text-slate-500'} group-open:rotate-180 transition-transform duration-300"></i>
+                    </summary>
+                    <div class="pl-11 pr-4 py-2 space-y-1.5 mt-1">
+                        ${menu.sub.map(s => {
+                            // Perbaikan: Cek sub item aktif menggunakan activePage atau URL path
+                            const isItemActive = activePage === s.id || currentPath === s.url;
+                            return `
+                            <a href="${s.url}" class="flex items-center px-3 py-2 rounded-lg text-xs font-bold transition ${isItemActive ? 'text-indigo-400 bg-indigo-500/10 shadow-inner' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}">
+                                <i class="fa ${s.icon} w-4 mr-2"></i> ${s.label}
+                            </a>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+                nav.appendChild(details);
+            } else {
+                // Render menu biasa
+                const isActive = activePage === menu.id || currentPath === menu.url;
+                const a = document.createElement('a');
+                a.href = menu.url;
+                a.className = `flex items-center space-x-3 px-4 py-3 rounded-xl transition ${isActive ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-inner' : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'}`;
+                a.innerHTML = `<i class="fa ${menu.icon} w-5 text-base"></i><span>${menu.label}</span>`;
+                nav.appendChild(a);
+            }
+        });
+    } catch (e) {
+        console.error("Gagal load menu.json", e);
+    }
+});
+</script>

@@ -7,9 +7,10 @@
 configure_permissions() {
     log_info "Applying strict filesystem ACLs and ownership..."
     
-    sudo mkdir -p /var/www/html /etc/nginx /etc/php /var/log/nginx
+    sudo mkdir -p /var/www/html /etc/nginx /etc/php /var/log/nginx /etc/samba
     sudo chown -R "${APP_USER}:${APP_USER}" /var/www/html /etc/nginx /var/log/nginx
     sudo chown -R "${APP_USER}:${APP_USER}" /etc/php 2>/dev/null || true
+    sudo chown -R "${APP_USER}:${APP_USER}" /etc/samba 2>/dev/null || true
 
     sudo setfacl -m u:"${APP_USER}":rw /etc/resolv.conf 2>/dev/null || true
 
@@ -30,6 +31,15 @@ ${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/systemctl * mariadb, /usr/bin/systemctl
 ${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/resolv.conf
 ${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/systemctl * hyperion
 ${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u hyperion *
+${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/systemctl * smb nmb, /usr/bin/systemctl * smbd nmbd
+${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u smb *, /usr/bin/journalctl -u smbd *
+${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/useradd -M -s /sbin/nologin *
+${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/pdbedit -L
+${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/smbpasswd -s -a *
+${APP_USER} ALL=(ALL) NOPASSWD: /usr/bin/smbpasswd -x *
+
+#DNS
+kianandz ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/resolv.conf
 EOF
     sudo chmod 0440 /etc/sudoers.d/hyperion
     log_success "Filesystem and execution policies activated."
