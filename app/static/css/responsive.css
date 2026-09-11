@@ -1,0 +1,90 @@
+/* /static/css/responsive.css */
+
+@media (max-width: 768px) {
+    /* 1. SIDEBAR GESER (OFF-CANVAS) YANG RAPI */
+    aside {
+        position: fixed !important;
+        top: 0;
+        left: -100%; /* Sembunyi di luar layar */
+        width: 260px !important; /* Lebar normal biar teks muat */
+        height: 100vh !important;
+        
+        /* Desain Glassmorphism yang lebih solid buat HP */
+        background: rgba(15, 23, 42, 0.95) !important; 
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border-right: 1px solid rgba(99, 102, 241, 0.2) !important;
+        box-shadow: 10px 0 25px -5px rgba(0, 0, 0, 0.5) !important;
+        
+        z-index: 999;
+        transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    /* Class untuk nampilin sidebar */
+    aside.sidebar-active {
+        left: 0 !important;
+    }
+
+    /* Overlay gelap di belakang sidebar */
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(4px);
+        z-index: 998;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Sesuaikan padding main content */
+    main {
+        padding: 1rem !important;
+    }
+
+    /* 2. TABLE RESPONSIVE (CARD VIEW) */
+    table thead { 
+        display: none; 
+    }
+    
+    table, table tbody, table tr, table td {
+        display: block;
+        width: 100%;
+    }
+    
+    table tr {
+        margin-bottom: 1rem;
+        background: rgba(30, 41, 59, 0.4); 
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 1rem;
+        overflow: hidden;
+    }
+    
+    table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        font-size: 0.875rem;
+        text-align: right;
+    }
+    
+    table td:last-child {
+        border-bottom: none;
+    }
+    
+    table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #94a3b8;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+    }
+}

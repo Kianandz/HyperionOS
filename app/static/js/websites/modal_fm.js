@@ -27,11 +27,11 @@ let currentFMDomain = '';
                 html += data.files.map(f => {
                     const relativePath = currentSubPath ? `${currentSubPath}/${f.name}` : f.name;
                     return `<tr class="hover:bg-slate-800/50 transition">
-                        <td class="p-3 pl-4 text-slate-200 ${f.is_dir ? 'cursor-pointer hover:text-cyan-400 font-medium' : ''}" ${f.is_dir ? `onclick="enterFolder('${f.name}')"` : ''}>
+                        <td data-label="${f.is_dir ? 'Folder' : 'File'}" class="p-3 pl-4 text-slate-200 ${f.is_dir ? 'cursor-pointer hover:text-cyan-400 font-medium' : ''}" ${f.is_dir ? `onclick="enterFolder('${f.name}')"` : ''}>
                             <i class="fa ${f.is_dir ? 'fa-folder text-amber-400' : 'fa-file text-slate-400'} mr-2"></i> ${f.name}
                         </td>
-                        <td class="p-3 text-xs">${f.is_dir ? '-' : (f.size / 1024).toFixed(2) + ' KB'}</td>
-                        <td class="p-3 pr-4 text-right space-x-1.5">
+                        <td data-label="${f.is_dir ? '-' : "Size"}" class="p-3 text-xs">${f.is_dir ? '-' : (f.size / 1024).toFixed(2) + ' KB'}</td>
+                        <td data-label="Action" class="p-3 pr-4 text-right space-x-1.5">
                             ${!f.is_dir ? `<button onclick="openEditor('${relativePath}')" class="px-2 py-1 bg-amber-600/20 text-amber-400 hover:bg-amber-600 hover:text-white rounded text-xs"><i class="fa fa-edit"></i></button>` : ''}
                             <button onclick="setClipboard('copy', '${relativePath}', '${f.name}')" class="px-2 py-1 bg-slate-700 text-slate-300 hover:bg-slate-600 rounded text-xs"><i class="fa fa-copy"></i></button>
                             <button onclick="setClipboard('move', '${relativePath}', '${f.name}')" class="px-2 py-1 bg-slate-700 text-slate-300 hover:bg-slate-600 rounded text-xs"><i class="fa fa-cut"></i></button>

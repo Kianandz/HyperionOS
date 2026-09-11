@@ -59,18 +59,18 @@
             <tbody class="divide-y divide-slate-800/50">
                 {% for site in sites %}
                 <tr class="hover:bg-slate-800/30 transition-colors">
-                    <td class="p-4 pl-6 font-mono">
+                    <td class="p-4 pl-6 font-mono" data-label="vhost">
                         <a href="//{{ site.domain }}:{{ site.port }}" class="inline-flex items-center px-3 py-1.5 rounded-lg bg-slate-950/50 text-indigo-300 border border-slate-800 hover:bg-indigo-900/40 hover:border-indigo-700 transition-all shadow-inner">
                             <i class="fa fa-link text-indigo-500/50 mr-2 text-xs"></i> {{ site.domain }}:<span class="text-indigo-400 font-bold ml-0.5">{{ site.port }}</span>
                         </a>
                     </td>
-                    <td class="p-4 text-center">
+                    <td class="p-4 text-center" data-label="statusVhost">
                         <span class="px-3 py-1.5 rounded-xl text-xs font-bold {% if site.is_active %}bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]{% else %}bg-rose-500/10 text-rose-400 border border-rose-500/20{% endif %} flex items-center justify-center gap-1.5 w-max mx-auto">
                             <i class="fa {% if site.is_active %}fa-check-circle{% else %}fa-times-circle{% endif %}"></i>
                             {{ 'Active' if site.is_active else 'Disabled' }}
                         </span>
                     </td>
-                    <td class="p-4 text-right pr-6 space-x-1">
+                    <td class="p-4 text-right pr-6 space-x-1" data-label="action">
                         <button type="button" onclick="openFileManager('{{ site.domain }}')" class="p-2 bg-cyan-600/10 text-cyan-400 hover:bg-cyan-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Files"><i class="fa fa-folder-open"></i></button>
                         <button type="button" onclick="openEditModal('{{ site.domain }}')" class="p-2 bg-purple-600/10 text-purple-400 hover:bg-purple-600 hover:text-white rounded-lg text-sm transition tooltip-btn" title="Config"><i class="fa fa-cog"></i></button>
                         

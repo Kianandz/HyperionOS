@@ -4,7 +4,7 @@
         "id": "websites", "icon": "fa-globe", "label": "Website",
         "sub": [
             {"id": "nginx", "url": "/websites", "icon": "fa-server", "label": "Nginx"},
-            {"id": "node", "url": "/websites/node", "icon": "fa-code", "label": "Node.js Manager"}
+            {"id": "node", "url": "/websites/node", "icon": "fa-code", "label": "Node"}
         ]
     },
     {"id": "databases", "url": "/databases", "icon": "fa-database", "label": "Remote DB"},

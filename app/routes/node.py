@@ -66,9 +66,7 @@ async def api_modify(
     
     proj_path = proj["path"]
     if pkg_action:
-        # Contoh: npm i express atau npm uninstall express
         node_service.run_cmd(f"cd {proj_path} && npm i {pkg_action}")
     
-    # Restart pm2 dengan command baru
     node_service.run_cmd(f"pm2 restart {name} --update-env")
     return JSONResponse({"success": True})

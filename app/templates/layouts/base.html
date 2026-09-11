@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="/static/css/fontawesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/responsive.css">
     <script src="/static/js/htmx.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -35,10 +36,14 @@
 <body class="bg-transparent text-slate-100 font-sans flex h-screen overflow-hidden selection:bg-indigo-500 selection:text-white">
 
     <!-- SIDEBAR COMPONENT -->
+     
     {% include 'components/sidebar.html' %}
 
     <!-- MAIN CONTENT AREA -->
     <main class="flex-1 overflow-y-auto bg-transparent p-8 lg:p-10">
+        <button id="mobile-menu-btn" class="fixed z-999 md:hidden py-2 px-3 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 rounded-xl text-slate-300 transition-all cursor-pointer">
+            <i class="fa fa-bars text-lg"></i>
+        </button>
 
         {% block content %}{% endblock %}
 
@@ -77,6 +82,33 @@
             vid.src = bgCfg.val;
             vid.classList.remove('hidden');
         }
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.querySelector('aside');
+        
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        document.body.appendChild(overlay);
+
+        const toggleSidebar = () => {
+            sidebar.classList.toggle('sidebar-active');
+            overlay.classList.toggle('active');
+            
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+            menuBtn.classList.toggle('translate-x-64'); 
+        };
+
+        // Event listener pas di-klik
+        if (menuBtn) {
+            menuBtn.addEventListener('click', toggleSidebar);
+        }
+        
+        // Kalau overlay di-klik, tutup sidebarnya
+        overlay.addEventListener('click', toggleSidebar);
     });
 
 </script>
