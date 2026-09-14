@@ -1,4 +1,3 @@
-// --- CLIPBOARD SYSTEM ---
 function setClipboard(path, name, action) {
     const item = { path: path, name: name, action: action };
     localStorage.setItem('fm_clipboard', JSON.stringify(item));
@@ -6,7 +5,7 @@ function setClipboard(path, name, action) {
     
     ToastDark.fire({
         icon: 'success',
-        title: `Disimpan ke Clipboard (${action.toUpperCase()})`
+        title: `Saved to Clipboard (${action.toUpperCase()})`
     });
 }
 
@@ -50,7 +49,6 @@ function handlePasteSubmit(event) {
     event.target.submit();
 }
 
-// --- SELECTION & FLOATING BATCH BAR ---
 function toggleSelectAll(masterCheckbox) {
     const checkboxes = document.querySelectorAll('.file-checkbox');
     checkboxes.forEach(cb => cb.checked = masterCheckbox.checked);
@@ -93,19 +91,18 @@ function getSelectedPaths() {
     return Array.from(selected).map(cb => cb.getAttribute('data-path'));
 }
 
-// Batch Actions
 function batchDelete() {
     const paths = getSelectedPaths();
     if (paths.length === 0) return;
 
     SwalDark.fire({
-        title: 'Hapus Item Terpilih?',
-        text: `Anda yakin ingin menghapus ${paths.length} item secara permanen?`,
+        title: 'Delete Selected Items?',
+        text: `Are you sure you want to permanently delete ${paths.length} items?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#e11d48',
-        confirmButtonText: 'Ya, Hapus',
-        cancelButtonText: 'Batal'
+        confirmButtonText: 'Yes, Delete',
+        cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
             const form = document.getElementById('batchDeleteForm');
@@ -120,12 +117,12 @@ function batchCompress() {
     if (paths.length === 0) return;
 
     SwalDark.fire({
-        title: 'Kompres ke ZIP',
+        title: 'Compress to ZIP',
         input: 'text',
         inputValue: 'archive.zip',
-        inputPlaceholder: 'nama_file.zip',
+        inputPlaceholder: 'filename.zip',
         showCancelButton: true,
-        confirmButtonText: 'Kompres'
+        confirmButtonText: 'Compress'
     }).then((result) => {
         if (result.isConfirmed && result.value) {
             const form = document.getElementById('batchCompressForm');
@@ -148,5 +145,4 @@ function batchCopyCut(action) {
     clearSelection();
 }
 
-// INIT
 document.addEventListener('DOMContentLoaded', checkClipboard);

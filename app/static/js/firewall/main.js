@@ -1,3 +1,4 @@
+// main_3.js
 // Modal Handlers
 function openModal(id) {
     const modal = document.getElementById(id);
@@ -15,7 +16,7 @@ function setFwPreset(port, proto, action) {
     document.getElementById('fw-action').value = action;
 }
 
-// POST via Fetch API biar nggak reload
+// POST via Fetch API to avoid page reload
 async function apiCall(data, successMsg) {
     try {
         const formData = new FormData();
@@ -30,7 +31,7 @@ async function apiCall(data, successMsg) {
         
         if (!res.ok || json.status === 'error') throw new Error(json.message);
         
-        // Trigger HTMX buat refresh tabel doang
+        // Trigger HTMX to refresh table only
         htmx.trigger("body", "reloadRules");
         
         Swal.fire({
@@ -54,7 +55,7 @@ async function apiCall(data, successMsg) {
     }
 }
 
-// Tambah Rule dari form Modal
+// Add Rule from Modal form
 function submitRule(e) {
     e.preventDefault();
     const form = e.target;
@@ -65,24 +66,24 @@ function submitRule(e) {
         action: form.action.value
     };
     
-    apiCall(data, 'Rule berhasil ditambahkan!');
+    apiCall(data, 'Rule added successfully!');
     closeModal('addRuleModal');
     form.reset();
 }
 
-// Hapus Rule pake konfirmasi
+// Delete Rule with confirmation
 function deleteRule(action, port) {
-    // Bersihin embel-embel (v6) biar UFW ngga bingung
+    // Clean up (v6) suffix so UFW handles it correctly
     const cleanPort = port.replace(" (v6)", "");
     
     Swal.fire({
-        title: 'Hapus Rule?',
-        text: `Lu yakin mau hapus rule untuk ${cleanPort}?`,
+        title: 'Delete Rule?',
+        text: `Are you sure you want to delete the rule for ${cleanPort}?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#334155',
-        confirmButtonText: 'Ya, Hapus!',
+        confirmButtonText: 'Yes, Delete!',
         background: '#0f172a',
         color: '#fff'
     }).then((result) => {
@@ -91,7 +92,7 @@ function deleteRule(action, port) {
                 command_type: 'delete_rule',
                 action: action,
                 port: cleanPort
-            }, 'Rule berhasil dihapus!');
+            }, 'Rule deleted successfully!');
         }
     });
 }
@@ -101,12 +102,12 @@ function toggleUFW(currentStatus) {
     const action = currentStatus === 'active' ? 'disable' : 'enable';
     Swal.fire({
         title: `${action.toUpperCase()} UFW?`,
-        text: `Ini bakal ngubah status firewall server lu.`,
+        text: `This will change your server firewall status.`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#6366f1',
         cancelButtonColor: '#334155',
-        confirmButtonText: 'Lanjutkan',
+        confirmButtonText: 'Continue',
         background: '#0f172a',
         color: '#fff'
     }).then((result) => {
@@ -115,7 +116,7 @@ function toggleUFW(currentStatus) {
                 command_type: 'toggle_active',
                 action: action
             }, `UFW ${action}d successfully!`).then(() => {
-                setTimeout(() => location.reload(), 1000); // Reload bentar biar header status ganti
+                setTimeout(() => location.reload(), 1000); // Reload briefly to update status header
             });
         }
     });

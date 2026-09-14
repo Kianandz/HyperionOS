@@ -69,3 +69,6 @@ htmlcov/
 # User Uploads (Opsional, hapus '#' jika ingin mengabaikan file upload user)
 app/static/uploads/*
 app/static/uploads/backgrounds/
+
+folder-structure
+codesummary.json

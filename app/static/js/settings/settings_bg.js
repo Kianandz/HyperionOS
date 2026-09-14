@@ -1,3 +1,4 @@
+// settings_bg.js
 async function saveGlobalBg() {
     let type = 'color';
     if (!document.getElementById('panel-media').classList.contains('hidden')) {
@@ -25,11 +26,11 @@ async function saveGlobalBg() {
                     const data = await res.json();
                     val = data.file_url;
                 } catch (e) {
-                    alert('Upload gagal, pastiin endpoint backend siap.');
+                    alert('Upload failed, make sure the backend endpoint is ready.');
                     return;
                 }
             } else {
-                alert('Pilih file dulu!'); return;
+                alert('Please select a file first!'); return;
             }
         }
     }
@@ -60,8 +61,8 @@ async function saveGlobalBg() {
     
     Swal.fire({
         icon: 'success',
-        title: 'Tersimpan!',
-        text: 'Background global berhasil diupdate.',
+        title: 'Saved!',
+        text: 'Global background updated successfully.',
         background: '#1e293b', color: '#f8fafc',
         showConfirmButton: false, timer: 1500
     });

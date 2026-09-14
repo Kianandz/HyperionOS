@@ -1,15 +1,11 @@
-/* /static/css/responsive.css */
-
 @media (max-width: 768px) {
-    /* 1. SIDEBAR GESER (OFF-CANVAS) YANG RAPI */
     aside {
         position: fixed !important;
         top: 0;
-        left: -100%; /* Sembunyi di luar layar */
-        width: 260px !important; /* Lebar normal biar teks muat */
+        left: -100%;
+        width: 260px !important;
         height: 100vh !important;
         
-        /* Desain Glassmorphism yang lebih solid buat HP */
         background: rgba(15, 23, 42, 0.95) !important; 
         backdrop-filter: blur(16px) !important;
         -webkit-backdrop-filter: blur(16px) !important;
@@ -20,12 +16,10 @@
         transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
     }
 
-    /* Class untuk nampilin sidebar */
     aside.sidebar-active {
         left: 0 !important;
     }
 
-    /* Overlay gelap di belakang sidebar */
     .sidebar-overlay {
         position: fixed;
         inset: 0;
@@ -42,12 +36,10 @@
         visibility: visible;
     }
 
-    /* Sesuaikan padding main content */
     main {
         padding: 1rem !important;
     }
 
-    /* 2. TABLE RESPONSIVE (CARD VIEW) */
     table thead { 
         display: none; 
     }

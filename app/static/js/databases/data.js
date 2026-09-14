@@ -15,7 +15,7 @@ function triggerBatchAction(action) {
         const queryText = document.querySelector('textarea[name="query"]').value; 
         const match = queryText.match(/(?:FROM|INTO|UPDATE)\s+`?([^`\s]+)`?/i); 
         if (!match) {
-            alert('Gagal nentuin nama tabel dari query. Pastiin query formatnya bener.'); 
+            alert('Failed to determine table name from query. Ensure the query format is correct.'); 
             return; 
         }
         tableName = match[1]; 
@@ -113,7 +113,7 @@ async function openAddRowModal(btnElement) {
     const cols = JSON.parse(btnElement.getAttribute('data-cols')); 
     let htmlForm = `<div class="space-y-4 text-left max-h-[60vh] overflow-y-auto px-2">`; 
     cols.forEach((col, idx) => { 
-        const placeholder = idx === 0 ? 'Kosongkan jika Auto Increment' : ''; 
+        const placeholder = idx === 0 ? 'Leave blank if Auto Increment' : ''; 
         htmlForm += `
             <div>
                 <label class="block text-xs text-slate-400 font-medium mb-1.5">${col}</label>
@@ -123,16 +123,16 @@ async function openAddRowModal(btnElement) {
     htmlForm += `</div>`; 
 
     const { isConfirmed } = await Swal.fire({ 
-        title: 'Tambah Data Baru', 
+        title: 'Add New Data', 
         html: htmlForm, 
         background: '#0f172a', color: '#fff',  
-        showCancelButton: true, confirmButtonText: 'Simpan Data' 
+        showCancelButton: true, confirmButtonText: 'Save Data' 
     });
 
     if (isConfirmed) { 
         const match = document.querySelector('textarea[name="query"]').value.match(/FROM\s+`?([^`\s]+)`?/i); 
         const table = match ? match[1] : ''; 
-        if(!table) return Swal.fire('Error', 'Gagal deteksi nama tabel dari query!', 'error'); 
+        if(!table) return Swal.fire('Error', 'Failed to detect table name from query!', 'error'); 
 
         const formData = new FormData(); 
         formData.append('table', table); 
@@ -186,7 +186,7 @@ function applyQuickSearch(keyword, columnsData) {
     let query = textarea.value.trim(); 
     
     const match = query.match(/FROM\s+`?([^`\s]+)`?/i); 
-    if (!match) return Swal.fire('Error', 'Gagal deteksi tabel dari query!', 'error'); 
+    if (!match) return Swal.fire('Error', 'Failed to detect table from query!', 'error'); 
     const table = match[1]; 
     
     if (!keyword) { 

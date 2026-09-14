@@ -1,3 +1,4 @@
+// bulk_del_2.js
 function toggleSelectAll(source) {
     const checkboxes = document.querySelectorAll('.rule-checkbox');
     checkboxes.forEach(cb => cb.checked = source.checked);
@@ -22,20 +23,20 @@ function deleteSelectedRules() {
     if (checkedBoxes.length === 0) return;
 
     Swal.fire({
-        title: 'Sikat Semua?',
-        text: `Lu yakin mau hapus ${checkedBoxes.length} baris rule ini?`,
+        title: 'Delete Selected Rules?',
+        text: `Are you sure you want to delete these ${checkedBoxes.length} selected rules?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#ef4444',
         cancelButtonColor: '#334155',
-        confirmButtonText: 'Ya, Hapus!',
+        confirmButtonText: 'Yes, Delete!',
         background: '#0f172a',
         color: '#fff'
     }).then(async (result) => {
         if (result.isConfirmed) {
             
             Swal.fire({
-                title: 'Lagi ngehapus...',
+                title: 'Deleting...',
                 allowOutsideClick: false,
                 background: '#0f172a',
                 color: '#fff',
@@ -43,7 +44,7 @@ function deleteSelectedRules() {
             });
 
             try {
-                // Pake Set biar ngga ada request duplikat buat port yang sama
+                // Use a Set to avoid duplicate requests for the same port
                 const uniqueRules = new Set();
                 
                 checkedBoxes.forEach(cb => {
@@ -60,7 +61,7 @@ function deleteSelectedRules() {
                     data.append('port', port);
 
                     const res = await fetch('/firewall/action', { method: 'POST', body: data });
-                    // Kalo dapet 400 karena rule udah beneran kehapus, kita cuekin aja (skip)
+                    // If 400 is returned because rule is already deleted, skip it
                     if (!res.ok) console.warn("Skipped or already deleted:", port);
                 }
                 
@@ -70,7 +71,7 @@ function deleteSelectedRules() {
                     toast: true,
                     position: 'top-end',
                     icon: 'success',
-                    title: `Proses hapus rule kelar!`,
+                    title: `Rule deletion process completed!`,
                     showConfirmButton: false,
                     timer: 2000,
                     background: '#0f172a',
@@ -80,8 +81,8 @@ function deleteSelectedRules() {
             } catch (err) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error jir',
-                    text: 'Ada rule yang gagal dihapus, cek log server.',
+                    title: 'Error',
+                    text: 'Failed to delete some rules. Check server logs.',
                     background: '#0f172a',
                     color: '#fff'
                 });

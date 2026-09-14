@@ -36,7 +36,7 @@ async function openContainerSettings(containerId) {
                 termInput.placeholder = "Container is stopped...";
             }
         }
-    } catch (e) { console.error("Gagal load config:", e); }
+    } catch (e) { console.error("Failed to load config:", e); }
 
     try {
         const composeRes = await fetch(`/docker/api/export/${containerId}`);
@@ -53,13 +53,13 @@ async function openContainerSettings(containerId) {
                 </div>
             `;
         }
-    } catch (e) { console.error("Gagal load export:", e); }
+    } catch (e) { console.error("Failed to load export:", e); }
 
     try {
         const logsRes = await fetch(`/docker/api/logs/${containerId}`);
         const logsData = await logsRes.json();
         if (document.getElementById('logs-output')) document.getElementById('logs-output').textContent = logsData.logs || "No logs available or container stopped.";
-    } catch (e) { console.error("Gagal load logs:", e); }
+    } catch (e) { console.error("Failed to load logs:", e); }
 }
 
 function closeSettingsModal() { document.getElementById('settings-modal').classList.add('hidden'); }
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         termOutput.innerHTML += `<span class="text-rose-500">Error: ${result.message}</span>`;
                     }
                 } catch (error) {
-                    termOutput.innerHTML += `<span class="text-rose-500">Error: Gagal konek server. ${error.message}</span>`;
+                    termOutput.innerHTML += `<span class="text-rose-500">Error: Failed to connect to server. ${error.message}</span>`;
                 }
                 
                 termOutput.innerHTML += '\nroot@container:/# ';
@@ -197,9 +197,9 @@ async function saveContainerConfig() {
         });
         const result = await response.json();
         if (result.status === 'success') {
-            Swal.fire({ icon: 'success', title: 'Mantap!', background: '#0f172a', color: '#f8fafc', confirmButtonColor: '#10b981' }).then(() => window.location.reload());
+            Swal.fire({ icon: 'success', title: 'Success!', background: '#0f172a', color: '#f8fafc', confirmButtonColor: '#10b981' }).then(() => window.location.reload());
         } else throw new Error(result.message);
     } catch (error) {
-        Swal.fire({ icon: 'error', title: 'Gagal Update', text: error.message, background: '#0f172a', color: '#f8fafc', confirmButtonColor: '#ef4444' });
+        Swal.fire({ icon: 'error', title: 'Update Failed', text: error.message, background: '#0f172a', color: '#f8fafc', confirmButtonColor: '#ef4444' });
     }
 }

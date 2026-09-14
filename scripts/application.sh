@@ -58,6 +58,9 @@ APP_NAME=HyperionOS
 VERSION=1.0.0
 PORT=${app_port}
 SECRET_KEY=${secret_key}
+DEBUG=False
+SESSION_MAX_AGE=3600
+SESSION_SECURE=True
 EOF
 
     sudo ufw default allow incoming

@@ -1,4 +1,5 @@
-// Function buat ganti tab di halaman Settings (Jinja2 Rendered)
+// main_5.js
+// Function to switch tabs on the Settings page (Jinja2 Rendered)
 function switchSettingTab(tabName) {
     const panels = document.querySelectorAll('.setting-panel');
     panels.forEach(panel => panel.classList.add('hidden'));
@@ -27,7 +28,7 @@ function saveGeneralUI() {
     localStorage.setItem('REFRESH_RATE', rate);
     localStorage.setItem('HYPERION_THEME', theme);
 
-    alert("Preferensi UI berhasil disimpan!");
+    alert("UI preferences saved successfully!");
     location.reload();
 }
 

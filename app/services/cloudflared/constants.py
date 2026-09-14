@@ -1,0 +1,1 @@
+CLOUDFLARED_SERVICE_NAME = "cloudflared"

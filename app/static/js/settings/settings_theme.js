@@ -1,37 +1,38 @@
-// Fungsi Simpan
+// settings_theme.js
+// Save Function
 function saveAdvancedTheme() {
-    console.log("Menyimpan tema advanced...");
-    // Tambahkan logika fetch API atau form submit ke backend lu di sini
-    alert("Tema berhasil disimpan!");
+    console.log("Saving advanced theme...");
+    // Add fetch API logic or form submission to your backend here
+    alert("Theme saved successfully!");
 }
 
 function saveCardTheme() {
-    // Ambil nilai dari UI
+    // Get values from UI
     const cardHex = document.getElementById('ui-card-color').value;
     const textHex = document.getElementById('ui-text-color').value;
     const cardOp = document.getElementById('ui-card-opacity').value;
     const cardBlur = document.getElementById('ui-card-blur').value;
 
-    // Simpan ke localStorage
+    // Save to localStorage
     const config = { cardHex, cardOp, cardBlur, textHex };
     localStorage.setItem('HYPERION_UI', JSON.stringify(config));
 
-    // Convert ke RGBA biar tembus pandang
+    // Convert to RGBA for transparency
     const hexToRgba = (hex, alpha) => {
         let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
         return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     };
 
-    // Langsung tembak ke CSS Root biar berubah tanpa reload!
+    // Apply directly to CSS Root to update without page reload!
     document.documentElement.style.setProperty('--theme-card-bg', hexToRgba(cardHex, cardOp));
     document.documentElement.style.setProperty('--theme-card-blur', cardBlur + 'px');
     document.documentElement.style.setProperty('--theme-text-main', textHex);
 
-    // Alert SweetAlert2 yang bakal langsung nyesuaiin warna baru lu wkwk
+    // SweetAlert2 alert that automatically matches your new colors
     Swal.fire({
         icon: 'success',
-        title: 'Styling Diperbarui!',
-        text: 'Warna, opacity, dan blur berhasil diterapkan ke semua.',
+        title: 'Styling Updated!',
+        text: 'Color, opacity, and blur successfully applied to all.',
         background: 'var(--theme-card-bg)', 
         color: 'var(--theme-text-main)',
         showConfirmButton: false, 

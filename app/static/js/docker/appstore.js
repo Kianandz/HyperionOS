@@ -39,8 +39,8 @@ async function loadAppStoreData() {
         container.innerHTML = html;
         container.dataset.loaded = "true";
     } catch (error) {
-        console.error("Gagal load app store:", error);
-        container.innerHTML = `<div class="col-span-full text-center text-rose-500 py-10">Gagal narik data App Store eksternal. Cek koneksi lu, cok.</div>`;
+        console.error("Failed to load app store:", error);
+        container.innerHTML = `<div class="col-span-full text-center text-rose-500 py-10">Failed to fetch external App Store data. Check your connection.</div>`;
     }
 }
 
@@ -82,14 +82,14 @@ async function installApp(imageName, appTitle, defaultPort, containerPort, btn) 
             btn.classList.add('bg-emerald-500/20', 'text-emerald-400');
             setTimeout(() => window.location.reload(), 2000); 
         } else {
-            throw new Error(result.message || "Gagal install dari server");
+            throw new Error(result.message || "Failed to install from server");
         }
     } catch (error) {
         btn.innerHTML = originalText;
         btn.disabled = false;
         btn.classList.remove('opacity-70', 'cursor-wait');
         btn.classList.add('hover:bg-indigo-600', 'hover:text-white', 'cursor-pointer');
-        Swal.fire({ icon: 'error', title: 'Install Gagal!', text: error.message, background: '#0f172a', color: '#f8fafc', confirmButtonColor: '#4f46e5' });
+        Swal.fire({ icon: 'error', title: 'Installation Failed!', text: error.message, background: '#0f172a', color: '#f8fafc', confirmButtonColor: '#4f46e5' });
     }
 }
 

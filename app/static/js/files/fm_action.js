@@ -1,11 +1,10 @@
-// --- SINGLE PROMPTS ---
 function promptCreateFolder(currentPath) {
     SwalDark.fire({
-        title: 'Folder Baru',
+        title: 'New Folder',
         input: 'text',
-        inputPlaceholder: 'Nama folder...',
+        inputPlaceholder: 'Folder name...',
         showCancelButton: true,
-        confirmButtonText: 'Buat'
+        confirmButtonText: 'Create'
     }).then((result) => {
         if (result.isConfirmed && result.value) {
             const form = document.getElementById('createFolderForm');
@@ -17,11 +16,11 @@ function promptCreateFolder(currentPath) {
 
 function promptCreateFile(currentPath) {
     SwalDark.fire({
-        title: 'File Baru',
+        title: 'New File',
         input: 'text',
-        inputPlaceholder: 'contoh: index.html',
+        inputPlaceholder: 'e.g., index.html',
         showCancelButton: true,
-        confirmButtonText: 'Buat'
+        confirmButtonText: 'Create'
     }).then((result) => {
         if (result.isConfirmed && result.value) {
             const form = document.getElementById('createFileForm');
@@ -33,11 +32,11 @@ function promptCreateFile(currentPath) {
 
 function promptRename(path, oldName) {
     SwalDark.fire({
-        title: 'Ganti Nama',
+        title: 'Rename',
         input: 'text',
         inputValue: oldName,
         showCancelButton: true,
-        confirmButtonText: 'Simpan'
+        confirmButtonText: 'Save'
     }).then((result) => {
         if (result.isConfirmed && result.value && result.value !== oldName) {
             const form = document.getElementById('singleRenameForm');
@@ -50,12 +49,12 @@ function promptRename(path, oldName) {
 
 function promptDelete(path, name) {
     SwalDark.fire({
-        title: 'Hapus Item',
-        text: `Hapus [${name}] secara permanen?`,
+        title: 'Delete Item',
+        text: `Permanently delete [${name}]?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#e11d48',
-        confirmButtonText: 'Ya, Hapus'
+        confirmButtonText: 'Yes, Delete'
     }).then((result) => {
         if (result.isConfirmed) {
             const form = document.getElementById('singleDeleteForm');
@@ -67,11 +66,11 @@ function promptDelete(path, name) {
 
 function promptExtract(path) {
     SwalDark.fire({
-        title: 'Ekstrak Arsip',
-        text: 'Ekstrak isi arsip ini ke folder saat ini?',
+        title: 'Extract Archive',
+        text: 'Extract archive contents to the current folder?',
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: 'Ekstrak'
+        confirmButtonText: 'Extract'
     }).then((result) => {
         if (result.isConfirmed) {
             const form = document.getElementById('singleExtractForm');

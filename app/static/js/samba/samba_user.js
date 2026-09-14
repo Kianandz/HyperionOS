@@ -1,11 +1,12 @@
-// Fungsi membuka modal user
+// samba_user.js
+// Function to open user modal
 async function openUserModal() {
     document.getElementById('smb-user-modal').classList.remove('hidden');
     switchUserTab('list');
     await loadSambaUsers();
 }
 
-// Fungsi berpindah tab antara List dan Add User
+// Function to switch tabs between List and Add User
 function switchUserTab(tab) {
     const isList = (tab === 'list');
     document.getElementById('tab-user-list').classList.toggle('hidden', !isList);
@@ -15,15 +16,15 @@ function switchUserTab(tab) {
     document.getElementById('btn-user-add').className = !isList ? "flex-1 py-2 text-xs font-bold rounded-lg bg-emerald-600 text-white shadow-md cursor-pointer" : "flex-1 py-2 text-xs font-bold rounded-lg bg-transparent text-slate-400 hover:bg-slate-800 cursor-pointer";
 }
 
-// Fungsi memuat daftar user dari server
+// Function to load user list from server
 async function loadSambaUsers() {
     const container = document.getElementById('user-list-container');
-    container.innerHTML = '<div class="text-center text-slate-500 text-xs py-4"><i class="fa fa-spinner fa-spin mr-2"></i>Memuat...</div>';
+    container.innerHTML = '<div class="text-center text-slate-500 text-xs py-4"><i class="fa fa-spinner fa-spin mr-2"></i>Loading...</div>';
     try {
         let res = await fetch('/files/samba/api/users');
         let data = await res.json();
         if (!data.users || data.users.length === 0) {
-            container.innerHTML = '<div class="text-slate-500 text-xs text-center py-4">Belum ada user Samba.</div>';
+            container.innerHTML = '<div class="text-slate-500 text-xs text-center py-4">No Samba users found.</div>';
             return;
         }
         
@@ -44,25 +45,25 @@ async function loadSambaUsers() {
         });
         container.innerHTML = html;
     } catch(e) {
-        container.innerHTML = '<div class="text-rose-500 text-xs text-center py-4">Gagal meload user.</div>';
+        container.innerHTML = '<div class="text-rose-500 text-xs text-center py-4">Failed to load users.</div>';
     }
 }
 
-// Mengedit password user yang sudah ada
+// Edit existing user password
 function editUserPassword(username) {
     switchUserTab('add');
     document.getElementById('input-username').value = username;
 }
 
-// Konfirmasi pencabutan akses user
+// Confirm user access revocation
 function confirmDeleteUser(username) {
     SwalDark.fire({
-        title: 'Hapus Akses User?',
-        html: `Cabut akses Samba untuk user <b class="text-rose-400">${username}</b>?`,
+        title: 'Remove User Access?',
+        html: `Revoke Samba access for user <b class="text-rose-400">${username}</b>?`,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: '<i class="fa fa-trash"></i> Ya, Cabut!',
-        cancelButtonText: 'Batal',
+        confirmButtonText: '<i class="fa fa-trash"></i> Yes, Revoke!',
+        cancelButtonText: 'Cancel',
         confirmButtonColor: '#e11d48'
     }).then((result) => {
         if (result.isConfirmed) {

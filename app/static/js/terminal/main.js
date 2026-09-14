@@ -1,11 +1,12 @@
+// main_4.js
 (function initTerminal() {
     const termContainer = document.getElementById('terminal-container');
     
-    // Cegah terminal di-load dua kali gara-gara HTMX
+    // Prevent terminal from loading twice due to HTMX
     if (!termContainer || termContainer.dataset.initialized === 'true') return;
     termContainer.dataset.initialized = 'true';
 
-    // Inisialisasi Xterm
+    // Initialize Xterm
     const term = new Terminal({
         cursorBlink: true,
         theme: {
@@ -20,29 +21,29 @@
     const fitAddon = new FitAddon.FitAddon();
     term.loadAddon(fitAddon);
 
-    // Kasih delay dikit biar script CDN addon-image keburu di-load sepenuhnya oleh HTMX
+    // Add a short delay to ensure the addon-image CDN script is fully loaded by HTMX
     setTimeout(() => {
         if (window.ImageAddon) {
             const imageAddon = new window.ImageAddon.ImageAddon();
             term.loadAddon(imageAddon);
         } else {
-            console.warn("xterm-addon-image gagal di-load dari CDN.");
+            console.warn("xterm-addon-image failed to load from CDN.");
         }
     }, 500);
 
     term.open(termContainer);
     
-    // Tunggu DOM bener-bener nge-render selesai baru di-fit ukurannya
+    // Wait until DOM rendering is fully complete before fitting the size
     setTimeout(() => fitAddon.fit(), 100);
 
-    // Resize terminal kalau window berubah
+    // Resize terminal when the window resizes
     window.addEventListener('resize', () => {
         if(document.getElementById('terminal-container')) {
             fitAddon.fit();
         }
     });
 
-    // Koneksi WebSocket ke Backend FastAPI
+    // WebSocket connection to FastAPI Backend
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${protocol}//${window.location.host}/terminal/ws`);
 
@@ -61,10 +62,10 @@
     });
 
     ws.onclose = () => {
-        term.write('\r\n\x1b[31m[!] Koneksi terminal terputus dari server.\x1b[0m\r\n');
+        term.write('\r\n\x1b[31m[!] Terminal connection disconnected from server.\x1b[0m\r\n');
     };
 
-    // PENTING: Bersihkan WebSocket pas pindah menu biar gak memory leak
+    // IMPORTANT: Clean up WebSocket when switching menus to prevent memory leaks
     document.body.addEventListener('htmx:beforeSwap', function cleanup() {
         if (ws.readyState === WebSocket.OPEN) ws.close();
         document.body.removeEventListener('htmx:beforeSwap', cleanup);

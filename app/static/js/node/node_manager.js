@@ -1,3 +1,4 @@
+// node_manager.js
 document.addEventListener('DOMContentLoaded', () => {
     fetchStatus();
 });
@@ -9,7 +10,7 @@ async function fetchStatus() {
         renderDependencies(data.deps);
         renderProjects(data.projects);
     } catch (e) {
-        console.error("Gagal memuat status node", e);
+        console.error("Failed to load node status", e);
     }
 }
 
@@ -43,8 +44,8 @@ function renderDependencies(deps) {
 
 async function installDeps() {
     Swal.fire({
-        title: 'Sedang Menginstal...',
-        text: 'Mohon tunggu, sedang mendownload Node, NPM, dan PM2 sesuai OS kamu.',
+        title: 'Installing...',
+        text: 'Please wait, downloading Node, NPM, and PM2 according to your OS.',
         allowOutsideClick: false,
         didOpen: () => { Swal.showLoading(); }
     });
@@ -53,32 +54,32 @@ async function installDeps() {
     const data = await res.json();
     Swal.close();
     if (data.success) {
-        Swal.fire('Berhasil!', 'Semua dependencies berhasil diinstal.', 'success');
+        Swal.fire('Success!', 'All dependencies installed successfully.', 'success');
         fetchStatus();
     } else {
-        Swal.fire('Gagal!', data.error, 'error');
+        Swal.fire('Failed!', data.error, 'error');
     }
 }
 
 async function uninstallDeps() {
     Swal.fire({
-        title: 'Yakin ingin uninstall?',
-        text: 'Node, NPM, dan PM2 akan dihapus dari sistem.',
+        title: 'Are you sure you want to uninstall?',
+        text: 'Node, NPM, and PM2 will be removed from the system.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, Hapus!'
+        confirmButtonText: 'Yes, Delete!'
     }).then(async (result) => {
         if (result.isConfirmed) {
-            Swal.fire({ title: 'Menghapus...', didOpen: () => { Swal.showLoading(); } });
+            Swal.fire({ title: 'Uninstalling...', didOpen: () => { Swal.showLoading(); } });
             const fd = new FormData();
             const res = await fetch('/websites/node/api/uninstall', { method: 'POST', body: fd });
             const data = await res.json();
             Swal.close();
             if (data.success) {
-                Swal.fire('Berhasil!', 'Dependencies berhasil di-uninstall.', 'success');
+                Swal.fire('Success!', 'Dependencies uninstalled successfully.', 'success');
                 fetchStatus();
             } else {
-                Swal.fire('Gagal!', data.error, 'error');
+                Swal.fire('Failed!', data.error, 'error');
             }
         }
     });
@@ -87,7 +88,7 @@ async function uninstallDeps() {
 function renderProjects(projects) {
     const tbody = document.getElementById('project-table-body');
     if (projects.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">Belum ada project Node.js yang ditambahkan.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500">No Node.js projects added yet.</td></tr>`;
         return;
     }
     tbody.innerHTML = projects.map(p => `
@@ -114,7 +115,7 @@ async function submitAddProject(e) {
 
     Swal.fire({
         title: 'Deploying Project...',
-        text: 'Mengkloning/Memuat project, menjalankan npm i, dan start PM2...',
+        text: 'Cloning/Loading project, running npm i, and starting PM2...',
         allowOutsideClick: false,
         didOpen: () => { Swal.showLoading(); }
     });
@@ -124,12 +125,12 @@ async function submitAddProject(e) {
     Swal.close();
 
     if (data.success) {
-        Swal.fire('Berhasil!', 'Project berhasil dideploy!', 'success');
+        Swal.fire('Success!', 'Project deployed successfully!', 'success');
         closeAddModal();
         form.reset();
         fetchStatus();
     } else {
-        Swal.fire('Gagal!', data.error, 'error');
+        Swal.fire('Failed!', data.error, 'error');
     }
 }
 
@@ -144,11 +145,11 @@ function closeLogsModal() { document.getElementById('modal-logs').classList.remo
 
 async function deleteProject(name) {
     Swal.fire({
-        title: `Hapus project ${name}?`,
-        text: 'Folder project dan proses PM2 akan dihapus permanen!',
+        title: `Delete project ${name}?`,
+        text: 'Project folder and PM2 process will be permanently deleted!',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, Hapus!'
+        confirmButtonText: 'Yes, Delete!'
     }).then(async (result) => {
         if (result.isConfirmed) {
             const fd = new FormData();
@@ -156,10 +157,10 @@ async function deleteProject(name) {
             const res = await fetch('/websites/node/api/delete', { method: 'POST', body: fd });
             const data = await res.json();
             if (data.success) {
-                Swal.fire('Terhapus!', 'Project berhasil dihapus.', 'success');
+                Swal.fire('Deleted!', 'Project deleted successfully.', 'success');
                 fetchStatus();
             } else {
-                Swal.fire('Gagal!', data.error, 'error');
+                Swal.fire('Failed!', data.error, 'error');
             }
         }
     });

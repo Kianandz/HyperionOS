@@ -1,4 +1,5 @@
-// Event listener untuk form submission share
+// samba_share.js
+// Event listener for share form submission
 document.getElementById('form-share').addEventListener('submit', function(e) {
     const isGui = !document.getElementById('tab-gui').classList.contains('hidden');
     
@@ -24,7 +25,7 @@ document.getElementById('form-share').addEventListener('submit', function(e) {
     }
 });
 
-// Fungsi untuk berpindah tab antara GUI dan konfigurasi Advanced
+// Function to switch tabs between GUI and Advanced configuration
 function switchShareTab(tab) {
     const guiActive = (tab === 'gui');
     
@@ -58,7 +59,7 @@ function switchShareTab(tab) {
     }
 }
 
-// Fungsi untuk membuka modal penambahan/pengeditan share
+// Function to open share creation/editing modal
 function openShareModal(shareData = null) {
     switchShareTab('gui');
     document.getElementById('smb-share-modal').classList.remove('hidden');
@@ -96,7 +97,7 @@ function openShareModal(shareData = null) {
         commentInput.value = commentMatch ? commentMatch[1].trim() : "";
         forceUserInput.value = forceMatch ? forceMatch[1].trim() : "";
     } else {
-        title.innerHTML = '<i class="fa fa-folder-plus"></i> Buat Share Baru';
+        title.innerHTML = '<i class="fa fa-folder-plus"></i> Create New Share';
         document.getElementById('form-share').reset();
         nameInput.readOnly = false; 
         nameInput.classList.remove('opacity-50');
@@ -106,15 +107,15 @@ function openShareModal(shareData = null) {
     }
 }
 
-// Fungsi konfirmasi untuk menghapus share
+// Confirmation function to delete share
 function confirmDeleteShare(shareName) {
     SwalDark.fire({
-        title: 'Hapus Share?',
-        html: `Yakin mau hapus share <b class="text-rose-400">${shareName}</b>?`,
+        title: 'Delete Share?',
+        html: `Are you sure you want to delete share <b class="text-rose-400">${shareName}</b>?`,
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: '<i class="fa fa-trash"></i> Ya, Hapus!',
-        cancelButtonText: 'Batal',
+        confirmButtonText: '<i class="fa fa-trash"></i> Yes, Delete!',
+        cancelButtonText: 'Cancel',
         confirmButtonColor: '#e11d48'
     }).then((result) => {
         if (result.isConfirmed) {

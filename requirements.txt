@@ -13,3 +13,5 @@ python-multipart
 pydantic
 pydantic_settings
 flask
+bump-my-version
+pip install black

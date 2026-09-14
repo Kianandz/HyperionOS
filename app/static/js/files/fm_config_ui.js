@@ -42,7 +42,6 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// --- SEARCH & SORT ---
 function searchTable() {
     const input = document.getElementById("searchInput").value.toLowerCase();
     const rows = document.querySelectorAll("#fileTableBody tr");

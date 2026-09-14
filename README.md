@@ -1,89 +1,205 @@
-<div align="center">
-  <h1>🚀 HyperionOS</h1>
-  <p><b>Web-Based Server Management Panel</b></p>
-  <p>Automated provisioning, service configuration, and web-based administration for modern Linux environments.</p>
-</div>
+# HyperionOS
+
+> A lightweight, modern, and modular web-based server management panel built with FastAPI and Python for Linux environments.
+
+![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)
+![Framework](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![Platform](https://img.shields.io/badge/platform-Linux-f34b7d.svg)
 
 ---
 
-## 📖 Overview
+## 📌 Overview
 
-**HyperionOS** is a comprehensive, lightweight platform engineering solution designed to simplify server management. It provides a highly modular, Python-powered backend paired with an HTMX-driven frontend to manage your web server, databases, firewall, Docker containers, and Cloudflare tunnels seamlessly.
+**HyperionOS** is an open-source, all-in-one Linux server administration dashboard. Designed to bridge the gap between command-line server operations and modern web interfaces, HyperionOS empowers system administrators and developers to monitor, configure, and manage core server infrastructure seamlessly through an intuitive browser interface.
 
-Designed specifically for **Debian** and **Arch Linux** based distributions, HyperionOS abstracts complex system administration tasks into an intuitive web interface and a robust CLI tool.
+---
 
 ## ✨ Key Features
 
-* 🌐 **Web Server Management**: Integrated Nginx and PHP-FPM configuration and management.
-* 🐳 **Docker Integration**: Built-in container management, statistics tracking, and an "App Store" for rapid deployments.
-* 🗄️ **Database Administration**: Native MariaDB integration with web-based workspace, querying, and table management.
-* 🛡️ **Security & Firewall**: Visual UFW (Uncomplicated Firewall) management and rule configuration.
-* ☁️ **Cloudflared Tunnels**: Integrated Cloudflare zero-trust tunnel configuration directly from the dashboard.
-* 📁 **Advanced File Manager**: Web-based file explorer with batch actions, permissions handling, and editor.
-* 📊 **System Telemetry**: Real-time server metrics (CPU, RAM, Disk, Network) on the dashboard.
-* ⚡ **HTMX-Powered UI**: Blazing fast, SPA-like frontend without the heavy JavaScript frameworks.
+### 🔒 PAM-Based Native Authentication
+- Integrates directly with Linux Pluggable Authentication Modules (PAM).
+- Secures panel access using system credentials without requiring separate user databases.
 
-## 🛠️ Technology Stack
+### 📊 System Health & Performance Monitoring
+- Real-time telemetry for CPU usage, memory allocation, swap space, and disk utilization.
+- Live process monitoring and system resource analytics.
 
-* **Backend**: Python 3 (Virtual Environment isolated)
-* **Frontend**: HTML5, CSS3, Vanilla JS, [HTMX](https://htmx.org/)
-* **System Services**: Nginx, PHP-FPM, MariaDB, Docker, UFW, Systemd
-* **Security**: PAM authentication, strict filesystem ACLs, dynamic sudoers.
+### 🌐 Web Server & Reverse Proxy Manager
+- Automated host and configuration management for **Nginx**, **PHP-FPM**, and **Node.js**.
+- Easily create reverse proxies, configure virtual hosts, manage SSL certificates, and view live access/error logs.
 
-## 🚀 Installation & Quick Start
+### 🐳 Docker & Container Orchestration
+- Complete interface for managing Docker containers, images, volumes, and networks.
+- Full support for **Docker Compose** stack deployment and live container log streaming.
 
-HyperionOS comes with an automated bootstrap script (`install.sh`) that provisions the system, installs dependencies, creates isolated service accounts, and configures `systemd`.
+### 🗄️ Database Management (MySQL / MariaDB)
+- Built-in GUI for local database administration.
+- Execute custom SQL queries, perform table CRUD operations, inspect schemas, and manage user privileges.
 
-### Prerequisites
-* A fresh instance of **Debian/Ubuntu** or **Arch Linux**.
-* Root or `sudo` privileges.
+### 📁 Advanced Web File Manager
+- Feature-rich file browser supporting uploads, downloads, archive compression/extraction (ZIP/TAR), permission management (`chmod`/`chown`), and inline text editing.
 
-### Deployment
+### 🛡️ Firewall & Network Security (UFW)
+- Graphical control for Uncomplicated Firewall (UFW).
+- Add/remove TCP & UDP rules, toggle firewall statuses, and monitor security logs.
 
-```bash
-curl -sSL https://projecthyperion.my.id/script/install.sh | bash || wget -qO- https://projecthyperion.my.id/script/install.sh | bash
+### ☁️ Cloudflare Tunnels Integration
+- Manage `cloudflared` instances to securely expose local services to the web without opening public ports.
+
+### 📂 Samba Network Sharing
+- Graphical configuration for SMB/Samba local network shares.
+- Set share paths, guest permissions, and manage Samba user passwords.
+
+### 💻 Web-Based Interactive Terminal
+- Full pseudo-terminal (PTY) emulation over WebSockets.
+- Execute shell commands securely directly from your browser.
+
+---
+
+## 🏗️ Project Architecture
+
+HyperionOS is built following modern software design patterns, separating routing, business logic, and OS-level execution:
+
 ```
-
-##### OR
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/Kianandz/HyperionOS.git
-cd HyperionOS
-
-# 2. Run the bootstrap script
-chmod +x install.sh scripts/*.sh
-sudo ./install.sh
-```
-
-The installer will output connection instructions and start the background daemon automatically. 
-
-## 💻 Command Line Interface (CLI)
-
-HyperionOS includes a native `hyperion` CLI operator tool for rapid administrative actions directly from the terminal.
-
-```bash
-hyperion start                 # Bootstrap background service
-hyperion stop                  # Terminate service layer
-hyperion restart               # Power cycle the service
-hyperion status                # Display system telemetry and logs
-hyperion set-user <usr> <pwd>  # Rotate ownership and security contexts
-hyperion log                   # Stream application trace logs
-```
-
-## 📂 Project Structure
-
-HyperionOS follows a clean, modular architecture:
-
-```text
-HyperionOS/
+hyperion-os/
 ├── app/
-│   ├── core/         # App configuration & security policies
-│   ├── routes/       # Endpoint definitions (Auth, Docker, Databases, etc.)
-│   ├── services/     # Business logic & system interactions (UFW, PAM, Nginx)
-│   ├── static/       # CSS, Fonts, and Vanilla/HTMX JavaScript assets
-│   └── templates/    # Modular HTML components and layouts
-├── install.sh        # Core bootstrap and provisioning orchestrator
-├── main.py           # Application entry point
-└── requirements.txt  # Python dependencies
+│   ├── core/           # Core configuration, security middleware & PAM auth handlers
+│   │   ├── config.py
+│   │   └── security.py
+│   ├── routes/         # Modular API and HTML route controllers
+│   │   ├── auth.py
+│   │   ├── dashboard.py
+│   │   ├── database.py
+│   │   ├── docker.py
+│   │   ├── files.py
+│   │   ├── firewall.py
+│   │   ├── samba.py
+│   │   ├── system.py
+│   │   ├── terminal.py
+│   │   └── webserver.py
+│   ├── services/       # Service layer executing Linux system utilities & CLI commands
+│   │   ├── docker_service.py
+│   │   ├── system_service.py
+│   │   └── ...
+│   └── templates/      # Jinja2 HTML templates and Tailwind CSS UI layout
+├── scripts/            # Deployment and operational helper scripts
+├── install.sh          # One-click installation script
+├── requirements.txt    # Python dependencies
+├── main.py             # Application entry point
+└── README.md
 ```
+
+---
+
+## ⚙️ Prerequisites
+
+- **Operating System**: Linux (Ubuntu 20.04+, Debian 11+, or RHEL-based distributions recommended)
+- **Python**: Python 3.10 or higher
+- **Privileges**: `root` or `sudo` access (required for PAM authentication and `systemctl` interactions)
+- **Dependencies**: `systemd`, `nginx` (optional), `docker` & `docker-compose` (optional)
+
+---
+
+## 🚀 Installation & Setup
+
+### Automated Quick Installation
+
+HyperionOS provides an automated installation script to set up system dependencies, virtual environments, and initial permissions automatically:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/your-username/hyperion-os/main/install.sh | sudo bash
+```
+
+---
+
+### Manual Installation
+
+If you prefer to set up HyperionOS manually, follow these steps:
+
+#### 1. Clone the Repository
+```bash
+git clone https://github.com/your-username/hyperion-os.git
+cd hyperion-os
+```
+
+#### 2. Create and Activate a Virtual Environment
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+#### 3. Install Python Dependencies
+```bash
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+#### 4. Configure Environment Variables
+Create a `.env` file in the root directory:
+```env
+HOST=0.0.0.0
+PORT=8000
+SECRET_KEY=your-super-secret-key-change-this
+DEBUG=False
+```
+
+#### 5. Run the Application
+Start the Uvicorn server:
+```bash
+python main.py
+# or directly via Uvicorn
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Access the panel by navigating to `http://<your-server-ip>:8000`.
+
+---
+
+## 🛡️ Running as a Systemd Service
+
+To ensure HyperionOS runs continuously in the background and starts automatically on system boot:
+
+1. Create a service file at `/etc/systemd/system/hyperion.service`:
+
+```ini
+[Unit]
+Description=HyperionOS Web Management Panel
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/opt/hyperion-os
+ExecStart=/opt/hyperion-os/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+```
+
+2. Enable and start the service:
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable hyperion
+sudo systemctl start hyperion
+```
+
+3. Check service status:
+```bash
+sudo systemctl status hyperion
+```
+
+---
+
+## 🔒 Security & Best Practices
+
+- **Reverse Proxy & SSL**: Always run HyperionOS behind Nginx, Caddy, or Cloudflare Tunnel with SSL/TLS enabled for secure traffic encryption.
+- **Firewall Rules**: Restrict access to the application port using UFW or external security groups to trusted IP addresses only.
+- **PAM Authorization**: Ensure that user access levels are strictly controlled via Linux system accounts.
+
+---
+
+## 📄 License
+
+Distributed under the **MIT License**. See `LICENSE` for more information.

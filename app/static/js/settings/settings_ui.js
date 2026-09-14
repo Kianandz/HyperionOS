@@ -1,14 +1,15 @@
-// Mengganti Tipe Background (Color / Image / Video)
+// settings_ui.js
+// Change Background Type (Color / Image / Video)
 function setBgType(type) {
-    // Reset warna tombol
+    // Reset button colors
     document.getElementById('btn-type-color').className = "flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition";
     document.getElementById('btn-type-image').className = "flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition";
     document.getElementById('btn-type-video').className = "flex-1 py-2 bg-slate-800 text-slate-400 hover:text-white rounded-lg text-xs font-bold transition";
 
-    // Set tombol aktif
+    // Set active button
     document.getElementById(`btn-type-${type}`).className = "flex-1 py-2 bg-indigo-600 text-white rounded-lg text-xs font-bold transition";
 
-    // Tampilkan panel yang sesuai
+    // Display corresponding panel
     if (type === 'color') {
         document.getElementById('panel-color').classList.remove('hidden');
         document.getElementById('panel-media').classList.add('hidden');
@@ -18,7 +19,7 @@ function setBgType(type) {
     }
 }
 
-// Toggle URL vs Upload Lokal
+// Toggle URL vs Local Upload
 function toggleMediaInput() {
     const method = document.getElementById('mediaMethod').value;
     if (method === 'url') {
@@ -35,10 +36,10 @@ function previewTheme() {
     const blurVal = document.getElementById('sliderBlur').value;
     const opacityVal = document.getElementById('sliderOpacity').value;
     
-    // Update teks angka di UI
+    // Update number text in UI
     document.getElementById('valBlur').innerText = blurVal + 'px';
     document.getElementById('valOpacity').innerText = opacityVal;
 
-    // (Opsional) Terapkan langsung ke elemen background lu di sini
+    // (Optional) Apply directly to your background element here
     // document.body.style.backdropFilter = `blur(${blurVal}px)`;
 }

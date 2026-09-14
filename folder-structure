@@ -4,32 +4,146 @@
 │   │   ├── config.py
 │   │   └── security.py
 │   ├── routes
-│   │   ├── auth.py
-│   │   ├── cloudflared.py
-│   │   ├── dashboard.py
-│   │   ├── database.py
-│   │   ├── docker.py
-│   │   ├── files.py
-│   │   ├── firewall.py
+│   │   ├── auth
+│   │   │   ├── __init__.py
+│   │   │   ├── logout_route.py
+│   │   │   ├── page_route.py
+│   │   │   └── process_route.py
+│   │   ├── cloudflared
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   ├── service_route.py
+│   │   │   └── tunnel_route.py
+│   │   ├── dashboard
+│   │   │   ├── __init__.py
+│   │   │   ├── metrics_route.py
+│   │   │   └── page_route.py
+│   │   ├── database
+│   │   │   ├── db_route.py
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   ├── query_route.py
+│   │   │   ├── row_route.py
+│   │   │   └── table_route.py
+│   │   ├── docker
+│   │   │   ├── app_route.py
+│   │   │   ├── compose_route.py
+│   │   │   ├── container_route.py
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   └── terminal_route.py
+│   │   ├── files
+│   │   │   ├── archive_route.py
+│   │   │   ├── crud_route.py
+│   │   │   ├── editor_route.py
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   └── transfer_route.py
+│   │   ├── firewall
+│   │   │   ├── action_route.py
+│   │   │   ├── __init__.py
+│   │   │   ├── logs_route.py
+│   │   │   └── page_route.py
 │   │   ├── __init__.py
-│   │   ├── node.py
-│   │   ├── settings.py
-│   │   ├── terminal.py
-│   │   └── websites.py
+│   │   ├── node
+│   │   │   ├── __init__.py
+│   │   │   ├── logs_route.py
+│   │   │   ├── page_route.py
+│   │   │   ├── project_route.py
+│   │   │   └── system_route.py
+│   │   ├── samba
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   ├── service_route.py
+│   │   │   ├── share_route.py
+│   │   │   └── user_route.py
+│   │   ├── settings
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   ├── system_route.py
+│   │   │   └── upload_route.py
+│   │   ├── terminal
+│   │   │   ├── __init__.py
+│   │   │   ├── page_route.py
+│   │   │   └── ws_route.py
+│   │   └── websites
+│   │       ├── config_route.py
+│   │       ├── files_route.py
+│   │       ├── __init__.py
+│   │       ├── page_route.py
+│   │       ├── service_route.py
+│   │       └── site_route.py
 │   ├── services
-│   │   ├── cloudflared_service.py
-│   │   ├── database_service.py
-│   │   ├── docker_service.py
-│   │   ├── files_service.py
-│   │   ├── metrics.py
-│   │   ├── node_service.py
-│   │   ├── pam_service.py
-│   │   ├── ufw_service.py
-│   │   └── website_service.py
+│   │   ├── cloudflared
+│   │   │   ├── api.py
+│   │   │   ├── constants.py
+│   │   │   ├── daemon.py
+│   │   │   ├── __init__.py
+│   │   │   └── utils.py
+│   │   ├── database
+│   │   │   ├── connection.py
+│   │   │   ├── crud.py
+│   │   │   ├── db.py
+│   │   │   ├── __init__.py
+│   │   │   ├── installer.py
+│   │   │   ├── query.py
+│   │   │   └── table.py
+│   │   ├── docker
+│   │   │   ├── actions.py
+│   │   │   ├── client.py
+│   │   │   ├── compose.py
+│   │   │   ├── containers.py
+│   │   │   ├── images.py
+│   │   │   └── __init__.py
+│   │   ├── files
+│   │   │   ├── archive.py
+│   │   │   ├── config.py
+│   │   │   ├── crud.py
+│   │   │   ├── editor.py
+│   │   │   ├── explorer.py
+│   │   │   ├── __init__.py
+│   │   │   ├── path.py
+│   │   │   └── transfer.py
+│   │   ├── metrics
+│   │   │   ├── cpu.py
+│   │   │   ├── disk.py
+│   │   │   ├── __init__.py
+│   │   │   ├── memory.py
+│   │   │   ├── network.py
+│   │   │   └── system.py
+│   │   ├── node
+│   │   │   ├── config.py
+│   │   │   ├── dependencies.py
+│   │   │   ├── __init__.py
+│   │   │   ├── logs.py
+│   │   │   ├── projects.py
+│   │   │   └── utils.py
+│   │   ├── pam
+│   │   │   ├── auth.py
+│   │   │   ├── __init__.py
+│   │   │   └── logger.py
+│   │   ├── samba
+│   │   │   ├── config.py
+│   │   │   ├── core.py
+│   │   │   ├── __init__.py
+│   │   │   ├── shares.py
+│   │   │   └── users.py
+│   │   ├── ufw
+│   │   │   ├── actions.py
+│   │   │   ├── __init__.py
+│   │   │   ├── logs.py
+│   │   │   └── status.py
+│   │   └── website
+│   │       ├── constants.py
+│   │       ├── __init__.py
+│   │       ├── nginx.py
+│   │       ├── php.py
+│   │       └── service.py
 │   ├── static
 │   │   ├── css
 │   │   │   ├── fontawesome.css
 │   │   │   ├── fontawesome.min.css
+│   │   │   ├── responsive.css
 │   │   │   └── style.css
 │   │   ├── fonts
 │   │   │   ├── FontAwesome.otf
@@ -157,10 +271,10 @@
 │           ├── terminal.html
 │           └── websites.html
 ├── folder-structure
+├── install.sh
 ├── main.py
 ├── README.md
 ├── requirements.txt
-├── install.sh
 └── scripts
     ├── application.sh
     ├── cli-wrapper.sh
@@ -169,4 +283,4 @@
     ├── systemd.sh
     └── utils.sh
 
-37 directories, 133 files
+59 directories, 225 files

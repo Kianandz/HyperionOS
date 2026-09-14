@@ -1,12 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Muat token CF dari localStorage kalau udah pernah nyimpen
     const savedToken = localStorage.getItem('cf_api_token');
     if (savedToken) {
         document.getElementById('cfApiToken').value = savedToken;
         loadTunnels();
     }
     
-    // Auto refresh log terminal tiap 3 detik
     fetchLogs();
     setInterval(fetchLogs, 3000);
 });
@@ -17,7 +15,7 @@ function saveCFToken() {
         localStorage.setItem('cf_api_token', token);
         Swal.fire({
             toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
-            icon: 'success', title: 'API Token Disimpan', background: '#1e293b', color: '#fff'
+            icon: 'success', title: 'API Token Saved', background: '#1e293b', color: '#fff'
         });
         loadTunnels();
     }
@@ -28,7 +26,7 @@ async function loadTunnels() {
     const tunnelList = document.getElementById('tunnelList');
     
     if (!token) return;
-    tunnelList.innerHTML = `<div class="text-center py-5 text-indigo-400"><i class="fa-solid fa-spinner fa-spin text-2xl"></i><p class="mt-2">Memuat Tunnels...</p></div>`;
+    tunnelList.innerHTML = `<div class="text-center py-5 text-indigo-400"><i class="fa-solid fa-spinner fa-spin text-2xl"></i><p class="mt-2">Loading Tunnels...</p></div>`;
 
     try {
         const response = await fetch('/cloudflared/api/tunnels', {
@@ -42,7 +40,7 @@ async function loadTunnels() {
         if (data.status === 'success' && data.tunnels) {
             tunnelList.innerHTML = '';
             if(data.tunnels.length === 0) {
-                 tunnelList.innerHTML = '<div class="text-center py-5 opacity-50">Tidak ada tunnel di akun ini.</div>';
+                 tunnelList.innerHTML = '<div class="text-center py-5 opacity-50">No tunnels found in this account.</div>';
                  return;
             }
 
@@ -65,10 +63,10 @@ async function loadTunnels() {
                 `;
             });
         } else {
-            tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Gagal: ${data.message}</div>`;
+            tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Failed: ${data.message}</div>`;
         }
     } catch (err) {
-        tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Error memuat data.</div>`;
+        tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Error loading data.</div>`;
     }
 }
 
@@ -81,16 +79,15 @@ async function fetchLogs() {
         const data = await response.json();
         
         if (data.status === 'success') {
-            // Cuma update scroll kalau ada perubahan log biar ngga lompat-lompat
             const isScrolledToBottom = terminal.scrollHeight - terminal.clientHeight <= terminal.scrollTop + 10;
-            terminal.textContent = data.logs || 'Tidak ada log terbaru.';
+            terminal.textContent = data.logs || 'No recent logs.';
             
             if (isScrolledToBottom) {
                 terminal.scrollTop = terminal.scrollHeight;
             }
         }
     } catch (err) {
-        console.error("Gagal load logs:", err);
+        console.error("Failed to load logs:", err);
     }
 }
 
@@ -117,7 +114,7 @@ async function loadTunnels() {
     const tunnelList = document.getElementById('tunnelList');
     
     if (!token) return;
-    tunnelList.innerHTML = `<div class="text-center py-5 text-indigo-400"><i class="fa-solid fa-spinner fa-spin text-2xl"></i><p class="mt-2">Memuat Tunnels...</p></div>`;
+    tunnelList.innerHTML = `<div class="text-center py-5 text-indigo-400"><i class="fa-solid fa-spinner fa-spin text-2xl"></i><p class="mt-2">Loading Tunnels...</p></div>`;
 
     try {
         const response = await fetch('/cloudflared/api/tunnels', {
@@ -131,7 +128,7 @@ async function loadTunnels() {
         if (data.status === 'success' && data.tunnels) {
             tunnelList.innerHTML = '';
             if(data.tunnels.length === 0) {
-                 tunnelList.innerHTML = '<div class="text-center py-5 opacity-50">Tidak ada tunnel di akun ini.</div>';
+                 tunnelList.innerHTML = '<div class="text-center py-5 opacity-50">No tunnels found in this account.</div>';
                  return;
             }
 
@@ -154,10 +151,10 @@ async function loadTunnels() {
                 `;
             });
         } else {
-            tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Gagal: ${data.message}</div>`;
+            tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Failed: ${data.message}</div>`;
         }
     } catch (err) {
-        tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Error memuat data.</div>`;
+        tunnelList.innerHTML = `<div class="text-center py-5 text-rose-400">Error loading data.</div>`;
     }
 }
 
@@ -171,41 +168,39 @@ async function fetchLogs() {
         
         if (data.status === 'success') {
             const isScrolledToBottom = terminal.scrollHeight - terminal.clientHeight <= terminal.scrollTop + 10;
-            terminal.textContent = data.logs || 'Tidak ada log terbaru.';
+            terminal.textContent = data.logs || 'No recent logs.';
             
             if (isScrolledToBottom) {
                 terminal.scrollTop = terminal.scrollHeight;
             }
         }
     } catch (err) {
-        console.error("Gagal load logs:", err);
+        console.error("Failed to load logs:", err);
     }
 }
 
-// Tambahan fungsi untuk tombol Start / Stop
-// Timpa fungsi toggleService di cloudflared.js dengan ini:
 async function toggleService(action) {
     try {
         const response = await fetch('/cloudflared/api/action', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: action }) // Kirim payload sesuai request backend
+            body: JSON.stringify({ action: action })
         });
         const data = await response.json();
         
         if (data.status === 'success') {
             Swal.fire({
                 toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
-                icon: 'success', title: `Daemon ${action} sukses`, background: '#1e293b', color: '#fff'
+                icon: 'success', title: `Daemon ${action} successful`, background: '#1e293b', color: '#fff'
             });
             setTimeout(() => window.location.reload(), 1500);
         } else {
             Swal.fire({
                 toast: true, position: 'top-end', showConfirmButton: false, timer: 3000,
-                icon: 'error', title: data.message || `Gagal ${action} daemon`, background: '#1e293b', color: '#fff'
+                icon: 'error', title: data.message || `Failed to ${action} daemon`, background: '#1e293b', color: '#fff'
             });
         }
     } catch (err) {
-        console.error(`Gagal ${action} service:`, err);
+        console.error(`Failed to ${action} service:`, err);
     }
 }

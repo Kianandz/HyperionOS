@@ -1,10 +1,11 @@
-// Buka Modal & Load Log UFW
+// modal_logs_2.js
+// Open Modal & Load UFW Logs
 async function openLogsModal() {
     openModal('logsModal');
     await fetchUfwLogs();
 }
 
-// Ambil data log dari Server
+// Fetch log data from Server
 async function fetchUfwLogs() {
     const container = document.getElementById('log-content-container');
     container.innerHTML = '<div class="text-center text-slate-500 py-8"><i class="fa fa-spinner fa-spin text-xl"></i> Loading logs...</div>';
@@ -15,12 +16,12 @@ async function fetchUfwLogs() {
         
         if (json.status === 'success') {
             container.textContent = json.logs;
-            // Auto scroll ke paling bawah log
+            // Auto-scroll to bottom of logs
             container.scrollTop = container.scrollHeight;
         } else {
-            container.innerHTML = `<span class="text-rose-400">Gagal mengambil log: ${json.message}</span>`;
+            container.innerHTML = `<span class="text-rose-400">Failed to fetch logs: ${json.message}</span>`;
         }
     } catch (err) {
-        container.innerHTML = `<span class="text-rose-400">Error jaringan: ${err.message}</span>`;
+        container.innerHTML = `<span class="text-rose-400">Network error: ${err.message}</span>`;
     }
 }

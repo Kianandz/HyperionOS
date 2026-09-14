@@ -1,7 +1,7 @@
 async function createNewDB() {
     const { value: dbName } = await Swal.fire({ 
-        title: "Buat Database Baru", input: 'text', placeholder: 'nama_db', 
-        showCancelButton: true, background: '#0f172a', color: '#fff', confirmButtonText: 'Buat' 
+        title: "Create New Database", input: 'text', placeholder: 'db_name', 
+        showCancelButton: true, background: '#0f172a', color: '#fff', confirmButtonText: 'Create' 
     });
     if (!dbName) return; 
 
@@ -12,16 +12,16 @@ async function createNewDB() {
     const res = await fetch('/databases/create-db', { method: 'POST', body: form }); 
     const data = await res.json(); 
     if (data.status === 'success') {
-        Swal.fire({icon: 'success', title: 'Berhasil', background: '#0f172a', color: '#fff', timer: 1500}); 
+        Swal.fire({icon: 'success', title: 'Success', background: '#0f172a', color: '#fff', timer: 1500}); 
         loadSelectedSession(document.getElementById("saved-sessions-list").value || "");  
     } else {
-        Swal.fire({icon: 'error', title: 'Gagal', text: data.message, background: '#0f172a', color: '#fff'}); 
+        Swal.fire({icon: 'error', title: 'Failed', text: data.message, background: '#0f172a', color: '#fff'}); 
     }
 }
 
 function createNewTable() {
     const db = document.getElementById('q_database').value; 
-    if (!db) return Swal.fire({icon: 'warning', title: 'Oops', text: 'Pilih database dulu dari panel kiri!', background: '#0f172a', color: '#fff'}); 
+    if (!db) return Swal.fire({icon: 'warning', title: 'Oops', text: 'Please select a database from the left panel first!', background: '#0f172a', color: '#fff'}); 
     
     document.getElementById('new_tbl_name').value = ''; 
     document.getElementById('new_tbl_columns').innerHTML = ''; 
@@ -37,7 +37,7 @@ function addColumnRow(isFirst = false) {
     tr.className = "border-b border-slate-700/50 hover:bg-slate-900/50 transition-colors"; 
     
     tr.innerHTML = `
-        <td class="p-2"><input type="text" class="col-name w-full bg-slate-950/80 border border-slate-700/50 rounded-lg px-3 py-2 outline-none text-xs font-mono focus:border-indigo-500" value="${isFirst ? 'id' : ''}" placeholder="nama_field"></td>
+        <td class="p-2"><input type="text" class="col-name w-full bg-slate-950/80 border border-slate-700/50 rounded-lg px-3 py-2 outline-none text-xs font-mono focus:border-indigo-500" value="${isFirst ? 'id' : ''}" placeholder="field_name"></td>
         <td class="p-2">
             <select class="col-type w-full bg-slate-950/80 border border-slate-700/50 rounded-lg px-3 py-2 outline-none text-xs font-mono focus:border-indigo-500">
                 <option value="INT">INT</option>
@@ -58,10 +58,10 @@ function addColumnRow(isFirst = false) {
 
 async function submitCreateTable() {
     const tblName = document.getElementById('new_tbl_name').value; 
-    if(!tblName) return alert('Nama tabel harus diisi!'); 
+    if(!tblName) return alert('Table name is required!'); 
     
     const rows = document.querySelectorAll('#new_tbl_columns tr'); 
-    if(rows.length === 0) return alert('Minimal harus ada 1 field kolom!'); 
+    if(rows.length === 0) return alert('At least 1 column field is required!'); 
     
     let columns = []; 
     rows.forEach(tr => { 
@@ -83,11 +83,11 @@ async function submitCreateTable() {
     const data = await res.json(); 
     
     if (data.status === 'success') {
-        Swal.fire({icon: 'success', title: 'Tabel Terbuat', background: '#0f172a', color: '#fff', timer: 1500}); 
+        Swal.fire({icon: 'success', title: 'Table Created', background: '#0f172a', color: '#fff', timer: 1500}); 
         document.getElementById('modalCreateTable').classList.add('hidden'); 
         htmx.trigger(document.querySelector('select[name="database"]'), 'change');  
     } else {
-        Swal.fire({icon: 'error', title: 'Query Gagal', text: data.message, background: '#0f172a', color: '#fff'}); 
+        Swal.fire({icon: 'error', title: 'Query Failed', text: data.message, background: '#0f172a', color: '#fff'}); 
     }
 }
 
@@ -103,7 +103,7 @@ async function submitAddColumn() {
     const table = document.getElementById('add_col_table').value; 
     const name = document.getElementById('add_col_name').value; 
     
-    if (!name) return alert('Nama field harus diisi!'); 
+    if (!name) return alert('Field name is required!'); 
 
     const colData = {
         name: name, 
@@ -122,7 +122,7 @@ async function submitAddColumn() {
     const data = await res.json(); 
     
     if (data.status === 'success') {
-        Swal.fire({icon: 'success', title: 'Field Berhasil Ditambah', background: '#0f172a', color: '#fff', timer: 1500}); 
+        Swal.fire({icon: 'success', title: 'Field Added Successfully', background: '#0f172a', color: '#fff', timer: 1500}); 
         document.getElementById('modalAddColumn').classList.add('hidden'); 
         
         const refreshForm = new FormData(); 
@@ -135,21 +135,21 @@ async function submitAddColumn() {
             document.getElementById('data-view').innerHTML = html; 
         });
     } else {
-        Swal.fire({icon: 'error', title: 'Gagal', text: data.message, background: '#0f172a', color: '#fff'}); 
+        Swal.fire({icon: 'error', title: 'Failed', text: data.message, background: '#0f172a', color: '#fff'}); 
     }
 }
 
 async function deleteTable(tableName) {
     const { isConfirmed } = await Swal.fire({ 
-        title: `Hapus Tabel \`${tableName}\`?`, 
-        text: "Semua data di dalam tabel ini bakal hilang permanen dan nggak bisa dibalikin!", 
+        title: `Delete Table \`${tableName}\`?`, 
+        text: "All data in this table will be permanently deleted and cannot be recovered!", 
         icon: 'warning', 
         showCancelButton: true, 
         confirmButtonColor: '#ef4444', 
         cancelButtonColor: '#334155', 
         background: '#0f172a', 
         color: '#fff', 
-        confirmButtonText: 'Ya, Hapus!' 
+        confirmButtonText: 'Yes, Delete!' 
     });
 
     if (isConfirmed) { 
@@ -164,18 +164,18 @@ async function deleteTable(tableName) {
         const data = await res.json(); 
 
         if (data.status === 'success') {
-            Swal.fire({icon: 'success', title: 'Tabel Dihapus', background: '#0f172a', color: '#fff', timer: 1500}); 
+            Swal.fire({icon: 'success', title: 'Table Deleted', background: '#0f172a', color: '#fff', timer: 1500}); 
             
             htmx.trigger(document.querySelector('select[name="database"]'), 'change'); 
             
             document.getElementById('data-view').innerHTML = `
                 <div class="flex flex-col items-center justify-center h-64 text-slate-500 text-xs text-center space-y-2">
                     <i class="fa fa-table text-4xl mb-3 opacity-30"></i>
-                    <p>Pilih database dan tabel di sidebar kiri untuk menampilkan isi data.</p>
+                    <p>Select a database and table from the left sidebar to display data.</p>
                 </div>
             `; 
         } else {
-            Swal.fire({icon: 'error', title: 'Gagal Menghapus', text: data.message, background: '#0f172a', color: '#fff'}); 
+            Swal.fire({icon: 'error', title: 'Failed to Delete', text: data.message, background: '#0f172a', color: '#fff'}); 
         }
     }
 }

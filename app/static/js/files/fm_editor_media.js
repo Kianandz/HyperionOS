@@ -1,4 +1,3 @@
-// --- TEXT EDITOR ---
 async function openTextEditor(path) {
     const modal = document.getElementById('fm-editor-modal');
     const title = document.getElementById('fm-editor-title');
@@ -7,7 +6,7 @@ async function openTextEditor(path) {
 
     if (title) title.innerHTML = `<i class="fa fa-solid fa-code mr-2"></i> Edit: /${path}`;
     if (pathInput) pathInput.value = path;
-    if (textarea) textarea.value = "Memuat...";
+    if (textarea) textarea.value = "Loading...";
 
     if (modal) modal.classList.remove('hidden');
 
@@ -17,11 +16,11 @@ async function openTextEditor(path) {
         if (result.status === 'success') {
             if (textarea) textarea.value = result.content;
         } else {
-            SwalDark.fire('Gagal', result.message, 'error');
+            SwalDark.fire('Failed', result.message, 'error');
             closeTextEditor();
         }
     } catch (err) {
-        SwalDark.fire('Error', 'Gagal memuat isi file.', 'error');
+        SwalDark.fire('Error', 'Failed to load file contents.', 'error');
         closeTextEditor();
     }
 }
@@ -46,13 +45,13 @@ async function saveTextContent() {
         });
         const result = await response.json();
         if (result.status === 'success') {
-            ToastDark.fire({ icon: 'success', title: 'Perubahan Disimpan!' });
+            ToastDark.fire({ icon: 'success', title: 'Changes Saved!' });
             closeTextEditor();
         } else {
-            SwalDark.fire('Gagal', result.message, 'error');
+            SwalDark.fire('Failed', result.message, 'error');
         }
     } catch (err) {
-        SwalDark.fire('Error', 'Gagal menyimpan.', 'error');
+        SwalDark.fire('Error', 'Failed to save.', 'error');
     }
 }
 
