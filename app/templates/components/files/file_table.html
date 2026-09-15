@@ -6,11 +6,11 @@
                     <th class="p-4 pl-6 w-12 text-center">
                         <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-500 focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors">
                     </th>
-                    <th class="p-4 hover:text-white cursor-pointer transition-colors" onclick="sortTable(1)">Nama File / Folder <i class="fa fa-sort ml-1 opacity-50"></i></th>
-                    <th class="p-4 hover:text-white cursor-pointer transition-colors" onclick="sortTable(2, true)">Ukuran <i class="fa fa-sort ml-1 opacity-50"></i></th>
-                    <th class="p-4">Hak Akses</th>
-                    <th class="p-4 hover:text-white cursor-pointer transition-colors" onclick="sortTable(4)">Modifikasi <i class="fa fa-sort ml-1 opacity-50"></i></th>
-                    <th class="p-4 text-right pr-6">Aksi</th>
+                    <th class="p-4 hover:text-white cursor-pointer transition-colors" onclick="sortTable(1)">File / Folder Name <i class="fa fa-sort ml-1 opacity-50"></i></th>
+                    <th class="p-4 hover:text-white cursor-pointer transition-colors" onclick="sortTable(2, true)">Size <i class="fa fa-sort ml-1 opacity-50"></i></th>
+                    <th class="p-4">Permissions</th>
+                    <th class="p-4 hover:text-white cursor-pointer transition-colors" onclick="sortTable(4)">Modified <i class="fa fa-sort ml-1 opacity-50"></i></th>
+                    <th class="p-4 text-right pr-6">Action</th>
                 </tr>
             </thead>
             
@@ -19,8 +19,8 @@
                 {% set path_parts = contents['current_path'].strip('/').split('/') %}
                 {% set parent_path = path_parts[:-1]|join('/') %}
                 <tr class="hover:bg-slate-800/30 transition-colors cursor-pointer" onclick="window.location.href='/files?path={{ parent_path }}'">
-                    <td class="p-4 pl-6"></td>
-                    <td class="p-4" colspan="5">
+                    <td class="p-4 pl-6 md:pl-6 text-right md:text-center" data-label="Select"></td>
+                    <td class="p-4" colspan="5" data-label="Parent Directory">
                         <div class="text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-3">
                             <i class="fa fa-folder text-lg text-indigo-400"></i> ..
                         </div>
@@ -32,11 +32,11 @@
             <tbody id="fileTableBody" class="divide-y divide-slate-800/50">
                 {% for item in contents['items'] %}
                 <tr class="hover:bg-slate-800/30 transition-colors duration-150 group">
-                    <td class="p-4 pl-6 text-center">
+                    <td class="p-4 pl-6 md:pl-6 text-right md:text-center flex justify-end md:table-cell" data-label="Select">
                         <input type="checkbox" class="file-checkbox w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-500 focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors" data-path="{{ item.path }}" data-name="{{ item.name }}" onchange="updateBatchBar()">
                     </td>
 
-                    <td class="p-4" data-sort-val="{{ item.name.lower() }}">
+                    <td class="p-4" data-sort-val="{{ item.name.lower() }}" data-label="Name">
                         {% if item.is_dir %}
                         <a href="/files?path={{ item.path }}" class="text-indigo-300 hover:text-indigo-200 font-bold flex items-center gap-3 cursor-pointer">
                             <i class="fa fa-folder text-lg text-indigo-400"></i> <span class="truncate max-w-[250px] md:max-w-md">{{ item.name }}</span>
@@ -57,13 +57,13 @@
                         {% endif %}
                     </td>
 
-                    <td class="p-4 font-mono text-slate-400 font-semibold" data-sort-val="{{ item.size_bytes }}">{{ item.size_bytes }} B</td>
-                    <td class="p-4 font-mono"><span class="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 text-slate-400 shadow-inner">{{ item.permissions }}</span></td>
-                    <td class="p-4 text-slate-500 font-medium" data-sort-val="{{ item.last_modified }}">{{ item.last_modified }}</td>
+                    <td class="p-4 font-mono text-slate-400 font-semibold" data-sort-val="{{ item.size_bytes }}" data-label="Size">{{ item.size_bytes }} B</td>
+                    <td class="p-4 font-mono" data-label="Permissions"><span class="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 text-slate-400 shadow-inner">{{ item.permissions }}</span></td>
+                    <td class="p-4 text-slate-500 font-medium" data-sort-val="{{ item.last_modified }}" data-label="Modified">{{ item.last_modified }}</td>
                     
-                    <td class="p-3 text-right flex justify-end gap-1 items-center md:opacity-0 group-hover:opacity-100 transition-opacity pr-6">
+                    <td class="p-3 text-right flex justify-end gap-1 items-center md:opacity-0 group-hover:opacity-100 transition-opacity pr-6" data-label="Action">
                         {% if not item.is_dir and (item.name.endswith('.zip') or item.name.endswith('.tar.gz') or item.name.endswith('.gz')) %}
-                            <button onclick="promptExtract('{{ item.path }}')" class="p-2 rounded-xl text-purple-400 hover:bg-purple-500/20 hover:text-purple-300 transition-colors cursor-pointer" title="Ekstrak"><i class="fa fa-file-archive-o text-base"></i></button>
+                            <button onclick="promptExtract('{{ item.path }}')" class="p-2 rounded-xl text-purple-400 hover:bg-purple-500/20 hover:text-purple-300 transition-colors cursor-pointer" title="Extract"><i class="fa fa-file-archive-o text-base"></i></button>
                         {% endif %}
 
                         <button onclick="setClipboard('{{ item.path }}', '{{ item.name }}', 'copy')" class="p-2 rounded-xl text-sky-400 hover:bg-sky-500/20 hover:text-sky-300 transition-colors cursor-pointer" title="Copy"><i class="fa fa-copy text-base"></i></button>
@@ -75,15 +75,15 @@
 
                         <button onclick="promptRename('{{ item.path }}', '{{ item.name }}')" class="p-2 rounded-xl text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer" title="Rename"><i class="fa fa-pencil text-base"></i></button>
 
-                        <button onclick="promptDelete('{{ item.path }}', '{{ item.name }}')" class="p-2 rounded-xl text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-colors cursor-pointer" title="Hapus"><i class="fa fa-trash text-base"></i></button>
+                        <button onclick="promptDelete('{{ item.path }}', '{{ item.name }}')" class="p-2 rounded-xl text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-colors cursor-pointer" title="Delete"><i class="fa fa-trash text-base"></i></button>
                     </td>
                 </tr>
                 {% else %}
                 <tr>
                     <td colspan="6" class="p-16 text-center text-slate-500">
                         <i class="fa fa-folder-open-o text-5xl mb-3 block opacity-30"></i>
-                        <p class="text-sm font-bold text-slate-400">Folder Kosong</p>
-                        <p class="text-xs opacity-70 mt-1">Gunakan tombol Baru atau Upload di atas.</p>
+                        <p class="text-sm font-bold text-slate-400">Empty Folder</p>
+                        <p class="text-xs opacity-70 mt-1">Use the New or Upload buttons above.</p>
                     </td>
                 </tr>
                 {% endfor %}

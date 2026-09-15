@@ -4,19 +4,18 @@
     </div>
 {% elif result.tables|length == 0 %}
     <div class="p-3 text-slate-500 text-xs italic">
-        Database '{{ database }}' kosong (tidak ada tabel).
+        Database '{{ database }}' is empty (no tables).
         <button onclick="createNewTable()" class="text-indigo-400 hover:text-indigo-300 font-bold transition ml-2 mt-2"><i class="fa fa-plus"></i> Create Table</button>
     </div>
 {% else %}
     <div class="space-y-1 overflow-y-auto pr-1">
         <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 flex justify-between items-center">
-            <span>Tabel ({{ result.tables|length }})<span class="text-indigo-400 font-mono ml-4">{{ database }}</span></span>
+            <span>Tables ({{ result.tables|length }})<span class="text-indigo-400 font-mono ml-4">{{ database }}</span></span>
             <button onclick="createNewTable()" class="text-indigo-400 hover:text-indigo-300 font-bold transition"><i class="fa fa-plus"></i> New Table</button>
         </div>
         
         {% for tbl in result.tables %}
     <div class="flex items-center gap-1 mb-1 group">
-        <!-- Tombol Browse Data -->
         <button 
             hx-post="/databases/query" hx-target="#data-view" hx-include="#inline-query-box input, #inline-query-box textarea"
             onclick="document.querySelector('textarea[name=\'query\']').value = 'SELECT * FROM `{{ tbl.name }}` LIMIT 25;'"

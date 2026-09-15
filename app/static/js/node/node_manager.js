@@ -30,7 +30,7 @@ function renderDependencies(deps) {
             <span class="px-2.5 py-1 rounded-lg text-xs font-bold ${deps.npm ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">${deps.npm ? 'Installed' : 'Missing'}</span>
         </div>
         <div class="p-4 bg-slate-800/40 rounded-xl border border-slate-800 flex items-center justify-between">
-            <span>PM2 (Manager: ${deps.manager.toUpperCase()})</span>
+            <span>PM2</span>
             <span class="px-2.5 py-1 rounded-lg text-xs font-bold ${deps.pm2 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">${deps.pm2 ? 'Installed' : 'Missing'}</span>
         </div>
     `;

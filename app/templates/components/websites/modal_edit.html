@@ -1,5 +1,5 @@
 <div id="modalEditWebsite" class="hidden fixed inset-0 bg-slate-950/80 z-[60] flex items-center justify-center backdrop-blur-sm">
-    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-3xl p-6 shadow-2xl">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-3xl p-4 md:p-6 shadow-2xl mx-4">
         <div class="flex justify-between items-center mb-5 pb-4 border-b border-slate-800/60">
             <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa fa-cog text-purple-400"></i> Config: <span id="editDomainTitle" class="text-indigo-400 tracking-wider"></span></h3>
             <button onclick="closeModal('modalEditWebsite')" class="text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 p-2 px-4 rounded-xl transition-colors"><i class="fa fa-times"></i></button>
@@ -23,7 +23,7 @@
                 <div class="bg-rose-500/10 border border-rose-500/20 p-4 rounded-xl text-xs text-rose-400 font-bold flex items-center gap-3">
                     <i class="fa fa-exclamation-triangle text-xl"></i> Warning: Simple Mode will overwrite your existing configuration.
                 </div>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Template</label>
                         <select name="site_type" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-purple-500 transition shadow-inner">

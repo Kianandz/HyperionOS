@@ -43,10 +43,8 @@ setup_application() {
     log_info "Allocating random available port for application..."
     local app_port
     while true; do
-        # Generate port acak di rentang 8000 - 9999
         app_port=$((RANDOM % 2000 + 8000))
         
-        # Cek apakah port sedang dipakai (menggunakan ss atau netstat)
         if ! sudo ss -tulpn | grep -q ":${app_port} "; then
             break
         fi

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="en" class="dark">
 <head>
 
     <meta charset="UTF-8">
@@ -25,7 +25,6 @@
             return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         };
 
-        // Set CSS Variable ke :root
         document.documentElement.style.setProperty('--theme-card-bg', hexToRgba(uiCfg.cardHex, uiCfg.cardOp));
         document.documentElement.style.setProperty('--theme-card-blur', uiCfg.cardBlur + 'px');
         document.documentElement.style.setProperty('--theme-text-main', uiCfg.textHex);
@@ -35,11 +34,9 @@
 
 <body class="bg-transparent text-slate-100 font-sans flex h-screen overflow-hidden selection:bg-indigo-500 selection:text-white">
 
-    <!-- SIDEBAR COMPONENT -->
      
     {% include 'components/sidebar.html' %}
 
-    <!-- MAIN CONTENT AREA -->
     <main class="flex-1 overflow-y-auto bg-transparent p-8 lg:p-10">
         <button id="mobile-menu-btn" class="fixed z-999 md:hidden py-2 px-3 bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 rounded-xl text-slate-300 transition-all cursor-pointer">
             <i class="fa fa-bars text-lg"></i>
@@ -49,7 +46,6 @@
 
     </main>
 
-    <!-- JS MODULES -->
     <script src="/static/js/main.js"></script>
 
 </body>
@@ -102,12 +98,10 @@
             menuBtn.classList.toggle('translate-x-64'); 
         };
 
-        // Event listener pas di-klik
         if (menuBtn) {
             menuBtn.addEventListener('click', toggleSidebar);
         }
         
-        // Kalau overlay di-klik, tutup sidebarnya
         overlay.addEventListener('click', toggleSidebar);
     });
 

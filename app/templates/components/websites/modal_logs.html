@@ -1,5 +1,5 @@
 <div id="modalLogs" class="hidden fixed inset-0 bg-slate-950/80 z-[60] flex items-center justify-center backdrop-blur-sm">
-    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-4xl p-6 shadow-2xl flex flex-col h-[80vh]">
+    <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-700/60 rounded-2xl w-full max-w-4xl p-4 md:p-6 shadow-2xl flex flex-col h-[80vh]">
         <div class="flex justify-between items-center mb-4 pb-4 border-b border-slate-800/60">
             <h3 class="text-lg font-bold text-white flex items-center gap-2">
                 <i class="fa fa-terminal text-slate-400"></i> System Logs: <span id="logTitle" class="text-indigo-400 uppercase tracking-wider bg-indigo-500/10 px-2 py-0.5 rounded-lg border border-indigo-500/20 text-sm ml-1"></span>
@@ -9,13 +9,13 @@
         
         <div class="bg-[#0c0c0c]/90 backdrop-blur-md border border-slate-800/80 rounded-xl p-4 flex-1 overflow-hidden relative shadow-inner">
             <div id="logLoading" class="absolute inset-0 bg-[#0c0c0c]/80 flex justify-center items-center text-slate-400 text-sm font-bold z-10 backdrop-blur-sm">
-                <i class="fa fa-spinner fa-spin mr-2"></i> Mengambil log...
+                <i class="fa fa-spinner fa-spin mr-2"></i> Fetching logs...
             </div>
             <pre id="logContent" class="text-slate-300 text-[11px] md:text-xs font-mono whitespace-pre-wrap overflow-y-auto h-full outline-none custom-scrollbar pr-2 leading-loose"></pre>
         </div>
         
         <div class="mt-5 flex justify-end">
-            <button onclick="closeModal('modalLogs')" class="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-xl text-xs font-bold transition shadow-lg border border-slate-700/50">Tutup</button>
+            <button onclick="closeModal('modalLogs')" class="bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-xl text-xs font-bold transition shadow-lg border border-slate-700/50">Close</button>
         </div>
     </div>
 </div>

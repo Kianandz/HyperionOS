@@ -2,12 +2,11 @@
 {% block title %}Terminal - HyperionOS{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
+<div class="w-full h-full px-2 sm:px-0">
     {% include 'components/terminal/container.html' %}
 </div>
 
 {% block scripts %}
-<!-- Library xterm.js dan Addon buat responsive auto-fit -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.css" />
 <script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.js"></script>
@@ -18,7 +17,7 @@ var observer = new MutationObserver(() => {
   const el = document.querySelector('#terminal-container .terminal.xterm');
 
   if (el) {
-    el.classList.add('p-4');
+    el.classList.add('p-2', 'sm:p-4', 'h-full');
     observer.disconnect();
   }
 });
