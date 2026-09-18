@@ -5,13 +5,16 @@ from .constants import PHP_INI_PATHS
 
 def get_active_php_socket():
     possible_sockets = [
-        "/run/php-fpm/php-fpm.sock",
-        "/run/php/php-fpm.sock",
-        "/var/run/php-fpm/php-fpm.sock",
+        "/run/php/php*.sock",
+        "/run/php-fpm/php*.sock",
+        "/var/run/php/php*.sock",
+        "/var/run/php-fpm/php*.sock",
     ]
     for sock in possible_sockets:
-        if os.path.exists(sock):
-            return sock
+        matched_sockets = glob.glob(sock)
+        if matched_sockets:
+            return matched_sockets[0]
+
     return "/run/php-fpm/php-fpm.sock"
 
 
@@ -30,20 +33,19 @@ def has_php_files(root_dir: str) -> bool:
 def control_php_fpm(action: str):
     allowed = ["reload", "restart", "start", "stop"]
     if action not in allowed:
-        raise Exception("Actions is not valid")
+        raise Exception("Action is not valid")
 
     svc = "php-fpm"
     chk = subprocess.run(
-        ["sudo", "systemctl", "status", "php-fpm"], capture_output=True, text=True
+        ["systemctl", "status", "php-fpm"], capture_output=True, text=True
     )
-    if "loaded" not in chk.stdout:
-        for v in ["php8.3-fpm", "php8.2-fpm", "php8.1-fpm", "php-fpm"]:
-            if (
-                "loaded"
-                in subprocess.run(
-                    ["sudo", "systemctl", "status", v], capture_output=True, text=True
-                ).stdout
-            ):
+
+    if chk.returncode == 4:
+        for v in ["php8.4-fpm", "php8.3-fpm", "php8.2-fpm", "php8.1-fpm", "php-fpm"]:
+            check_v = subprocess.run(
+                ["systemctl", "status", v], capture_output=True, text=True
+            )
+            if check_v.returncode != 4:
                 svc = v
                 break
 
