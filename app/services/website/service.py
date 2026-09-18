@@ -1,28 +1,49 @@
 import os
 import subprocess
 
+possible_services = {
+    "nginx": ["nginx", "nginx.service"],
+    "php-fpm": [
+        "php-fpm",
+        "php-fpm.service",
+        "php8.3-fpm",
+        "php8.3-fpm.service",
+        "php8.2-fpm",
+        "php8.2-fpm.service",
+        "php81-php-fpm",
+    ],
+}
+
 
 def get_service_status(service_name: str) -> dict:
-    try:
-        res = subprocess.run(
-            ["sudo", "systemctl", "is-active", service_name],
-            capture_output=True,
-            text=True,
-        )
-        status = res.stdout.strip()
-        check_exist = subprocess.run(
-            ["sudo", "systemctl", "status", service_name],
-            capture_output=True,
-            text=True,
-        )
-        is_installed = "loaded" in check_exist.stdout or "loaded" in check_exist.stderr
-        return {
-            "service": service_name,
-            "status": status if is_installed else "not_installed",
-            "is_active": status == "active",
-        }
-    except Exception:
-        return {"service": service_name, "status": "unknown", "is_active": False}
+    candidates = possible_services.get(service_name, [service_name])
+
+    for unit in candidates:
+        try:
+            res = subprocess.run(
+                ["systemctl", "show", unit, "--property=LoadState,ActiveState"],
+                capture_output=True,
+                text=True,
+            )
+            props = dict(
+                line.split("=", 1)
+                for line in res.stdout.strip().splitlines()
+                if "=" in line
+            )
+
+            load_state = props.get("LoadState", "not-found")
+            active_state = props.get("ActiveState", "inactive")
+
+            if load_state == "loaded":
+                return {
+                    "service": unit,
+                    "status": active_state,
+                    "is_active": active_state == "active",
+                }
+        except Exception:
+            continue
+
+    return {"service": service_name, "status": "not_installed", "is_active": False}
 
 
 def get_service_logs(target: str, lines: int = 150):
@@ -32,7 +53,9 @@ def get_service_logs(target: str, lines: int = 150):
             "php-fpm",
             "php-fpm.service",
             "php8.3-fpm",
+            "php8.3-fpm.service",
             "php8.2-fpm",
+            "php8.2-fpm.service",
             "php81-php-fpm",
         ],
     }
