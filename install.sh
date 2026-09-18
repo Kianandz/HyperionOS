@@ -7,6 +7,11 @@
 
 set -euo pipefail
 
+if [[ "${EUID}" -ne 0 ]]; then
+    echo "Permission denied: Root or sudo access required."
+    exit 1
+fi
+
 # Ambil lokasi absolut direktori script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODULES_DIR="${SCRIPT_DIR}/scripts"
