@@ -40,6 +40,7 @@ setup_application() {
     local secret_key
     secret_key=$(openssl rand -base64 64 | tr -d '\n')
 
+    local app_version="1.0.0"
     if [[ -f "$PWD/VERSION" ]]; then
         app_version=$(cat "$PWD/version" | tr -d '\n' | tr -d ' ')
     fi
