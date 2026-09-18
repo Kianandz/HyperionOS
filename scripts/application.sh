@@ -41,7 +41,7 @@ setup_application() {
     secret_key=$(openssl rand -base64 64 | tr -d '\n')
 
     if [[ -f "$PWD/VERSION" ]]; then
-        app_version=$(cat "$PWD/VERSION" | tr -d '\n' | tr -d ' ')
+        app_version=$(cat "$PWD/version" | tr -d '\n' | tr -d ' ')
     fi
 
     log_info "Allocating random available port for application..."
