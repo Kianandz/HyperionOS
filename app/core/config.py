@@ -5,13 +5,13 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
 
-    APP_NAME: str = os.getenv("TITLE", "HyperionOS")
+    APP_NAME: str = os.getenv("TITLE")
 
-    VERSION: str = os.getenv("VERSION", "1.0.0")
+    VERSION: str = os.getenv("VERSION")
 
     PORT: str = os.getenv("PORT")
 
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "hyperion-secret-key-change-this")
+    SECRET_KEY: str = os.getenv("SECRET_KEY")
 
     DEBUG: bool = True
 

@@ -14,9 +14,9 @@ After=network.target
 
 [Service]
 User=root
-Group=${APP_USER}
+Group=root
 WorkingDirectory=${APP_DIR}
-ExecStart=${APP_DIR}/venv/bin/python /HyperionOS/main.py
+ExecStart=${APP_DIR}/venv/bin/python ${APP_DIR}/main.py
 Restart=always
 RestartSec=5
 StandardOutput=journal
@@ -27,5 +27,5 @@ WantedBy=multi-user.target
 EOF
     sudo systemctl daemon-reload
     sudo systemctl enable hyperion >/dev/null 2>&1
-    log_success "Systemd integration configured."
+    log_success "Systemd integration configured for root execution."
 }

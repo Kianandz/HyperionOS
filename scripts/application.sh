@@ -40,6 +40,10 @@ setup_application() {
     local secret_key
     secret_key=$(openssl rand -base64 64 | tr -d '\n')
 
+    if [[ -f "$PWD/VERSION" ]]; then
+        app_version=$(cat "$PWD/VERSION" | tr -d '\n' | tr -d ' ')
+    fi
+
     log_info "Allocating random available port for application..."
     local app_port
     while true; do
@@ -53,7 +57,7 @@ setup_application() {
 
     sudo -u "${APP_USER}" tee "${APP_DIR}/.env" > /dev/null <<EOF
 APP_NAME=HyperionOS
-VERSION=1.0.0
+VERSION=${app_version}
 PORT=${app_port}
 SECRET_KEY=${secret_key}
 DEBUG=False

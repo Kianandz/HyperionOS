@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from app.core.config import settings
 from app.routes import master_router
 
-app = FastAPI(title=settings.APP_NAME, debug=settings.DEBUG)
+app = FastAPI(title=settings.APP_NAME, version=settings.VERSION, debug=settings.DEBUG)
 
 app.add_middleware(
     SessionMiddleware,
