@@ -1,205 +1,112 @@
-# HyperionOS
+<p align="center">
+  <h1>HyperionOS</h1>
+  <em>Elevate your system management with intuitive control and powerful automation.</em>
+</p>
 
-> A lightweight, modern, and modular web-based server management panel built with FastAPI and Python for Linux environments.
-
-![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)
-![Framework](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Platform](https://img.shields.io/badge/platform-Linux-f34b7d.svg)
-
----
-
-## 📌 Overview
-
-**HyperionOS** is an open-source, all-in-one Linux server administration dashboard. Designed to bridge the gap between command-line server operations and modern web interfaces, HyperionOS empowers system administrators and developers to monitor, configure, and manage core server infrastructure seamlessly through an intuitive browser interface.
+<p align="center">
+  <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status">
+  <img src="https://img.shields.io/badge/license-MIT-blue" alt="License">
+  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="PRs Welcome">
+  <img src="https://img.shields.io/github/stars/Kianandz/HyperionOS?style=social" alt="GitHub Stars">
+</p>
 
 ---
 
-## ✨ Key Features
+## The Strategic "Why"
 
-### 🔒 PAM-Based Native Authentication
-- Integrates directly with Linux Pluggable Authentication Modules (PAM).
-- Secures panel access using system credentials without requiring separate user databases.
+> Navigating the complexities of modern system administration can be a fragmented and time-consuming ordeal. From disparate monitoring tools to manual script execution and a lack of centralized oversight, managing system health and operations often leads to inefficiencies, potential errors, and a steep learning curve. The absence of a unified, accessible interface for system control hinders productivity and proactive problem-solving.
 
-### 📊 System Health & Performance Monitoring
-- Real-time telemetry for CPU usage, memory allocation, swap space, and disk utilization.
-- Live process monitoring and system resource analytics.
+HyperionOS emerges as the definitive solution, providing a lightweight, web-enabled platform that consolidates essential system management functions into a single, intuitive interface. By abstracting away underlying complexities and offering powerful automation capabilities, HyperionOS empowers users to effortlessly monitor, control, and optimize their systems, ensuring peak performance and operational simplicity. Experience a superior outcome where system management is no longer a chore, but an efficient and streamlined process.
 
-### 🌐 Web Server & Reverse Proxy Manager
-- Automated host and configuration management for **Nginx**, **PHP-FPM**, and **Node.js**.
-- Easily create reverse proxies, configure virtual hosts, manage SSL certificates, and view live access/error logs.
+## Key Features
 
-### 🐳 Docker & Container Orchestration
-- Complete interface for managing Docker containers, images, volumes, and networks.
-- Full support for **Docker Compose** stack deployment and live container log streaming.
+*   🌐 **Web-based Control**: Access and manage your systems from any browser, anywhere, providing unparalleled flexibility and convenience.
+*   📊 **Real-time Monitoring**: Gain instant insights into critical system metrics like CPU usage, memory consumption, and disk space with a dynamic, easy-to-understand dashboard.
+*   ⚙️ **Script Automation Engine**: Automate routine tasks and custom operations by seamlessly integrating and executing your own Python or Bash scripts directly through the platform.
+*   ⚡ **Lightweight Footprint**: Engineered for efficiency, HyperionOS runs with minimal resource overhead, ensuring it enhances your system without bogging it down.
+*   🧩 **Modular & Extensible Architecture**: Built on a Python foundation, HyperionOS is designed for easy expansion, allowing developers to integrate new features and functionalities effortlessly.
 
-### 🗄️ Database Management (MySQL / MariaDB)
-- Built-in GUI for local database administration.
-- Execute custom SQL queries, perform table CRUD operations, inspect schemas, and manage user privileges.
+## Technical Architecture
 
-### 📁 Advanced Web File Manager
-- Feature-rich file browser supporting uploads, downloads, archive compression/extraction (ZIP/TAR), permission management (`chmod`/`chown`), and inline text editing.
+HyperionOS leverages a robust Python backend for its core logic and system interactions, complemented by a modern HTML-based frontend for an intuitive user experience. Bash scripting facilitates streamlined installation and operational tasks.
 
-### 🛡️ Firewall & Network Security (UFW)
-- Graphical control for Uncomplicated Firewall (UFW).
-- Add/remove TCP & UDP rules, toggle firewall statuses, and monitor security logs.
+| Technology          | Purpose                             | Key Benefit                                  |
+| :------------------ | :---------------------------------- | :------------------------------------------- |
+| **Python**          | Backend Logic, System Interaction   | Robust, scalable, and versatile core functionality |
+| **HTML/CSS/JS**     | Frontend Interface, User Experience | Intuitive, accessible, and responsive web UI |
+| **Bash Scripting**  | Installation, Utility Automation    | Streamlined setup and operational tasks      |
+| **Virtual Env (venv)** | Dependency Isolation              | Clean, reproducible, and conflict-free environments |
 
-### ☁️ Cloudflare Tunnels Integration
-- Manage `cloudflared` instances to securely expose local services to the web without opening public ports.
-
-### 📂 Samba Network Sharing
-- Graphical configuration for SMB/Samba local network shares.
-- Set share paths, guest permissions, and manage Samba user passwords.
-
-### 💻 Web-Based Interactive Terminal
-- Full pseudo-terminal (PTY) emulation over WebSockets.
-- Execute shell commands securely directly from your browser.
-
----
-
-## 🏗️ Project Architecture
-
-HyperionOS is built following modern software design patterns, separating routing, business logic, and OS-level execution:
+### Directory Structure
 
 ```
-hyperion-os/
+.
 ├── app/
-│   ├── core/           # Core configuration, security middleware & PAM auth handlers
-│   │   ├── config.py
-│   │   └── security.py
-│   ├── routes/         # Modular API and HTML route controllers
-│   │   ├── auth.py
-│   │   ├── dashboard.py
-│   │   ├── database.py
-│   │   ├── docker.py
-│   │   ├── files.py
-│   │   ├── firewall.py
-│   │   ├── samba.py
-│   │   ├── system.py
-│   │   ├── terminal.py
-│   │   └── webserver.py
-│   ├── services/       # Service layer executing Linux system utilities & CLI commands
-│   │   ├── docker_service.py
-│   │   ├── system_service.py
-│   │   └── ...
-│   └── templates/      # Jinja2 HTML templates and Tailwind CSS UI layout
-├── scripts/            # Deployment and operational helper scripts
-├── install.sh          # One-click installation script
-├── requirements.txt    # Python dependencies
-├── main.py             # Application entry point
-└── README.md
+│   ├── core/         # Core configurations and security middlewares
+│   ├── routes/       # API endpoints and application routing
+│   ├── services/     # Business logic and system integrations
+│   ├── static/       # Static web assets (CSS, JS, fonts, uploads)
+│   ├── storage/      # Local persistent data storage
+│   └── templates/    # HTML templates, layouts, and UI components
+├── scripts/          # Shell scripts for deployment and system operations
+├── main.py           # Application entry point
+├── install.sh        # Automated installation and setup script
+├── requirements.txt  # Python dependencies
+└── README.md         # Project documentation
 ```
 
----
+## Operational Setup
 
-## ⚙️ Prerequisites
+### Prerequisites
 
-- **Operating System**: Linux (Ubuntu 20.04+, Debian 11+, or RHEL-based distributions recommended)
-- **Python**: Python 3.10 or higher
-- **Privileges**: `root` or `sudo` access (required for PAM authentication and `systemctl` interactions)
-- **Dependencies**: `systemd`, `nginx` (optional), `docker` & `docker-compose` (optional)
+Before you begin, ensure you have the following installed on your system:
 
----
+*   **Python 3.8+**: Download from [python.org](https://www.python.org/downloads/).
+*   **pip**: Python's package installer (usually comes with Python).
+*   **venv**: Python's built-in module for creating virtual environments (usually comes with Python).
 
-## 🚀 Installation & Setup
+### Installation
 
-### Automated Quick Installation
-
-HyperionOS provides an automated installation script to set up system dependencies, virtual environments, and initial permissions automatically:
+**Option 1: Quick Installation (Recommended)**
+The easiest way to install HyperionOS. Run the following command in your terminal to automatically download and execute the setup script:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/your-username/hyperion-os/main/install.sh | sudo bash
+curl -sSL https://projecthyperion.my.id/script/install.sh | sudo bash || wget -qO- https://projecthyperion.my.id/script/install.sh | sudo bash
 ```
 
----
+**Option 2: Manual Installation**
+If you prefer to inspect the source code before running the setup, you can clone the repository manually:
 
-### Manual Installation
-
-If you prefer to set up HyperionOS manually, follow these steps:
-
-#### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/hyperion-os.git
-cd hyperion-os
+git clone https://github.com/Kianandz/HyperionOS.git
+cd HyperionOS
+chmod +x install.sh scripts/*.sh
+sudo ./install.sh
 ```
 
-#### 2. Create and Activate a Virtual Environment
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
+## Community & Governance
 
-#### 3. Install Python Dependencies
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
+### Contributing
 
-#### 4. Configure Environment Variables
-Create a `.env` file in the root directory:
-```env
-HOST=0.0.0.0
-PORT=8000
-SECRET_KEY=your-super-secret-key-change-this
-DEBUG=False
-```
+We welcome contributions from the community to make HyperionOS even better! If you're interested in contributing, please follow these guidelines:
 
-#### 5. Run the Application
-Start the Uvicorn server:
-```bash
-python main.py
-# or directly via Uvicorn
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-```
+1.  **Fork** the repository on GitHub.
+2.  **Clone** your forked repository to your local machine.
+3.  **Create a new branch** for your feature or bug fix: `git checkout -b feature/your-feature-name` or `git checkout -b bugfix/issue-description`.
+4.  **Make your changes**, ensuring your code adheres to the project's coding standards.
+5.  **Test your changes** thoroughly.
+6.  **Commit your changes** with a clear and descriptive message: `git commit -m "feat: Add new feature for X"` or `git commit -m "fix: Resolve bug in Y"`.
+7.  **Push your branch** to your forked repository: `git push origin feature/your-feature-name`.
+8.  **Open a Pull Request** against the `main` branch of the original HyperionOS repository. Provide a detailed description of your changes.
 
-Access the panel by navigating to `http://<your-server-ip>:8000`.
+### License
 
----
+HyperionOS is released under the **MIT License**.
 
-## 🛡️ Running as a Systemd Service
+This means you are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, and to permit persons to whom the software is furnished to do so, subject to the following conditions:
 
-To ensure HyperionOS runs continuously in the background and starts automatically on system boot:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-1. Create a service file at `/etc/systemd/system/hyperion.service`:
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.**
 
-```ini
-[Unit]
-Description=HyperionOS Web Management Panel
-After=network.target
-
-[Service]
-User=root
-WorkingDirectory=/opt/hyperion-os
-ExecStart=/opt/hyperion-os/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
-Restart=always
-RestartSec=3
-
-[Install]
-WantedBy=multi-user.target
-```
-
-2. Enable and start the service:
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable hyperion
-sudo systemctl start hyperion
-```
-
-3. Check service status:
-```bash
-sudo systemctl status hyperion
-```
-
----
-
-## 🔒 Security & Best Practices
-
-- **Reverse Proxy & SSL**: Always run HyperionOS behind Nginx, Caddy, or Cloudflare Tunnel with SSL/TLS enabled for secure traffic encryption.
-- **Firewall Rules**: Restrict access to the application port using UFW or external security groups to trusted IP addresses only.
-- **PAM Authorization**: Ensure that user access levels are strictly controlled via Linux system accounts.
-
----
-
-## 📄 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
+For the full license text, please refer to the `LICENSE` file in the root of this repository.

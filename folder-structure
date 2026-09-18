@@ -197,7 +197,8 @@
 │   │       └── backgrounds
 │   │           ├── wpp-10.png
 │   │           ├── wpp-1.jpg
-│   │           └── wpp-1.mp4
+│   │           ├── wpp-1.mp4
+│   │           └── wpp-2.png
 │   ├── storage
 │   │   └── node_projects.json
 │   └── templates
@@ -270,17 +271,19 @@
 │           ├── settings.html
 │           ├── terminal.html
 │           └── websites.html
+├── codesummary.json
 ├── folder-structure
 ├── install.sh
 ├── main.py
 ├── README.md
 ├── requirements.txt
-└── scripts
-    ├── application.sh
-    ├── cli-wrapper.sh
-    ├── dependencies.sh
-    ├── security.sh
-    ├── systemd.sh
-    └── utils.sh
+├── scripts
+│   ├── application.sh
+│   ├── cli-wrapper.sh
+│   ├── dependencies.sh
+│   ├── security.sh
+│   ├── systemd.sh
+│   └── utils.sh
+└── version
 
-59 directories, 225 files
+59 directories, 228 files
