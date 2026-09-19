@@ -1,0 +1,80 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-4 sm:p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-network-wired text-blue-400"></i> Network Management
+    </h2>
+    
+    <div class="flex justify-between items-center bg-slate-950/80 border border-slate-700/60 rounded-xl p-3">
+        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Manager</span>
+        <span class="text-xs font-bold text-blue-400">{{ network.manager }}</span>
+    </div>
+
+    <div class="space-y-3 mt-4">
+        <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px]">Interfaces</label>
+        {% for iface in network.interfaces %}
+        <div class="flex justify-between items-center bg-slate-950/80 border border-slate-700/60 rounded-xl p-3">
+            <div class="flex flex-col">
+                <span class="text-xs font-bold text-slate-200">{{ iface.name }}</span>
+                <span class="text-[10px] text-slate-400">{{ iface.ip if iface.ip else 'No IP Assigned' }}</span>
+            </div>
+            <div>
+                <span class="px-2 py-1 rounded text-[10px] font-bold {% if iface.status == 'UP' %}bg-emerald-500/20 text-emerald-400{% else %}bg-red-500/20 text-red-400{% endif %}">
+                    {{ iface.status }}
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <button onclick="openNetworkModal()" class="w-full bg-blue-600 hover:bg-blue-500 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-blue-500/20 border border-blue-500/50 mt-2 flex items-center justify-center gap-2 cursor-pointer">
+        <i class="fa fa-cog"></i> Configure Interfaces
+    </button>
+</div>
+
+<div id="modal-network" class="hidden fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+        <h3 class="text-white font-bold mb-5 flex items-center gap-2"><i class="fa fa-ethernet text-blue-400"></i> Configure Interface IP</h3>
+        <form action="/settings/network/apply" method="POST" class="space-y-4">
+            <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1.5">Select Interface</label>
+                <select name="interface" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-white text-xs outline-none">
+                    {% for iface in network.interfaces %}
+                    <option value="{{ iface.name }}">{{ iface.name }} ({{ iface.ip }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1.5">IPv4 Mode</label>
+                <select name="mode" onchange="toggleIpInputs(this.value)" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-white text-xs outline-none">
+                    <option value="dhcp">DHCP (Automatic)</option>
+                    <option value="static">Static IP</option>
+                </select>
+            </div>
+
+            <div id="static-inputs" class="hidden space-y-4">
+                <div>
+                    <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1.5">IP Address (e.g. 192.168.1.10/24)</label>
+                    <input type="text" name="ip_address" placeholder="192.168.1.x/24" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-white text-xs outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] text-slate-400 uppercase font-bold mb-1.5">Gateway IP</label>
+                    <input type="text" name="gateway" placeholder="192.168.1.1" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-white text-xs outline-none">
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <button type="button" onclick="closeNetworkModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-3 rounded-xl text-xs font-bold transition cursor-pointer">Cancel</button>
+                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white py-3 rounded-xl text-xs font-bold transition cursor-pointer shadow-lg shadow-blue-500/20">Apply Config</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openNetworkModal() { document.getElementById('modal-network').classList.remove('hidden'); }
+    function closeNetworkModal() { document.getElementById('modal-network').classList.add('hidden'); }
+    function toggleIpInputs(val) {
+        if(val === 'static') document.getElementById('static-inputs').classList.remove('hidden');
+        else document.getElementById('static-inputs').classList.add('hidden');
+    }
+</script>

@@ -3,14 +3,25 @@
 {% block title %}Settings - HyperionOS{% endblock %}
 
 {% block content %}
-<div class="space-y-6 max-w-7xl mx-auto">
+<div class="space-y-6">
     {% include 'components/settings/header.html' %}
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {% include 'components/settings/status.html' %}
+        {% include 'components/settings/network.html' %}
+        
+        {% include 'components/settings/timezone.html' %}
+        {% include 'components/settings/users.html' %}
+        
+        {% include 'components/settings/port.html' %}
         {% include 'components/settings/dns.html' %}
+        
         {% include 'components/settings/maintenance.html' %}
-        {% include 'components/settings/background.html' %}
         {% include 'components/settings/styling.html' %}
+        
+        <div class="md:col-span-2">
+            {% include 'components/settings/background.html' %}
+        </div>
     </div>
 </div>
 

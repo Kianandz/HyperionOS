@@ -1,0 +1,22 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-4 sm:p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-users text-blue-400"></i> Host User Management
+    </h2>
+    <form action="/settings/password" method="POST" class="space-y-4">
+        <div>
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Select User</label>
+            <select name="username" class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500">
+                {% for user in system_users %}
+                <option value="{{ user }}">{{ user }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">New Password</label>
+            <input type="password" name="password" placeholder="Enter new password" required class="w-full bg-slate-950/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 text-xs outline-none focus:border-indigo-500">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 active:scale-95 text-white py-2.5 rounded-xl text-xs font-bold transition shadow-lg shadow-blue-500/20 border border-blue-500/50 flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa fa-key"></i> Update Password
+        </button>
+    </form>
+</div>

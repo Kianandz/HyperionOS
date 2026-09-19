@@ -29,11 +29,11 @@ def add_project(name, source_type, source_val, env_content, start_cmd):
         env_path = proj_dir / ".env"
         env_path.write_text(env_content)
 
-    npm_res = run_cmd(f"cd {proj_dir} && npm install")
+    npm_res = run_cmd(f"cd {proj_dir} && sudo npm install")
     if not npm_res["success"]:
         return {"success": False, "error": f"Failed running npm i: {npm_res['error']}"}
 
-    pm2_res = run_cmd(f"cd {proj_dir} && pm2 start {start_cmd} --name {name}")
+    pm2_res = run_cmd(f"cd {proj_dir} && sudo pm2 start {start_cmd} --name {name}")
     if not pm2_res["success"]:
         return {"success": False, "error": f"Failed starting PM2: {pm2_res['error']}"}
 

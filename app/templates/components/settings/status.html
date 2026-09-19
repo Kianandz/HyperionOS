@@ -1,0 +1,15 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-4 sm:p-5 rounded-2xl space-y-4 shadow-xl">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-server text-emerald-400"></i> System Status
+    </h2>
+    <div class="space-y-2 text-xs">
+        <div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="text-slate-400">Hostname</span> <span class="font-bold text-slate-200">{{ sys_status.hostname }}</span></div>
+        <div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="text-slate-400">Kernel</span> <span class="font-bold text-slate-200">{{ sys_status.kernel }}</span></div>
+        <div class="flex justify-between border-b border-slate-800/60 pb-2"><span class="text-slate-400">SSH Service</span> 
+            <span class="font-bold {% if sys_status.ssh_active %}text-emerald-400{% else %}text-red-400{% endif %}">
+                {{ 'Active' if sys_status.ssh_active else 'Inactive' }}
+            </span>
+        </div>
+        <div class="flex justify-between"><span class="text-slate-400">Swap Memory</span> <span class="font-bold text-slate-200">{{ sys_status.swap_used_mb }} / {{ sys_status.swap_total_mb }} MB ({{ sys_status.swap_percent }}%)</span></div>
+    </div>
+</div>
