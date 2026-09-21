@@ -5,6 +5,7 @@ from .logger import logger
 def verify_linux_user(username: str, password: str) -> bool:
     try:
         pamela.authenticate(username, password, service="passwd")
+        logger.info(f"Successful login for user '{username}'")
         return True
     except pamela.PAMError as e:
         logger.warning(f"Failed login attempt for user '{username}': {e}")

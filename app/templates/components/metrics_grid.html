@@ -1,5 +1,5 @@
 <!-- Hostname Card -->
-<div class="md:col-span-1 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl transition-all hover:bg-slate-900/60">
+<div class="md:col-span-1 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl hover:bg-slate-900/60">
     <div class="flex h-full flex-col justify-center">
         <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500"><i class="fa fa-server mr-1"></i> Hostname</p>
         <p class="mt-1.5 flex items-center gap-2 font-mono text-xs font-bold text-slate-200 truncate">
@@ -10,20 +10,20 @@
 
 <!-- CPU Usage Card -->
 <div class="md:col-span-3 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl -mr-10 -mt-10 transition-all group-hover:bg-indigo-500/10"></div>
+    <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-indigo-500/10"></div>
     <div class="flex h-full flex-col justify-center relative z-10">
         <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500"><i class="fa fa-microchip mr-1"></i> CPU Usage</p>
         <div class="flex items-end justify-between gap-4">
             <p class="font-mono text-4xl font-semibold tracking-tight text-white">{{ metrics.cpu_percent }}%</p>
             <div class="mb-1 h-2 w-full max-w-xs overflow-hidden rounded-full bg-slate-800/80 shadow-inner">
-                <div class="h-full rounded-full bg-indigo-500 transition-all duration-700 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: {{ metrics.cpu_percent }}%"></div>
+                <div class="h-full rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: {{ metrics.cpu_percent }}%"></div>
             </div>
         </div>
     </div>
 </div>
 
 <!-- Memory RAM Card -->
-<div class="md:col-span-2 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl transition-all hover:bg-slate-900/60">
+<div class="md:col-span-2 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl hover:bg-slate-900/60">
     <div class="flex h-full items-center justify-between gap-6">
         <div>
             <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500"><i class="fa fa-microchip mr-1"></i> Memory</p>
@@ -36,12 +36,12 @@
         </div>
     </div>
     <div class="mt-5 h-2 overflow-hidden rounded-full bg-slate-800/80 shadow-inner">
-        <div class="h-full rounded-full bg-indigo-500 transition-all duration-700 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: {{ metrics.ram.percent }}%"></div>
+        <div class="h-full rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]" style="width: {{ metrics.ram.percent }}%"></div>
     </div>
 </div>
 
 <!-- Storage Card -->
-<div class="md:col-span-2 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl transition-all hover:bg-slate-900/60">
+<div class="md:col-span-2 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl hover:bg-slate-900/60">
     <div class="mb-4 flex items-center gap-2">
         <i class="fa fa-hdd-o text-slate-500"></i>
         <span class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">Storage Volumes</span>
@@ -96,5 +96,29 @@
             <p class="mb-2 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-slate-500"><i class="fa fa-arrow-up text-pink-400"></i> Upload</p>
             <p class="font-mono text-3xl font-semibold tracking-tight text-pink-400">{{ metrics.network.upload_kbps }} <span class="text-xs font-normal text-pink-400/50">KB/s</span></p>
         </div>
+    </div>
+</div>
+
+<!-- Login Logs -->
+<div class="md:col-span-4 glass-panel border border-slate-800/60 rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+    <div class="mb-4 flex items-center justify-between">
+        <p class="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+            <i class="fa fa-shield mr-1"></i> Recents Login
+        </p>
+    </div>
+    
+    <div class="bg-slate-900/80 rounded-xl p-4 font-mono text-[11px] text-slate-400 h-32 overflow-y-auto space-y-2 shadow-inner border border-slate-800/50">
+        {% if metrics.auth_logs %}
+            {% for log in metrics.auth_logs %}
+                <div class="border-b border-slate-800/50 pb-1 
+                    {% if 'Failed' in log %}text-rose-400{% elif 'Successful' in log %}text-emerald-400{% endif %}">
+                    > {{ log }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-slate-500 flex items-center justify-center h-full">
+                Loading Logs!
+            </div>
+        {% endif %}
     </div>
 </div>

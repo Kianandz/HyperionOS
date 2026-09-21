@@ -128,6 +128,10 @@
 │   │   │   ├── __init__.py
 │   │   │   ├── shares.py
 │   │   │   └── users.py
+│   │   ├── settings
+│   │   │   ├── page_service.py
+│   │   │   ├── system_service.py
+│   │   │   └── upload_service.py
 │   │   ├── ufw
 │   │   │   ├── actions.py
 │   │   │   ├── __init__.py
@@ -143,8 +147,10 @@
 │   │   ├── css
 │   │   │   ├── fontawesome.css
 │   │   │   ├── fontawesome.min.css
+│   │   │   ├── input.css
 │   │   │   ├── responsive.css
-│   │   │   └── style.css
+│   │   │   ├── style.css
+│   │   │   └── tailwind.css
 │   │   ├── fonts
 │   │   │   ├── FontAwesome.otf
 │   │   │   ├── fontawesome-webfont.eot
@@ -247,7 +253,12 @@
 │       │   │   ├── dns.html
 │       │   │   ├── header.html
 │       │   │   ├── maintenance.html
-│       │   │   └── styling.html
+│       │   │   ├── network.html
+│       │   │   ├── port.html
+│       │   │   ├── status.html
+│       │   │   ├── styling.html
+│       │   │   ├── timezone.html
+│       │   │   └── users.html
 │       │   ├── sidebar.html
 │       │   ├── terminal
 │       │   │   └── container.html
@@ -274,7 +285,48 @@
 ├── codesummary.json
 ├── folder-structure
 ├── install.sh
+├── logs
+│   └── auth.log
 ├── main.py
+├── node_modules
+│   └── tailwindcss
+│       ├── dist
+│       │   ├── chunk-5JIJA4QV.mjs
+│       │   ├── chunk-C2OYBFIH.mjs
+│       │   ├── chunk-DCG7AFIE.mjs
+│       │   ├── colors-C__qRT83.d.ts
+│       │   ├── colors.d.mts
+│       │   ├── colors.d.ts
+│       │   ├── colors.js
+│       │   ├── colors.mjs
+│       │   ├── default-theme.d.mts
+│       │   ├── default-theme.d.ts
+│       │   ├── default-theme.js
+│       │   ├── default-theme.mjs
+│       │   ├── flatten-color-palette.d.mts
+│       │   ├── flatten-color-palette.d.ts
+│       │   ├── flatten-color-palette.js
+│       │   ├── flatten-color-palette.mjs
+│       │   ├── lib.d.mts
+│       │   ├── lib.d.ts
+│       │   ├── lib.js
+│       │   ├── lib.mjs
+│       │   ├── plugin.d.mts
+│       │   ├── plugin.d.ts
+│       │   ├── plugin.js
+│       │   ├── plugin.mjs
+│       │   ├── resolve-config-B4yBzhca.d.ts
+│       │   ├── resolve-config-QUZ9b-Gn.d.mts
+│       │   └── types-DWdTiksJ.d.mts
+│       ├── index.css
+│       ├── LICENSE
+│       ├── package.json
+│       ├── preflight.css
+│       ├── README.md
+│       ├── theme.css
+│       └── utilities.css
+├── package.json
+├── package-lock.json
 ├── README.md
 ├── requirements.txt
 ├── scripts
@@ -286,4 +338,4 @@
 │   └── utils.sh
 └── version
 
-59 directories, 228 files
+64 directories, 275 files

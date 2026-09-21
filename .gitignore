@@ -72,3 +72,8 @@ app/static/uploads/backgrounds/
 
 folder-structure
 codesummary.json
+
+node_modules
+package-lock.json
+package.json
+logs

@@ -4,7 +4,6 @@
             <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30 border border-indigo-500/50">H</div>
             <span class="text-xl font-bold tracking-wider text-white">Hyperion<span class="text-indigo-500">OS</span></span>
         </div>
-        <!-- Kontainer Menu -->
         <nav id="sidebar-nav" class="p-4 space-y-1.5 text-xs font-bold"></nav>
     </div>
 
@@ -19,17 +18,18 @@
 document.addEventListener('DOMContentLoaded', async () => {
     const nav = document.getElementById('sidebar-nav');
     const currentPath = window.location.pathname;
-    
-    // Default active page dilempar dari backend (Jinja context)
     const activePage = '{{ active_page | default("dashboard") }}'; 
 
     try {
-        const res = await fetch('/static/menu.json');
-        const menus = await res.json();
+        let menus = JSON.parse(sessionStorage.getItem('hyperion_menus'));
+        if (!menus) {
+            const res = await fetch('/static/menu.json');
+            menus = await res.json();
+            sessionStorage.setItem('hyperion_menus', JSON.stringify(menus));
+        }
         
         menus.forEach(menu => {
             if (menu.sub) {
-                // Perbaikan: Cek parent ID, Sub ID, ATAU cocokkan dengan currentPath (URL saat ini)
                 const isSubActive = menu.id === activePage || menu.sub.some(s => s.id === activePage || currentPath === s.url);
                 const details = document.createElement('details');
                 details.className = "group [&_summary::-webkit-details-marker]:hidden";
@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 details.innerHTML = `
                     <summary class="flex items-center justify-between px-4 py-3 rounded-xl cursor-pointer transition ${isSubActive ? 'bg-indigo-600/10 border border-indigo-500/20' : 'hover:bg-slate-800/50'}">
-                        <!-- Perbaikan: Set warna text agar tetap ungu kalau aktif, tidak peduli dropdown open/closed -->
                         <div class="flex items-center space-x-3 ${isSubActive ? 'text-indigo-300' : 'text-slate-400 group-open:text-indigo-300'}">
                             <i class="fa ${menu.icon} w-5 text-base"></i>
                             <span class="font-bold">${menu.label}</span>
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </summary>
                     <div class="pl-11 pr-4 py-2 space-y-1.5 mt-1">
                         ${menu.sub.map(s => {
-                            // Perbaikan: Cek sub item aktif menggunakan activePage atau URL path
                             const isItemActive = activePage === s.id || currentPath === s.url;
                             return `
                             <a href="${s.url}" class="flex items-center px-3 py-2 rounded-lg text-xs font-bold transition ${isItemActive ? 'text-indigo-400 bg-indigo-500/10 shadow-inner' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}">
@@ -58,7 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 `;
                 nav.appendChild(details);
             } else {
-                // Render menu biasa
                 const isActive = activePage === menu.id || currentPath === menu.url;
                 const a = document.createElement('a');
                 a.href = menu.url;

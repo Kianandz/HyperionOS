@@ -23,3 +23,11 @@ def get_system_info():
         "cpu_cores": psutil.cpu_count(logical=True),
         "process_count": len(psutil.pids()),
     }
+
+
+def get_recent_auth_logs(lines=5):
+    try:
+        with open("logs/auth.log", "r") as f:
+            return f.readlines()[-lines:]
+    except FileNotFoundError:
+        return []
