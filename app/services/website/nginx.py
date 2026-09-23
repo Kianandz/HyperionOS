@@ -52,7 +52,7 @@ def list_websites():
 
 
 def get_website_config(domain: str):
-    conf_path = os.path.join(NGINX_CONF_DIR, f"{domain}.conf")
+    conf_path = os.path.join(NGINX_CONF_DIR)
     disabled_path = os.path.join(NGINX_CONF_DIR, f"{domain}.disabled")
     target_path = conf_path if os.path.exists(conf_path) else disabled_path
 

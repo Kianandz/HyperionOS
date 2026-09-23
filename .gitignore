@@ -31,17 +31,11 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-
-# Logs
 *.log
 pip-log.txt
 pip-delete-this-directory.txt
-
-# Databases
 *.db
 *.sqlite3
-
-# OS generated files
 .DS_Store
 .DS_Store?
 ._*
@@ -49,15 +43,11 @@ pip-delete-this-directory.txt
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# IDEs and Editors
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-
-# Unit test / coverage reports
 htmlcov/
 .tox/
 .nox/
@@ -65,14 +55,10 @@ htmlcov/
 .coverage.*
 .cache
 .pytest_cache/
-
-# User Uploads (Opsional, hapus '#' jika ingin mengabaikan file upload user)
 app/static/uploads/*
 app/static/uploads/backgrounds/
-
 folder-structure
 codesummary.json
-
 node_modules
 package-lock.json
 package.json
