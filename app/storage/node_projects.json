@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "name": "a",
+    "path": "/var/www/nodes/a",
+    "start_cmd": "server.js",
+    "status": "online"
+  }
+]

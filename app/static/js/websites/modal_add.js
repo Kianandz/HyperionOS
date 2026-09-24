@@ -15,11 +15,20 @@ function switchTab(mode) {
 }
 
 function updateRootDir(domainValue) {
-    const cleanDomain = domainValue.replace(/[^a-zA-Z0-9.-]/g, '');
-    document.getElementById('inputRootDir').value = '/var/www/html/' + cleanDomain;
+    const originalDomain = domainValue.trim();
+    const safeDomain = originalDomain.split(/\s+/)[0]; 
+
+    if (safeDomain) {
+        document.getElementById('inputRootDir').value = '/var/www/html/' + safeDomain;
+    } else {
+        document.getElementById('inputRootDir').value = '/var/www/html/';
+    }
+    
     let rawArea = document.getElementById('rawConfigArea');
     let currentText = rawArea.value;
-    currentText = currentText.replace(/server_name [^;]+;/, 'server_name ' + (cleanDomain || 'example.com') + ';');
-    currentText = currentText.replace(/root \/var\/www\/html\/[^;]+;/, 'root /var/www/html/' + (cleanDomain || 'example.com') + ';');
+    
+    currentText = currentText.replace(/server_name [^;]+;/, 'server_name ' + (originalDomain || 'example.com') + ';');
+    currentText = currentText.replace(/root \/var\/www\/html\/[^;]+;/, 'root /var/www/html/' + (safeDomain || 'example.com') + ';');
+    
     rawArea.value = currentText;
 }

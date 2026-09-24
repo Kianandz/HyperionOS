@@ -1,4 +1,13 @@
-NGINX_CONF_DIR = "/etc/nginx/conf.d"
+import os
+
+if os.path.exists("/etc/nginx/sites-available"):
+    IS_DEBIAN = True
+    NGINX_CONF_DIR = "/etc/nginx/sites-available"
+    NGINX_ENABLED_DIR = "/etc/nginx/sites-enabled"
+else:
+    IS_DEBIAN = False
+    NGINX_CONF_DIR = "/etc/nginx/conf.d"
+    NGINX_ENABLED_DIR = "/etc/nginx/conf.d"
 
 NGINX_TEMPLATE = r"""
 server {

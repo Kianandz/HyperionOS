@@ -1,4 +1,5 @@
 import os
+import re
 from fastapi import Form, Depends, responses
 from app.core.security import verify_session
 from app.services import website
@@ -15,6 +16,11 @@ async def save_site(
     raw_config: str = Form(""),
     _: str = Depends(verify_session),
 ):
+    if mode != "simple" and raw_config:
+        match_root = re.search(r"root\s+([^;]+);", raw_config)
+        if match_root:
+            root_dir = match_root.group(1).strip()
+
     if root_dir.startswith("/var/www/html/"):
         os.makedirs(root_dir, exist_ok=True)
         index_file = os.path.join(

@@ -1,15 +1,21 @@
-// modal_fm.js
 let currentFMDomain = '';
 let currentSubPath = ''; 
 let clipboard = null; 
+let currentActualRoot = '';
 
 async function openFileManager(domain) {
-    currentFMDomain = domain; currentSubPath = ''; 
-    updatePathHeader(); openModal('modalFileManager'); await loadFiles();
+    currentFMDomain = domain; 
+    currentSubPath = ''; 
+    currentActualRoot = '';
+    
+    document.getElementById('fmCurrentPath').innerText = 'Loading path...'; 
+    openModal('modalFileManager'); 
+    await loadFiles();
 }
 
 function updatePathHeader() {
-    document.getElementById('fmCurrentPath').innerText = `/${currentFMDomain}${currentSubPath ? '/' + currentSubPath : ''}`;
+    let displayPath = currentActualRoot ? currentActualRoot : `/var/www/html/${currentFMDomain}`;
+    document.getElementById('fmCurrentPath').innerText = `${displayPath}${currentSubPath ? '/' + currentSubPath : ''}`;
 }
 
 async function loadFiles() {
@@ -19,6 +25,10 @@ async function loadFiles() {
     try {
         const res = await fetch(`/websites/files/list/${currentFMDomain}?subpath=${encodeURIComponent(currentSubPath)}`);
         const data = await res.json();
+
+        if (data.actual_root) {
+            currentActualRoot = data.actual_root;
+        }
         
         let html = currentSubPath !== '' ? `<tr class="hover:bg-slate-800/80 transition cursor-pointer bg-slate-800/30" onclick="goUpFolder()"><td colspan="3" class="p-3 pl-4 text-slate-300 font-bold"><i class="fa fa-level-up-alt text-cyan-400 mr-2"></i> .. (Go back)</td></tr>` : '';
 

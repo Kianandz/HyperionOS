@@ -8,26 +8,57 @@
             </div>
             <div>
                 <label class="block text-slate-400 mb-1">Source Type</label>
-                <select name="source_type" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+                <select name="source_type" id="source_type" onchange="toggleSourceInput()" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
                     <option value="git">Git Repository URL</option>
-                    <option value="folder">Local Path / Upload Folder</option>
+                    <option value="upload">Upload Project (.zip)</option>
                 </select>
             </div>
-            <div>
-                <label class="block text-slate-400 mb-1">Source Value (Git URL or Local Path)</label>
-                <input type="text" name="source_val" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+            <div id="input-git">
+                <label class="block text-slate-400 mb-1">Git URL</label>
+                <input type="text" name="source_val" id="source_val" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white" required>
+            </div>
+            
+            <div id="input-upload" class="hidden">
+                <label class="block text-slate-400 mb-1">Upload File (.zip)</label>
+                <input type="file" name="source_file" id="source_file" accept=".zip" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500">
             </div>
             <div>
                 <label class="block text-slate-400 mb-1">.env Content (Optional)</label>
                 <textarea name="env_content" rows="3" placeholder="PORT=3000&#10;DB_HOST=localhost" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white font-mono"></textarea>
             </div>
             <div>
-                <label class="block text-slate-400 mb-1">PM2 Start Command (e.g., app.js or npm start)</label>
-                <input type="text" name="start_cmd" value="npm start" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+                <label class="block text-slate-400 mb-1">Entry File / Start Command (e.g., app.js or server.js)</label>
+                <input type="text" name="start_cmd" value="app.js" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+                <p class="text-[10px] text-slate-500 mt-1">Just put the entry file. PM2 cluster & ecosystem logic is handled automatically.</p>
             </div>
             <div class="flex justify-end gap-2 pt-2">
                 <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl">Cancel</button>
                 <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg">Deploy & Install</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="modal-edit" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-4 md:p-6 space-y-4 mx-4">
+        <h3 class="text-base font-bold text-white flex items-center gap-2"><i class="fa fa-edit text-indigo-400"></i> Edit Node Project</h3>
+        <form id="form-edit-project" onsubmit="submitEditProject(event)" class="space-y-4 text-xs font-bold">
+            <input type="hidden" name="name" id="edit-name">
+            
+            <div>
+                <label class="block text-slate-400 mb-1">Install Package (NPM) - Optional</label>
+                <input type="text" name="pkg_action" placeholder="e.g. express mongoose (leave blank if none)" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-indigo-500">
+                <p class="text-[10px] text-slate-500 mt-1">NPM will automatically install this package to the project folder.</p>
+            </div>
+            <div>
+                <label class="block text-slate-400 mb-1">Update PM2 Entry File / Start Command</label>
+                <input type="text" id="edit-start-cmd" name="start_cmd" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white">
+                <p class="text-[10px] text-slate-500 mt-1">This will update the script inside ecosystem.config.cjs.</p>
+            </div>
+            
+            <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg">Save & Restart PM2</button>
             </div>
         </form>
     </div>

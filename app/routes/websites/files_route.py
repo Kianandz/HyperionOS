@@ -1,18 +1,31 @@
-import os, shutil
+import os, shutil, re
 from fastapi import Form, File, UploadFile, Depends
 from fastapi.responses import FileResponse, JSONResponse
 from app.core.security import verify_session
+from app.services import website
 from . import router
+
+
+def get_actual_root(domain: str) -> str:
+    try:
+        config = website.get_website_config(domain)
+        match = re.search(r"root\s+([^;]+);", config)
+        if match:
+            return match.group(1).strip()
+    except:
+        pass
+    return f"/var/www/html/{domain}"
 
 
 @router.get("/files/list/{domain}")
 async def list_files(domain: str, subpath: str = "", _: str = Depends(verify_session)):
-    base_dir = f"/var/www/html/{domain}"
+    base_dir = get_actual_root(domain)
     target_dir = os.path.normpath(os.path.join(base_dir, subpath))
+
     if not target_dir.startswith(base_dir):
         target_dir = base_dir
     if not os.path.exists(target_dir):
-        return JSONResponse({"files": []})
+        return JSONResponse({"files": [], "actual_root": base_dir})
 
     files_data = []
     for f in os.listdir(target_dir):
@@ -25,7 +38,10 @@ async def list_files(domain: str, subpath: str = "", _: str = Depends(verify_ses
             }
         )
     return JSONResponse(
-        {"files": sorted(files_data, key=lambda x: x["is_dir"], reverse=True)}
+        {
+            "files": sorted(files_data, key=lambda x: x["is_dir"], reverse=True),
+            "actual_root": base_dir,
+        }
     )
 
 
@@ -36,8 +52,10 @@ async def upload_files(
     subpath: str = Form(""),
     _: str = Depends(verify_session),
 ):
-    base_dir = os.path.normpath(os.path.join(f"/var/www/html/{domain}", subpath))
-    if not base_dir.startswith(f"/var/www/html/{domain}"):
+    actual_root = get_actual_root(domain)
+    base_dir = os.path.normpath(os.path.join(actual_root, subpath))
+
+    if not base_dir.startswith(actual_root):
         return JSONResponse({"error": "Unauthorized"}, status_code=403)
     os.makedirs(base_dir, exist_ok=True)
 
@@ -51,16 +69,20 @@ async def upload_files(
 
 @router.get("/files/download/{domain}/{filename:path}")
 async def download_file(domain: str, filename: str, _: str = Depends(verify_session)):
-    file_path = f"/var/www/html/{domain}/{filename}"
-    if os.path.exists(file_path):
+    actual_root = get_actual_root(domain)
+    file_path = os.path.normpath(os.path.join(actual_root, filename))
+
+    if file_path.startswith(actual_root) and os.path.exists(file_path):
         return FileResponse(file_path, filename=filename.split("/")[-1])
     return JSONResponse({"error": "File not found"}, status_code=404)
 
 
 @router.post("/files/delete/{domain}/{filename:path}")
 async def delete_file(domain: str, filename: str, _: str = Depends(verify_session)):
-    file_path = f"/var/www/html/{domain}/{filename}"
-    if os.path.exists(file_path):
+    actual_root = get_actual_root(domain)
+    file_path = os.path.normpath(os.path.join(actual_root, filename))
+
+    if file_path.startswith(actual_root) and os.path.exists(file_path):
         if os.path.isdir(file_path):
             shutil.rmtree(file_path)
         else:
@@ -76,8 +98,10 @@ async def create_item(
     subpath: str = Form(""),
     _: str = Depends(verify_session),
 ):
-    base_dir = os.path.normpath(os.path.join(f"/var/www/html/{domain}", subpath))
-    if not base_dir.startswith(f"/var/www/html/{domain}"):
+    actual_root = get_actual_root(domain)
+    base_dir = os.path.normpath(os.path.join(actual_root, subpath))
+
+    if not base_dir.startswith(actual_root):
         return JSONResponse({"error": "Unauthorized"}, status_code=403)
     path = os.path.join(base_dir, name)
 
@@ -94,12 +118,12 @@ async def file_actions(
     mods: str = Form(""),
     _: str = Depends(verify_session),
 ):
-    base_dir = f"/var/www/html/{domain}"
-    src_path = os.path.normpath(os.path.join(base_dir, target))
-    dest_path = os.path.normpath(os.path.join(base_dir, dest)) if dest else ""
+    actual_root = get_actual_root(domain)
+    src_path = os.path.normpath(os.path.join(actual_root, target))
+    dest_path = os.path.normpath(os.path.join(actual_root, dest)) if dest else ""
 
-    if not src_path.startswith(base_dir) or (
-        dest and not dest_path.startswith(base_dir)
+    if not src_path.startswith(actual_root) or (
+        dest and not dest_path.startswith(actual_root)
     ):
         return JSONResponse({"error": "Unauthorized"}, status_code=403)
 
@@ -120,7 +144,13 @@ async def file_actions(
 async def read_file_content(
     domain: str, filename: str, _: str = Depends(verify_session)
 ):
-    with open(f"/var/www/html/{domain}/{filename}", "r") as f:
+    actual_root = get_actual_root(domain)
+    file_path = os.path.normpath(os.path.join(actual_root, filename))
+
+    if not file_path.startswith(actual_root) or not os.path.exists(file_path):
+        return JSONResponse({"error": "File not found"}, status_code=404)
+
+    with open(file_path, "r") as f:
         return JSONResponse({"content": f.read()})
 
 
@@ -131,6 +161,12 @@ async def write_file_content(
     content: str = Form(...),
     _: str = Depends(verify_session),
 ):
-    with open(f"/var/www/html/{domain}/{filename}", "w") as f:
+    actual_root = get_actual_root(domain)
+    file_path = os.path.normpath(os.path.join(actual_root, filename))
+
+    if not file_path.startswith(actual_root):
+        return JSONResponse({"error": "Unauthorized"}, status_code=403)
+
+    with open(file_path, "w") as f:
         f.write(content)
     return JSONResponse({"status": "success"})
