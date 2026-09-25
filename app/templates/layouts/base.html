@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}HyperionOS{% endblock %}</title>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" defer></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
     <link rel="stylesheet" href="/static/css/tailwind.css">
     <link rel="stylesheet" href="/static/css/fontawesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
     <link rel="stylesheet" href="/static/css/responsive.css">
-    <script src="/static/js/htmx.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="/static/js/htmx.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         const uiCfg = JSON.parse(localStorage.getItem('HYPERION_UI')) || { 
@@ -45,7 +45,7 @@
         <video id="bg-video" src="" autoplay loop muted class="hidden w-full h-full object-cover"></video>
     </div>
 
-    <script src="/static/js/main.js" defer></script>
+    <script src="/static/js/main.js"></script>
 
     <script>
         const bgCfg = JSON.parse(localStorage.getItem('HYPERION_BG')) || { type: 'color', val: '#0f172a', bright: 1 };
