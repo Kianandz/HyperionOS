@@ -4,6 +4,15 @@ document.addEventListener('click', (e) => {
     }
 });
 
+async function openAppStore() {
+    if (!window.appStoreLoaded) {
+        await import('/static/js/docker/appstore.js');
+        window.appStoreLoaded = true;
+    }
+    document.getElementById('appstore-modal').classList.remove('hidden');
+    loadAppStoreData();
+}
+
 function toggleMenu(menuId) {
     document.querySelectorAll('[id^="menu-"]').forEach(menu => {
         if (menu.id !== menuId) menu.classList.add('hidden');

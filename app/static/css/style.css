@@ -1,13 +1,16 @@
+.bg-slate-800\/60,
+.bg-slate-800\/40,
 .bg-slate-900\/60, 
 .bg-slate-900\/40, 
+.bg-slate-900\/20, 
 .bg-slate-950,
 .bg-slate-900,
 .dynamic-glass,
 .swal2-popup,
 .glass-panel {
     background-color: var(--theme-card-bg) !important;
-    backdrop-filter: blur(var(--theme-card-blur)) !important;
-    -webkit-backdrop-filter: blur(var(--theme-card-blur)) !important;
+    backdrop-filter: blur(calc(var(--theme-card-blur) * 0.25)) !important;
+    -webkit-backdrop-filter: blur(calc(var(--theme-card-blur) * 0.25)) !important;
     border-color: rgba(255, 255, 255, 0.1) !important; 
     
     transform: translateZ(0);
@@ -17,8 +20,8 @@
 
     .swal2-popup {
         border-radius: 12px !important;
-        backdrop-filter: blur(calc(var(--theme-card-blur) + 10px)) !important;
-        -webkit-backdrop-filter: blur(calc(var(--theme-card-blur) + 10px)) !important;
+        backdrop-filter: blur(calc(var(--theme-card-blur) * 0.5))  !important;
+        -webkit-backdrop-filter: blur(calc(var(--theme-card-blur) * 0.5))  !important;
     }
 
     body, 

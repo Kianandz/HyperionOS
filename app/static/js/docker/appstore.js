@@ -24,15 +24,27 @@ async function loadAppStoreData() {
             const appTitle = app.title.replace(/'/g, "\\'");
             
             html += `
-            <div class="app-card h-fit bg-slate-950 border border-white/5 rounded-xl p-4 flex flex-col items-center text-center hover:border-white/20 transition-all shadow-md">
-                <div class="w-16 h-16 mb-3 p-1 bg-white/5 rounded-2xl flex items-center justify-center">
-                    <img src="${iconUrl}" class="w-full h-full object-contain drop-shadow-md" onerror="this.src='https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/docker.png'">
+            <div class="app-card bg-slate-950 border border-white/5 hover:bg-slate-800/80 rounded-xl p-3 md:p-4 flex items-center gap-3 transition-all hover:shadow-lg cursor-pointer group">
+                
+                <!-- Icon -->
+                <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center shrink-0 p-1.5 overflow-hidden">
+                    <img src="${iconUrl}" class="w-full h-full object-contain" onerror="this.src='https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/docker.png'">
                 </div>
-                <h4 class="text-white font-bold w-full truncate" title="${app.title}">${app.title}</h4>
-                <p class="text-xs text-slate-400 mb-4 line-clamp-2 w-full h-8" title="${app.description}">${app.description}</p>
-                <button onclick="installApp('${app.image}', '${appTitle}', ${defaultPort}, ${containerPort}, this)" class="w-full mt-auto py-2 bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-lg text-sm font-medium transition-all cursor-pointer">
+                
+                <!-- Info text (min-w-0 dan overflow-hidden memastikan teks tidak bocor) -->
+                <div class="flex-1 min-w-0 overflow-hidden pr-2">
+                    <h4 class="text-white font-semibold text-sm truncate" title="${app.title}">
+                        ${app.title}
+                    </h4>
+                    <!-- Deskripsi dibatasi maksimal 2 baris agar rapi -->
+                    <p class="text-[11px] text-slate-400 mt-1 line-clamp-2 whitespace-normal break-words leading-snug w-full" title="${app.description}">${app.description}</p>
+                </div>
+                
+                <!-- Button Install -->
+                <button onclick="installApp('${app.image}', '${appTitle}', ${defaultPort}, ${containerPort}, this)" class="shrink-0 px-3 py-1.5 bg-indigo-500/10 text-indigo-400 group-hover:bg-indigo-600 group-hover:text-white rounded-lg text-xs font-semibold transition-all">
                     Install
                 </button>
+                
             </div>`;
         });
         
@@ -93,10 +105,10 @@ async function installApp(imageName, appTitle, defaultPort, containerPort, btn) 
     }
 }
 
-async function openAppStore() {
-    document.getElementById('appstore-modal').classList.remove('hidden');
-    await loadAppStoreData();
-}
+// async function openAppStore() {
+//     document.getElementById('appstore-modal').classList.remove('hidden');
+//     await loadAppStoreData();
+// }
 
 function closeAppStore() {
     document.getElementById('appstore-modal').classList.add('hidden');

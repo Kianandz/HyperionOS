@@ -14,3 +14,4 @@ pydantic
 pydantic_settings
 flask
 websockets
+Pillow
