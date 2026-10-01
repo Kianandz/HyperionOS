@@ -14,6 +14,7 @@ from .nginx import (
     save_website,
     toggle_website,
     delete_website,
+    test_nginx_syntax,
 )
 
 __all__ = [
@@ -31,4 +32,5 @@ __all__ = [
     "save_website",
     "toggle_website",
     "delete_website",
+    "test_nginx_syntax",
 ]

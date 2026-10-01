@@ -1,5 +1,6 @@
 import os
 import re
+import uuid
 import subprocess
 from jinja2 import Template
 from .constants import NGINX_CONF_DIR, NGINX_ENABLED_DIR, IS_DEBIAN, NGINX_TEMPLATE
@@ -105,7 +106,7 @@ def save_website(
         match_server = re.search(r"server_name\s+([^;]+);", raw_config)
         if match_server:
             new_full_domain = match_server.group(1).strip()
-            new_safe_name = new_full_domain.split()[0].strip()
+            # new_safe_name = new_full_domain.split()[0].strip()
 
             # raw_config = re.sub(
             #     r"root\s+/var/www/html/[^;]+;",
@@ -289,3 +290,25 @@ def delete_website(domain: str):
         text=True,
     )
     return {"status": "success", "message": f"Website {domain} deleted"}
+
+def test_nginx_syntax(raw_config: str):
+    temp_filename = f"temp_syntax_{uuid.uuid4().hex}.conf"
+    temp_path = os.path.join(NGINX_CONF_DIR, temp_filename)
+    
+    try:
+        with open(temp_path, "w") as f:
+            f.write(raw_config)
+        
+        result = subprocess.run(
+            ["sudo", "nginx", "-t"], 
+            capture_output=True, 
+            text=True
+        )
+        
+        if result.returncode == 0:
+            return {"status": "success", "message": "Syntax OK"}
+        else:
+            return {"status": "error", "message": result.stderr}
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)

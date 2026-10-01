@@ -1,6 +1,7 @@
 import os
 import re
 from fastapi import Form, Depends, responses
+from fastapi.responses import JSONResponse
 from app.core.security import verify_session
 from app.services import website
 from . import router
@@ -59,3 +60,9 @@ async def toggle_site(domain: str, _: str = Depends(verify_session)):
 async def delete_site(domain: str, _: str = Depends(verify_session)):
     website.delete_website(domain)
     return responses.RedirectResponse(url="/websites", status_code=303)
+
+
+@router.post("/test-syntax")
+async def test_syntax(raw_config: str = Form(...), _: str = Depends(verify_session)):
+    result = website.test_nginx_syntax(raw_config)
+    return JSONResponse(result)

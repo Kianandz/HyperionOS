@@ -16,7 +16,12 @@
             <input type="hidden" name="root_dir" id="editInputRootDir">
 
             <div id="editContentAdvanced">
-                <textarea id="editRawConfigArea" name="raw_config" class="w-full h-[400px] bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-xs font-mono text-slate-300 outline-none focus:border-purple-500 transition resize-none custom-scrollbar shadow-inner"></textarea>
+                <div class="flex justify-between items-end mb-2">
+                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Raw Configuration</label>
+                    <div id="syntaxStatus" class="text-[11px] font-bold flex items-center gap-1 transition-all">
+                    </div>
+                </div>
+                <textarea id="editRawConfigArea" name="raw_config" class="w-full h-[400px] bg-slate-950/80 border border-slate-700/60 rounded-xl p-4 text-xs font-mono text-slate-300 outline-none focus:border-purple-500 transition-colors resize-none custom-scrollbar shadow-inner"></textarea>
             </div>
 
             <div id="editContentSimple" class="hidden space-y-5">
