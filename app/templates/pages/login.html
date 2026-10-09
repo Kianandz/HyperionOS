@@ -90,14 +90,20 @@
 
             </div>
 
+            {% if show_captcha %}
+            <div>
+                <label class="block font-bold text-rose-400 uppercase tracking-wider text-[10px] mb-1.5">Security Check: {{ captcha_question }} = ?</label>
+                <div class="relative">
+                    <i class="fa fa-shield absolute left-3.5 top-3.5 text-rose-400 text-xs"></i>
+                    <input type="text" name="captcha_answer" required placeholder="Enter result..." class="w-full bg-transparent/80 border border-rose-900/60 rounded-xl pl-10 pr-4 py-3 text-white focus:outline-none focus:border-rose-500 transition-all shadow-inner font-medium">
+                </div>
+            </div>
+            {% endif %}
+
             <div class="pt-2">
-
                 <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-bold py-3.5 rounded-xl transition-all flex justify-center items-center gap-2 shadow-lg shadow-indigo-500/20 border border-indigo-500/50 cursor-pointer">
-
                     <i class="fa fa-sign-in"></i> Login
-
                 </button>
-
             </div>
 
         </form>

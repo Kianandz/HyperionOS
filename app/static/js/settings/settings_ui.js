@@ -43,3 +43,71 @@ function previewTheme() {
     // (Optional) Apply directly to your background element here
     // document.body.style.backdropFilter = `blur(${blurVal}px)`;
 }
+
+function toggleLogoInput() {
+    const type = document.getElementById('logo-type').value;
+    const uploadDiv = document.getElementById('logo-image-input');
+    if (type === 'image') {
+        uploadDiv.classList.remove('hidden');
+    } else {
+        uploadDiv.classList.add('hidden');
+    }
+}
+
+async function saveBranding() {
+    const name = document.getElementById('brand-name').value || 'HyperionOS';
+    const type = document.getElementById('logo-type').value;
+    const fileInput = document.getElementById('logo-upload');
+
+    let brandCfg = { name: name, type: type, url: '' };
+
+    // 1. Update APP_NAME ke backend (.env)
+    const nameForm = new FormData();
+    nameForm.append('name', name);
+    try {
+        await fetch('/settings/branding/name', {
+            method: 'POST',
+            body: nameForm
+        });
+    } catch (err) {
+        console.error("Failed to update .env", err);
+    }
+
+    // 2. Kalau mode gambar dan ada file yang di-upload
+    if (type === 'image' && fileInput.files.length > 0) {
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        try {
+            const response = await fetch('/settings/upload-logo', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            if (result.status === 'success') {
+                brandCfg.url = result.file_url;
+            }
+        } catch (err) {
+            Swal.fire('Error', 'Failed to upload logo image', 'error');
+            return;
+        }
+    } 
+    // 3. Kalau mode gambar tapi nggak upload file baru (pake yang lama)
+    else if (type === 'image') {
+        const existing = JSON.parse(localStorage.getItem('HYPERION_BRAND'));
+        if (existing && existing.url) brandCfg.url = existing.url;
+    }
+
+    // Simpan ke local storage buat load UI yang instan tanpa delay
+    localStorage.setItem('HYPERION_BRAND', JSON.stringify(brandCfg));
+    
+    Swal.fire({
+        title: 'Success!',
+        text: 'Branding and .env applied successfully',
+        icon: 'success',
+        timer: 1500,
+        showConfirmButton: false
+    }).then(() => {
+        window.location.reload();
+    });
+}

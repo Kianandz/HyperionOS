@@ -1,0 +1,29 @@
+<div class="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 p-4 sm:p-5 rounded-2xl space-y-4 shadow-xl mb-6">
+    <h2 class="text-sm font-bold text-white border-b border-slate-800/60 pb-3 flex items-center gap-2">
+        <i class="fa fa-cube text-indigo-400"></i> Branding & Logo
+    </h2>
+    
+    <div class="space-y-4">
+        <div>
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Application Name</label>
+            <input type="text" id="brand-name" value="HyperionOS" class="w-full bg-transparent/80 border border-slate-700/60 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 transition-all font-medium text-sm">
+        </div>
+
+        <div>
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Logo Type</label>
+            <select id="logo-type" onchange="toggleLogoInput()" class="w-full bg-slate-800 border border-slate-700/60 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-indigo-500 text-sm appearance-none">
+                <option value="text">Text (First Letter)</option>
+                <option value="image">Custom Image</option>
+            </select>
+        </div>
+
+        <div id="logo-image-input" class="hidden">
+            <label class="block font-bold text-slate-400 uppercase tracking-wider text-[10px] mb-1.5">Upload Custom Logo (PNG/JPG/WEBP)</label>
+            <input type="file" id="logo-upload" accept="image/*" class="w-full text-sm text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-slate-700 file:text-white hover:file:bg-slate-600 cursor-pointer border border-slate-700/60 rounded-xl bg-transparent/80">
+        </div>
+    </div>
+
+    <button onclick="saveBranding()" class="w-full bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white py-3 rounded-xl text-xs font-bold transition shadow-lg shadow-indigo-500/20 border border-indigo-500/50 mt-4 flex items-center justify-center gap-2">
+        <i class="fa fa-save"></i> Apply Branding
+    </button>
+</div>

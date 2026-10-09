@@ -186,3 +186,26 @@ def update_app_port(new_port: str):
 
     with open(env_path, "w") as f:
         f.writelines(lines)
+
+def update_app_name(new_name: str):
+    env_path = ".env"
+    lines = []
+    found = False
+
+    if os.path.exists(env_path):
+        with open(env_path, "r") as f:
+            lines = f.readlines()
+
+    # Cari dan timpa APP_NAME kalau udah ada
+    for i, line in enumerate(lines):
+        if line.startswith("APP_NAME="):
+            lines[i] = f'APP_NAME="{new_name}"\n'
+            found = True
+            break
+
+    # Kalau belum ada di .env, tambahin di baris paling bawah
+    if not found:
+        lines.append(f'\nAPP_NAME="{new_name}"\n')
+
+    with open(env_path, "w") as f:
+        f.writelines(lines)

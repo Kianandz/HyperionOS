@@ -6,38 +6,146 @@
 <div class="space-y-6">
     {% include 'components/settings/header.html' %}
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {% include 'components/settings/status.html' %}
-        {% include 'components/settings/network.html' %}
-        
-        {% include 'components/settings/timezone.html' %}
-        {% include 'components/settings/users.html' %}
-        
-        {% include 'components/settings/port.html' %}
-        {% include 'components/settings/dns.html' %}
-        
-        {% include 'components/settings/maintenance.html' %}
-        {% include 'components/settings/styling.html' %}
-        
-        <div class="md:col-span-2">
-            {% include 'components/settings/background.html' %}
+    <!-- Tabs Navigation -->
+    <div class="border-b border-slate-700/50 mb-6">
+        <nav class="flex space-x-6 overflow-x-auto" aria-label="Tabs">
+            <button onclick="switchTab('general')" id="tab-btn-general" class="tab-btn whitespace-nowrap py-4 px-2 border-b-2 font-bold text-sm transition-colors border-indigo-500 text-indigo-400 focus:outline-none cursor-pointer">
+                <i class="fa fa-sliders mr-2"></i> General
+            </button>
+            <button onclick="switchTab('network')" id="tab-btn-network" class="tab-btn whitespace-nowrap py-4 px-2 border-b-2 font-bold text-sm transition-colors border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500 focus:outline-none cursor-pointer">
+                <i class="fa fa-globe mr-2"></i> Network & Services
+            </button>
+            <button onclick="switchTab('appearance')" id="tab-btn-appearance" class="tab-btn whitespace-nowrap py-4 px-2 border-b-2 font-bold text-sm transition-colors border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500 focus:outline-none cursor-pointer">
+                <i class="fa fa-paint-brush mr-2"></i> Appearance
+            </button>
+            <button onclick="switchTab('logs')" id="tab-btn-logs" class="tab-btn whitespace-nowrap py-4 px-2 border-b-2 font-bold text-sm transition-colors border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500 focus:outline-none cursor-pointer">
+                <i class="fa fa-terminal mr-2"></i> System Logs
+            </button>
+        </nav>
+    </div>
+
+    <!-- Tab Contents -->
+    
+    <!-- 1. General Tab -->
+    <div id="tab-general" class="tab-content block space-y-6 animate-fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% include 'components/settings/status.html' %}
+            {% include 'components/settings/timezone.html' %}
+            {% include 'components/settings/users.html' %}
+            {% include 'components/settings/maintenance.html' %}
         </div>
     </div>
+
+    <!-- 2. Network & Services Tab -->
+    <div id="tab-network" class="tab-content hidden space-y-6 animate-fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% include 'components/settings/network.html' %}
+            {% include 'components/settings/port.html' %}
+            {% include 'components/settings/dns.html' %}
+        </div>
+    </div>
+
+    <!-- 3. Appearance Tab -->
+    <div id="tab-appearance" class="tab-content hidden space-y-6 animate-fade-in">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% include 'components/settings/brand.html' %}
+            {% include 'components/settings/styling.html' %}
+            <div class="md:col-span-2">
+                {% include 'components/settings/background.html' %}
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. System Logs Tab -->
+    <div id="tab-logs" class="tab-content hidden space-y-6 animate-fade-in">
+        <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 p-6 rounded-3xl shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white"><i class="fa fa-file-text-o text-indigo-400 mr-2"></i> Application Logs</h3>
+                <button class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 px-3 rounded-lg transition-colors border border-slate-700 cursor-pointer">
+                    <i class="fa fa-refresh mr-1"></i> Refresh
+                </button>
+            </div>
+            <div class="bg-slate-950 rounded-xl p-4 font-mono text-xs text-slate-400 h-96 overflow-y-auto border border-slate-800 shadow-inner">
+                <!-- Log streams will go here -->
+                <p class="text-slate-600">Waiting for log stream data...</p>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
+    // Tab switching logic
+    function switchTab(targetId) {
+        // Hide all contents
+        document.querySelectorAll('.tab-content').forEach(el => {
+            el.classList.add('hidden');
+            el.classList.remove('block');
+        });
+
+        // Reset all button styles
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('border-indigo-500', 'text-indigo-400');
+            btn.classList.add('border-transparent', 'text-slate-400');
+        });
+
+        // Show target content
+        const content = document.getElementById('tab-' + targetId);
+        if(content) {
+            content.classList.remove('hidden');
+            content.classList.add('block');
+        }
+
+        // Highlight active tab button
+        const activeBtn = document.getElementById('tab-btn-' + targetId);
+        if(activeBtn) {
+            activeBtn.classList.remove('border-transparent', 'text-slate-400');
+            activeBtn.classList.add('border-indigo-500', 'text-indigo-400');
+        }
+        
+        // Optional: Save active tab to localStorage so it persists on reload
+        localStorage.setItem('HYPERION_ACTIVE_TAB', targetId);
+    }
+
+    // Initialize scripts on load
     document.addEventListener('DOMContentLoaded', () => {
+        
+        // Load UI configurations from local storage
         const savedUi = JSON.parse(localStorage.getItem('HYPERION_UI'));
         if(savedUi) {
-            document.getElementById('ui-card-color').value = savedUi.cardHex;
-            document.getElementById('ui-text-color').value = savedUi.textHex;
-            document.getElementById('ui-card-opacity').value = savedUi.cardOp;
-            document.getElementById('valCardOp').innerText = savedUi.cardOp;
-            document.getElementById('ui-card-blur').value = savedUi.cardBlur;
-            document.getElementById('valCardBlur').innerText = savedUi.cardBlur + 'px';
+            const inputs = {
+                'ui-card-color': savedUi.cardHex,
+                'ui-text-color': savedUi.textHex,
+                'ui-card-opacity': savedUi.cardOp,
+                'ui-card-blur': savedUi.cardBlur
+            };
+            
+            for (const [id, val] of Object.entries(inputs)) {
+                if (document.getElementById(id)) document.getElementById(id).value = val;
+            }
+            
+            if(document.getElementById('valCardOp')) document.getElementById('valCardOp').innerText = savedUi.cardOp;
+            if(document.getElementById('valCardBlur')) document.getElementById('valCardBlur').innerText = savedUi.cardBlur + 'px';
+        }
+
+        // Restore previously active tab if exists
+        const lastTab = localStorage.getItem('HYPERION_ACTIVE_TAB');
+        if(lastTab) {
+            switchTab(lastTab);
         }
     });
 </script>
+
+<!-- Add a simple fade-in animation to style.css if you haven't already -->
+<style>
+    .animate-fade-in {
+        animation: fadeIn 0.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
 
 <script src="/static/js/settings/settings_ui.js"></script>
 <script src="/static/js/settings/settings_theme.js"></script>

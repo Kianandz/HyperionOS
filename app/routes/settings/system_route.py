@@ -55,3 +55,8 @@ async def save_port(port: str = Form(...), _: str = Depends(verify_session)):
     if port.isdigit():
         system_service.update_app_port(port)
     return responses.RedirectResponse(url="/settings", status_code=303)
+
+@router.post("/branding/name")
+async def update_branding_name(name: str = Form(...), _: str = Depends(verify_session)):
+    system_service.update_app_name(name)
+    return {"status": "success", "app_name": name}

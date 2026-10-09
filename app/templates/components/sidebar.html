@@ -1,8 +1,13 @@
 <aside class="w-64 bg-slate-900/60 backdrop-blur-md border-r border-slate-800/80 flex flex-col justify-between select-none">
     <div class="flex-1 flex flex-col overflow-hidden">
         <div class="p-6 border-b border-slate-800/80 flex items-center space-x-3 shrink-0">
-            <div class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30 border border-indigo-500/50">H</div>
-            <span class="text-xl font-bold tracking-wider text-white">Hyperion<span class="text-indigo-500">OS</span></span>
+            <div id="sidebar-logo-box" class="w-9 h-9 bg-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30 border border-indigo-500/50 overflow-hidden shrink-0">
+                <!-- Teks inisial -->
+                <span id="sidebar-logo-text" class="text-white">H</span>
+                <!-- Gambar Logo -->
+                <img id="sidebar-logo-img" src="" class="hidden w-full h-full object-cover">
+            </div>
+            <span id="sidebar-brand-name" class="text-xl font-bold tracking-wider text-white truncate">HyperionOS</span>
         </div>
         <nav id="sidebar-nav" class="flex-1 p-4 space-y-1.5 text-xs font-bold overflow-y-auto"></nav>
     </div>
@@ -15,6 +20,38 @@
 </aside>
 
 <script>
+
+const brandCfg = JSON.parse(localStorage.getItem('HYPERION_BRAND')) || { name: 'HyperionOS', type: 'text', url: '' };
+    
+    const brandNameEl = document.getElementById('sidebar-brand-name');
+    const logoBoxEl = document.getElementById('sidebar-logo-box');
+    const logoTextEl = document.getElementById('sidebar-logo-text');
+    const logoImgEl = document.getElementById('sidebar-logo-img');
+
+    // 1. Set teks nama aplikasi di samping logo
+    brandNameEl.innerText = brandCfg.name;
+
+    // 2. Logika Teks vs Gambar
+    if (brandCfg.type === 'image' && brandCfg.url) {
+        // Mode Gambar: Kosongin teks inisial APP_NAME, munculin gambar
+        logoTextEl.classList.add('hidden');
+        logoImgEl.src = brandCfg.url;
+        logoImgEl.classList.remove('hidden');
+        
+        // Ilangin style kotak indigo bawaan biar gambar transparan lu makin kece
+        logoBoxEl.classList.replace('bg-indigo-600', 'bg-transparent');
+        logoBoxEl.classList.remove('border', 'shadow-lg'); 
+    } else {
+        // Mode Teks: Ambil huruf pertama dari APP_NAME
+        logoImgEl.classList.add('hidden');
+        logoTextEl.classList.remove('hidden');
+        logoTextEl.innerText = brandCfg.name.charAt(0).toUpperCase(); 
+        
+        // Balikin style kotak indigo bawaan
+        logoBoxEl.classList.replace('bg-transparent', 'bg-indigo-600');
+        logoBoxEl.classList.add('border', 'shadow-lg');
+    }
+
 document.addEventListener('DOMContentLoaded', async () => {
     const nav = document.getElementById('sidebar-nav');
     const currentPath = window.location.pathname;
