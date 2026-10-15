@@ -36,10 +36,10 @@
                         <input type="checkbox" class="file-checkbox w-4 h-4 rounded border-slate-700 bg-slate-950 text-indigo-500 focus:ring-0 focus:ring-offset-0 cursor-pointer transition-colors" data-path="{{ item.path | e }}" data-name="{{ item.name | e }}" onchange="updateBatchBar()">
                     </td>
 
-                    <td class="p-4" data-sort-val="{{ item.name.lower() }}" data-label="Name">
+                    <td class="p-4" data-sort-val="{{ item.name.lower() | e }}" data-label="Name">
                         {% if item.is_dir %}
                         <a href="/files?path={{ item.path | urlencode }}" class="text-indigo-300 hover:text-indigo-200 font-bold flex items-center gap-3 cursor-pointer">
-                            <i class="fa fa-folder text-lg text-indigo-400"></i> <span class="truncate max-w-[250px] md:max-w-md">{{ item.name }}</span>
+                            <i class="fa fa-folder text-lg text-indigo-400"></i> <span class="truncate max-w-[250px] md:max-w-md">{{ item.name | e }}</span>
                         </a>
                         {% else %}
                         <button data-path="{{ item.path | e }}" data-name="{{ item.name | e }}" onclick="handleItemClick(this.dataset.path, this.dataset.name, false)" class="text-slate-200 hover:text-white text-left font-bold flex items-center gap-3 cursor-pointer bg-transparent border-0 p-0 transition-colors">
@@ -52,30 +52,30 @@
                             {% else %}
                                 <i class="fa fa-file-text-o text-slate-400 text-lg"></i>
                             {% endif %}
-                            <span class="truncate max-w-[250px] md:max-w-md">{{ item.name }}</span>
+                            <span class="truncate max-w-[250px] md:max-w-md">{{ item.name | e }}</span>
                         </button>
                         {% endif %}
                     </td>
 
                     <td class="p-4 font-mono text-slate-400 font-semibold" data-sort-val="{{ item.size_bytes }}" data-label="Size">{{ item.size_bytes }} B</td>
-                    <td class="p-4 font-mono" data-label="Permissions"><span class="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 text-slate-400 shadow-inner">{{ item.permissions }}</span></td>
-                    <td class="p-4 text-slate-500 font-medium" data-sort-val="{{ item.last_modified }}" data-label="Modified">{{ item.last_modified }}</td>
+                    <td class="p-4 font-mono" data-label="Permissions"><span class="bg-slate-950/80 px-2.5 py-1 rounded-lg border border-slate-800 text-slate-400 shadow-inner">{{ item.permissions | e }}</span></td>
+                    <td class="p-4 text-slate-500 font-medium" data-sort-val="{{ item.last_modified }}" data-label="Modified">{{ item.last_modified | e }}</td>
                     
                     <td class="p-3 text-right flex justify-end gap-1 items-center md:opacity-0 group-hover:opacity-100 transition-opacity pr-6" data-label="Action">
                         {% if not item.is_dir and (item.name.endswith('.zip') or item.name.endswith('.tar.gz') or item.name.endswith('.gz')) %}
-                            <button onclick="promptExtract('{{ item.path }}')" class="p-2 rounded-xl text-purple-400 hover:bg-purple-500/20 hover:text-purple-300 transition-colors cursor-pointer" title="Extract"><i class="fa fa-file-archive-o text-base"></i></button>
+                            <button data-path="{{ item.path | e }}" onclick="promptExtract(this.dataset.path)" class="p-2 rounded-xl text-purple-400 hover:bg-purple-500/20 hover:text-purple-300 transition-colors cursor-pointer" title="Extract"><i class="fa fa-file-archive-o text-base"></i></button>
                         {% endif %}
 
-                        <button onclick="setClipboard('{{ item.path }}', '{{ item.name }}', 'copy')" class="p-2 rounded-xl text-sky-400 hover:bg-sky-500/20 hover:text-sky-300 transition-colors cursor-pointer" title="Copy"><i class="fa fa-copy text-base"></i></button>
-                        <button onclick="setClipboard('{{ item.path }}', '{{ item.name }}', 'move')" class="p-2 rounded-xl text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 transition-colors cursor-pointer" title="Cut"><i class="fa fa-scissors text-base"></i></button>
+                        <button data-path="{{ item.path | e }}" data-name="{{ item.name | e }}" onclick="setClipboard(this.dataset.path, this.dataset.name, 'copy')" class="p-2 rounded-xl text-sky-400 hover:bg-sky-500/20 hover:text-sky-300 transition-colors cursor-pointer" title="Copy"><i class="fa fa-copy text-base"></i></button>
+                        <button data-path="{{ item.path | e }}" data-name="{{ item.name | e }}" onclick="setClipboard(this.dataset.path, this.dataset.name, 'move')" class="p-2 rounded-xl text-cyan-400 hover:bg-cyan-500/20 hover:text-cyan-300 transition-colors cursor-pointer" title="Cut"><i class="fa fa-scissors text-base"></i></button>
 
                         <a href="/files/download?path={{ item.path | urlencode }}" class="p-2 rounded-xl text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 transition-colors cursor-pointer" title="Download">
                             <i class="fa fa-download text-base"></i>
                         </a>
 
-                        <button onclick="promptRename('{{ item.path }}', '{{ item.name }}')" class="p-2 rounded-xl text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer" title="Rename"><i class="fa fa-pencil text-base"></i></button>
+                        <button data-path="{{ item.path | e }}" data-name="{{ item.name | e }}" onclick="promptRename(this.dataset.path, this.dataset.name)" class="p-2 rounded-xl text-amber-400 hover:bg-amber-500/20 hover:text-amber-300 transition-colors cursor-pointer" title="Rename"><i class="fa fa-pencil text-base"></i></button>
 
-                        <button onclick="promptDelete('{{ item.path }}', '{{ item.name }}')" class="p-2 rounded-xl text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-colors cursor-pointer" title="Delete"><i class="fa fa-trash text-base"></i></button>
+                        <button data-path="{{ item.path | e }}" data-name="{{ item.name | e }}" onclick="promptDelete(this.dataset.path, this.dataset.name)" class="p-2 rounded-xl text-rose-400 hover:bg-rose-500/20 hover:text-rose-300 transition-colors cursor-pointer" title="Delete"><i class="fa fa-trash text-base"></i></button>
                     </td>
                 </tr>
                 {% else %}
